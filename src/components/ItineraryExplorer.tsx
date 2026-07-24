@@ -18,7 +18,7 @@ interface WaypointNode {
   align: "left" | "right" | "center";
 }
 
-const CENTERED_ROUTE_NODES: WaypointNode[] = [
+const WINDING_CURVED_NODES: WaypointNode[] = [
   {
     id: "step-1",
     stepNum: 1,
@@ -180,135 +180,147 @@ export function ItineraryExplorer() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-20">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#4F9CF9]/10 text-[#4F9CF9] text-xs font-bold uppercase tracking-wider">
-            <span>Alpine Mountain Route Telemetry</span>
+            <span>Winding Alpine Mountain Switchback</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0F172A] tracking-tight">
-            Annapurna Expedition Route Pathway
+            Curved Mountain Route Pathway
           </h2>
           <p className="text-[#64748B] text-base sm:text-lg">
-            Continuous mountain trail connecting every expedition stop from Pokhara (820m) up to the 4,130m base camp summit with real-time oxygen level telemetry.
+            Organic curved SVG trail path weaving back and forth directly through every waypoint card pin from Pokhara (820m) up to the 4,130m summit with oxygen level telemetry.
           </p>
         </div>
 
-        {/* CENTERED TRAIL ROADMAP CONTAINER WITH DASHED LINE TOUCHING EVERY NODE PIN */}
-        <div className="relative max-w-5xl mx-auto py-6">
-          {/* Continuous Center Dashed Trail Line */}
-          <div className="absolute left-6 md:left-1/2 top-10 bottom-10 w-1.5 border-l-4 border-dashed border-[#F97316] transform -translate-x-1/2 z-0 pointer-events-none" />
+        {/* CURVED SVG TRAIL ROADMAP CONTAINER */}
+        <div className="relative max-w-5xl mx-auto py-10">
+          {/* Organic SVG Bezier Curve Trail Path Directly Weaving Through Card Pins */}
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none hidden md:block z-0"
+            viewBox="0 0 1000 3100"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient id="curvedTrailGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#4F9CF9" />
+                <stop offset="35%" stopColor="#F97316" />
+                <stop offset="65%" stopColor="#EF4444" />
+                <stop offset="100%" stopColor="#16A34A" />
+              </linearGradient>
+            </defs>
 
+            {/* Curving SVG Path mathematically anchoring every card pin */}
+            <path
+              d="M 240 150 
+                 C 500 150, 760 300, 760 460 
+                 C 760 620, 200 620, 200 770 
+                 C 200 920, 800 920, 800 1080 
+                 C 800 1240, 240 1240, 240 1390 
+                 C 240 1540, 760 1540, 760 1700 
+                 C 760 1860, 500 1860, 500 2010 
+                 C 500 2160, 220 2160, 220 2320 
+                 C 220 2480, 780 2480, 780 2630 
+                 C 780 2790, 500 2790, 500 2940"
+              fill="none"
+              stroke="url(#curvedTrailGrad)"
+              strokeWidth="7"
+              strokeDasharray="14 14"
+              className="opacity-90"
+            />
+          </svg>
+
+          {/* Cards Grid arranged along the winding curve */}
           <div className="space-y-16 relative z-10">
-            {CENTERED_ROUTE_NODES.map((node) => {
+            {WINDING_CURVED_NODES.map((node) => {
               const isActive = node.id === activeStepId;
               const isSummit = node.stepNum === 7;
               const isLeft = node.align === "left";
               const isCenter = node.align === "center";
 
+              // Desktop positioning alignment to match curved SVG coordinates
+              let flexClass = "md:justify-start md:pl-4";
+              if (node.align === "right") flexClass = "md:justify-end md:pr-4";
+              if (isCenter) flexClass = "md:justify-center";
+
               return (
-                <div key={node.id} className="relative flex flex-col md:flex-row items-center w-full">
-                  {/* CENTER TRAIL PIN CIRCLE - DIRECTLY ON THE LINE */}
+                <div key={node.id} className={`flex ${flexClass} items-center w-full relative`}>
+                  {/* WAYPOINT CARD WITH EMBEDDED PIN THAT THE CURVED LINE WEAVES THROUGH */}
                   <div
                     onClick={() => setActiveStepId(node.id)}
-                    className="absolute left-6 md:left-1/2 transform -translate-x-1/2 z-30 cursor-pointer group"
-                  >
-                    <div
-                      className={`w-12 h-12 rounded-full border-4 shadow-xl flex items-center justify-center font-mono font-extrabold text-xs transition-transform duration-300 group-hover:scale-125 ${
-                        isSummit
-                          ? "bg-[#F97316] text-white border-white ring-4 ring-[#F97316]/30 animate-bounce"
-                          : isActive
-                          ? "bg-[#0F172A] text-white border-[#4F9CF9] scale-110"
-                          : "bg-white text-[#0F172A] border-[#0F172A]"
-                      }`}
-                    >
-                      {node.stepNum}
-                    </div>
-                  </div>
-
-                  {/* DESKTOP CONNECTOR DOTTED BRANCH LINE TOUCHING CARD TO CENTER PIN */}
-                  {!isCenter && (
-                    <div
-                      className={`hidden md:block absolute top-6 z-20 border-t-2 border-dashed border-[#F97316] w-24 ${
-                        isLeft ? "right-1/2 mr-6" : "left-1/2 ml-6"
-                      }`}
-                    />
-                  )}
-
-                  {/* WAYPOINT CARD CONTAINER */}
-                  <div
-                    className={`w-full md:w-[calc(50%-4rem)] ml-14 md:ml-0 ${
-                      isCenter
-                        ? "md:mx-auto md:w-[540px] pt-14 md:pt-16"
-                        : isLeft
-                        ? "md:mr-auto"
-                        : "md:ml-auto"
+                    className={`w-full md:w-[480px] bg-white rounded-3xl p-6 sm:p-7 border shadow-xl hover:shadow-2xl transition-all duration-300 space-y-4 cursor-pointer relative overflow-hidden group ${
+                      isActive
+                        ? "border-[#0F172A] ring-4 ring-[#0F172A]/10 scale-105 bg-slate-50 z-20"
+                        : "border-slate-200 hover:border-[#4F9CF9] z-10"
                     }`}
                   >
-                    <div
-                      onClick={() => setActiveStepId(node.id)}
-                      className={`bg-white rounded-3xl p-6 sm:p-7 border shadow-xl hover:shadow-2xl transition-all duration-300 space-y-4 cursor-pointer relative overflow-hidden group ${
-                        isActive
-                          ? "border-[#0F172A] ring-4 ring-[#0F172A]/10 scale-105 bg-slate-50"
-                          : "border-slate-200 hover:border-[#4F9CF9]"
-                      }`}
-                    >
-                      {/* Step Header Badges */}
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="px-3 py-1 rounded-full bg-[#0F172A] text-white text-[11px] font-mono font-bold">
+                    {/* Step Pin Header */}
+                    <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                      <div className="flex items-center gap-2.5">
+                        <div
+                          className={`w-9 h-9 rounded-full shadow-lg flex items-center justify-center font-mono font-extrabold text-xs transition-transform group-hover:scale-110 ${
+                            isSummit
+                              ? "bg-[#F97316] text-white ring-4 ring-[#F97316]/30 animate-pulse"
+                              : "bg-[#0F172A] text-white"
+                          }`}
+                        >
+                          {node.stepNum}
+                        </div>
+                        <span className="text-xs font-mono font-bold text-[#F97316] uppercase">
                           {node.dayTitle}
                         </span>
-
-                        <span className={`px-3 py-1 rounded-full text-[11px] font-mono border ${node.oxygenColor}`}>
-                          {node.oxygen}
-                        </span>
                       </div>
 
-                      {/* Location & Altitude */}
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <h3 className="text-lg sm:text-xl font-extrabold text-[#0F172A] group-hover:text-[#4F9CF9] transition-colors">
-                            {node.location}
-                          </h3>
-                          <span className="px-2.5 py-1 rounded-lg bg-[#4F9CF9]/10 text-[#4F9CF9] text-xs font-mono font-bold shrink-0">
-                            {node.altitude}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Image Thumbnail in Center of Card */}
-                      <div className="relative h-48 sm:h-52 rounded-2xl overflow-hidden shadow-inner">
-                        <img
-                          src={node.image}
-                          alt={node.dayTitle}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                        <span className="absolute bottom-3 left-3 text-white font-bold text-xs flex items-center gap-2">
-                          <svg className="w-4 h-4 text-[#4F9CF9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                          </svg>
-                          <span>{node.scene}</span>
-                        </span>
-                      </div>
-
-                      {/* Description */}
-                      <p className="text-xs sm:text-sm text-[#64748B] leading-relaxed">
-                        {node.description}
-                      </p>
-
-                      {/* Highlights */}
-                      <div className="pt-2 border-t border-slate-100 flex flex-wrap gap-2">
-                        {node.highlights.map((h, hIdx) => (
-                          <span key={hIdx} className="px-2.5 py-1 rounded-lg bg-[#F8FAFC] text-[11px] font-semibold text-[#0F172A] border border-slate-200">
-                            ✓ {h}
-                          </span>
-                        ))}
-                      </div>
-
-                      {isSummit && (
-                        <div className="absolute top-0 right-0 bg-[#F97316] text-white px-4 py-1 rounded-bl-2xl text-[10px] font-bold uppercase tracking-widest shadow-lg">
-                          ANNAPURNA SANCTUARY 4,130m
-                        </div>
-                      )}
+                      <span className={`px-3 py-1 rounded-full text-[11px] font-mono border ${node.oxygenColor}`}>
+                        {node.oxygen}
+                      </span>
                     </div>
+
+                    {/* Location Title & Altitude Badge */}
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-lg sm:text-xl font-extrabold text-[#0F172A] group-hover:text-[#4F9CF9] transition-colors">
+                          {node.location}
+                        </h3>
+                        <span className="px-2.5 py-1 rounded-lg bg-[#0F172A] text-white text-[11px] font-mono font-bold shrink-0">
+                          {node.altitude}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Scenic Photo Thumbnail in Center */}
+                    <div className="relative h-48 rounded-2xl overflow-hidden shadow-inner">
+                      <img
+                        src={node.image}
+                        alt={node.dayTitle}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                      <span className="absolute bottom-3 left-3 text-white font-bold text-xs flex items-center gap-2">
+                        <svg className="w-4 h-4 text-[#4F9CF9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <span>{node.scene}</span>
+                      </span>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-xs sm:text-sm text-[#64748B] leading-relaxed">
+                      {node.description}
+                    </p>
+
+                    {/* Highlights */}
+                    <div className="pt-2 border-t border-slate-100 flex flex-wrap gap-2">
+                      {node.highlights.map((h, hIdx) => (
+                        <span key={hIdx} className="px-2.5 py-1 rounded-lg bg-[#F8FAFC] text-[11px] font-semibold text-[#0F172A] border border-slate-200">
+                          ✓ {h}
+                        </span>
+                      ))}
+                    </div>
+
+                    {isSummit && (
+                      <div className="absolute top-0 right-0 bg-[#F97316] text-white px-4 py-1 rounded-bl-2xl text-[10px] font-bold uppercase tracking-widest shadow-lg">
+                        ANNAPURNA SANCTUARY 4,130m
+                      </div>
+                    )}
                   </div>
                 </div>
               );
