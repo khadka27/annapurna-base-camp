@@ -48,19 +48,30 @@ export default function Home() {
         {/* Welcome Section */}
         <section id="welcome" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal variant="fade-up">
-            <div className="bg-white/5 backdrop-blur-xl p-8 sm:p-14 rounded-3xl border border-white/15 shadow-2xl text-center max-w-4xl mx-auto space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#4F9CF9]/20 text-[#4F9CF9] text-xs font-mono font-bold uppercase tracking-wider">
-                <span>Welcome to Annapurna Guesthouse</span>
+            <div className="relative rounded-3xl overflow-hidden border border-white/20 shadow-2xl text-center max-w-4xl mx-auto group">
+              {/* Background Image */}
+              <div
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-105"
+                style={{ backgroundImage: `url('/images/Annapurna-Base-Camp.jpg')` }}
+              />
+              {/* Dark Gradient & Glass Overlay for contrast and readability */}
+              <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A]/90 via-[#0F172A]/80 to-[#0F172A]/95 backdrop-blur-[2px]" />
+
+              {/* Content Container */}
+              <div className="relative z-10 p-8 sm:p-14 space-y-6">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#4F9CF9]/20 text-[#4F9CF9] text-xs font-mono font-bold uppercase tracking-wider backdrop-blur-md border border-[#4F9CF9]/30">
+                  <span>Welcome to Annapurna Guesthouse</span>
+                </div>
+                <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight drop-shadow-md">
+                  Your Mountain Home at Annapurna Base Camp
+                </h2>
+                <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto drop-shadow-sm">
+                  Located at 4,130 meters in the breathtaking Annapurna Sanctuary, Annapurna Guesthouse offers trekkers a comfortable place to rest, recharge, and experience authentic Himalayan hospitality. Surrounded by towering snow-covered peaks, our guesthouse combines warm local service with spectacular mountain scenery, creating memories that last a lifetime.
+                </p>
+                <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-3xl mx-auto drop-shadow-sm">
+                  Whether you&apos;re reaching the base camp after days of trekking or simply soaking in the incredible Himalayan views, every stay is designed to be peaceful, welcoming, and unforgettable.
+                </p>
               </div>
-              <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-                Your Mountain Home at Annapurna Base Camp
-              </h2>
-              <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
-                Located at 4,130 meters in the breathtaking Annapurna Sanctuary, Annapurna Guesthouse offers trekkers a comfortable place to rest, recharge, and experience authentic Himalayan hospitality. Surrounded by towering snow-covered peaks, our guesthouse combines warm local service with spectacular mountain scenery, creating memories that last a lifetime.
-              </p>
-              <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-                Whether you&apos;re reaching the base camp after days of trekking or simply soaking in the incredible Himalayan views, every stay is designed to be peaceful, welcoming, and unforgettable.
-              </p>
             </div>
           </ScrollReveal>
         </section>

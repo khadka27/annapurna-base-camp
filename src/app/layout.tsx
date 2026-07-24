@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CmsProvider } from "@/context/CmsContext";
+import { SnowEffect } from "@/components/SnowEffect";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
-        <CmsProvider>{children}</CmsProvider>
+        <CmsProvider>
+          <SnowEffect />
+          {children}
+        </CmsProvider>
       </body>
     </html>
   );
