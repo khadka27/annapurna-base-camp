@@ -9,7 +9,11 @@ const connectionString =
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const globalForPrisma = global as unknown as { prisma?: PrismaClient };
+
+if (process.env.NODE_ENV !== "production" && globalForPrisma.prisma && !(globalForPrisma.prisma as any).service) {
+  delete globalForPrisma.prisma;
+}
 
 export const prisma =
   globalForPrisma.prisma ||

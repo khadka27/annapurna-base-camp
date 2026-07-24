@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { GlassNavbar } from "@/components/GlassNavbar";
-import { useCms, RoomItem, GalleryItem } from "@/context/CmsContext";
+import { useCms, RoomItem, GalleryItem, ServiceItem } from "@/context/CmsContext";
 
 export default function AdminDashboardPage() {
   const router = useRouter();
@@ -177,6 +177,23 @@ export default function AdminDashboardPage() {
     alert(`Created coupon ${newCouponCode.toUpperCase()} (${newCouponDiscount}% OFF)`);
   };
 
+  const handleCreateService = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newSrvTitle) return;
+    await addService({
+      title: newSrvTitle,
+      category: newSrvCategory,
+      price: Number(newSrvPrice),
+      icon: newSrvIcon || "🏔️",
+      description: newSrvDescription || `${newSrvTitle} service at Annapurna Base Camp Sanctuary.`,
+      included: newSrvIncluded,
+    });
+    const title = newSrvTitle;
+    setNewSrvTitle("");
+    setNewSrvDescription("");
+    alert(`Published service "${title}"!`);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-20">
       <GlassNavbar />
@@ -222,6 +239,7 @@ export default function AdminDashboardPage() {
           {[
             { id: "analytics", label: "Analytics Overview" },
             { id: "rooms", label: "Rooms CRUD" },
+            { id: "services", label: "Services Manager" },
             { id: "bookings", label: "Bookings Engine" },
             { id: "hero", label: "Hero Content CMS" },
             { id: "gallery", label: "Gallery Manager" },
@@ -430,6 +448,122 @@ export default function AdminDashboardPage() {
                       </div>
                       <button
                         onClick={() => deleteRoom(r.id)}
+                        className="px-3 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* SERVICES MANAGER */}
+          {activeTab === "services" && (
+            <div className="space-y-8">
+              <form onSubmit={handleCreateService} className="bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/10 space-y-4">
+                <h3 className="text-sm font-bold text-[#4F9CF9] uppercase tracking-wider">+ Add New Guesthouse Service</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label className="text-xs text-slate-300 block mb-1">Service Title</label>
+                    <input
+                      type="text"
+                      required
+                      value={newSrvTitle}
+                      onChange={(e) => setNewSrvTitle(e.target.value)}
+                      placeholder="e.g. Helicopter Charter Service"
+                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-slate-300 block mb-1">Category</label>
+                    <select
+                      value={newSrvCategory}
+                      onChange={(e) => setNewSrvCategory(e.target.value as any)}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs focus:outline-none cursor-pointer"
+                    >
+                      <option value="Wellness & Safety" className="bg-[#0F172A]">Wellness & Safety</option>
+                      <option value="Logistics & Transport" className="bg-[#0F172A]">Logistics & Transport</option>
+                      <option value="Dining & Comfort" className="bg-[#0F172A]">Dining & Comfort</option>
+                      <option value="Connectivity" className="bg-[#0F172A]">Connectivity</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-xs text-slate-300 block mb-1">Icon / Emoji</label>
+                    <input
+                      type="text"
+                      required
+                      value={newSrvIcon}
+                      onChange={(e) => setNewSrvIcon(e.target.value)}
+                      placeholder="🫁 or 🚁"
+                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs text-slate-300 block mb-1">Price ($0 for Complimentary)</label>
+                    <input
+                      type="number"
+                      required
+                      value={newSrvPrice}
+                      onChange={(e) => {
+                        const val = Number(e.target.value);
+                        setNewSrvPrice(val);
+                        setNewSrvIncluded(val === 0);
+                      }}
+                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-slate-300 block mb-1">Perk Type</label>
+                    <select
+                      value={newSrvIncluded ? "true" : "false"}
+                      onChange={(e) => setNewSrvIncluded(e.target.value === "true")}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs focus:outline-none cursor-pointer"
+                    >
+                      <option value="true" className="bg-[#0F172A]">Complimentary Perk</option>
+                      <option value="false" className="bg-[#0F172A]">Add-On Service</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs text-slate-300 block mb-1">Service Description</label>
+                  <textarea
+                    rows={2}
+                    required
+                    value={newSrvDescription}
+                    onChange={(e) => setNewSrvDescription(e.target.value)}
+                    placeholder="Describe service features..."
+                    className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 rounded-xl bg-[#16A34A] text-white font-bold text-xs hover:bg-[#138a3e]"
+                >
+                  Publish Service
+                </button>
+              </form>
+
+              <div className="space-y-3">
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Active Services ({services.length})</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {services.map((srv) => (
+                    <div key={srv.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl p-2 rounded-xl bg-white/10">{srv.icon}</span>
+                        <div>
+                          <strong className="text-white block text-sm">{srv.title}</strong>
+                          <span className="text-xs text-slate-400">{srv.category} • {srv.included ? "Complimentary" : `$${srv.price}`}</span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => deleteService(srv.id)}
                         className="px-3 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold"
                       >
                         Delete

@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useCms, RoomItem, GalleryItem } from "@/context/CmsContext";
+import { useCms, RoomItem, GalleryItem, ServiceItem } from "@/context/CmsContext";
 
 export function AdminDashboard() {
   const {
@@ -150,20 +150,21 @@ export function AdminDashboard() {
     alert(`Created coupon ${newCouponCode.toUpperCase()} (${newCouponDiscount}% OFF)`);
   };
 
-  const handleCreateService = (e: React.FormEvent) => {
+  const handleCreateService = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newSrvTitle || !newSrvDescription) return;
-    addService({
+    if (!newSrvTitle) return;
+    await addService({
       title: newSrvTitle,
       category: newSrvCategory,
       price: Number(newSrvPrice),
-      icon: newSrvIcon,
-      description: newSrvDescription,
+      icon: newSrvIcon || "🏔️",
+      description: newSrvDescription || `${newSrvTitle} service at Annapurna Base Camp Sanctuary.`,
       included: newSrvIncluded,
     });
+    const title = newSrvTitle;
     setNewSrvTitle("");
     setNewSrvDescription("");
-    alert(`Published service "${newSrvTitle}"!`);
+    alert(`Published service "${title}"!`);
   };
 
   return (
