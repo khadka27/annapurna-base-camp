@@ -88,7 +88,7 @@ body {
   transform: scale(0.92);
 }
 
-.reveal-[#0F172A]-visible {
+.reveal-visible {
   opacity: 1 !important;
   transform: translate(0, 0) scale(1) !important;
 }

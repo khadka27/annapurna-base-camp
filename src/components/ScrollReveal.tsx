@@ -56,7 +56,7 @@ export function ScrollReveal({
       ref={ref}
       style={{ transitionDelay: `${delayMs}ms` }}
       className={`reveal-hidden ${variantClass} ${
-        isVisible ? "reveal-[#0F172A]-visible" : ""
+        isVisible ? "reveal-visible" : ""
       } ${className}`}
     >
       {children}
