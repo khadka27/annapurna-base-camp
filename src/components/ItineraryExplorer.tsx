@@ -2,381 +2,317 @@
 
 import React, { useState } from "react";
 
-interface ItineraryDay {
-  day: number;
-  title: string;
-  startElev: string;
-  endElev: string;
-  altitudeGain: string;
-  distance: string;
-  duration: string;
-  terrain: string;
-  overnight: string;
-  highlights: string[];
+interface WaypointNode {
+  id: string;
+  stepNum: number;
+  dayTitle: string;
+  location: string;
+  altitude: string;
+  oxygen: string;
+  oxygenColor: string;
+  scene: string;
+  image: string;
   description: string;
+  terrain: string;
+  highlights: string[];
+  align: "left" | "right" | "center";
 }
 
-const ITINERARY_DATA: ItineraryDay[] = [
+const CENTERED_ROUTE_NODES: WaypointNode[] = [
   {
-    day: 1,
-    title: "Pokhara to Nayapul Drive & Trek to Tikhedhunga",
-    startElev: "820m",
-    endElev: "1,540m",
-    altitudeGain: "+720m",
-    distance: "9 km",
-    duration: "4 hours",
-    terrain: "Cobblestone trails, river banks & terraced farmland",
-    overnight: "Tikhedhunga Tea House Lodge",
-    highlights: [
-      "Scenic drive from Pokhara along Modi Khola river",
-      "Check-in at Birethanti ACAP & TIMS permits counter",
-      "Crossing suspension bridges over Bhurungdi Stream",
-    ],
-    description:
-      "Your journey begins with a 1.5-hour drive from Pokhara to Nayapul. Clear check-in formalities and begin walking along gentle terraced slopes and cascading waterfalls towards Tikhedhunga.",
+    id: "step-1",
+    stepNum: 1,
+    dayTitle: "Day 1: Expedition Start",
+    location: "Pokhara (820m) → Nayapul → Tikhedhunga (1,540m)",
+    altitude: "1,540m",
+    oxygen: "84% O₂",
+    oxygenColor: "text-[#16A34A] bg-[#16A34A]/10 border-[#16A34A]/30",
+    scene: "Terraced Farmland & Modi Khola Suspension Bridges",
+    image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80",
+    description: "Drive along Modi Khola river, clear TIMS permits, and walk past cascading waterfalls into Tikhedhunga.",
+    terrain: "Cobblestone trails & river banks",
+    highlights: ["Scenic river drive", "Birethanti permit check", "Suspension bridge crossing"],
+    align: "left",
   },
   {
-    day: 2,
-    title: "Tikhedhunga to Ghorepani via Ulleri Steps",
-    startElev: "1,540m",
-    endElev: "2,860m",
-    altitudeGain: "+1,320m",
-    distance: "13 km",
-    duration: "6 hours",
-    terrain: "3,300+ Stone Steps, Oak & Rhododendron Forest",
-    overnight: "Ghorepani Village Tea House",
-    highlights: [
-      "Conquering the famous 3,300 Ulleri stone staircases",
-      "Dense oak and blooming red rhododendron forests",
-      "First panoramic glimpses of Annapurna South & Hiunchuli",
-    ],
-    description:
-      "Trek steeply upward via the iconic 3,300 stone steps of Ulleri. Ascend through lush alpine forest ecosystems into the traditional Magar village of Ghorepani.",
+    id: "step-2",
+    stepNum: 2,
+    dayTitle: "Day 2: Conquer 3,300 Ulleri Steps",
+    location: "Tikhedhunga (1,540m) → Ulleri → Ghorepani (2,860m)",
+    altitude: "2,860m",
+    oxygen: "72% O₂",
+    oxygenColor: "text-[#4F9CF9] bg-[#4F9CF9]/10 border-[#4F9CF9]/30",
+    scene: "3,300 Ulleri Stone Steps & Blooming Rhododendron Forests",
+    image: "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=800&q=80",
+    description: "Climb the famous 3,300 stone steps of Ulleri into dense oak and red rhododendron mountain forests.",
+    terrain: "3,300 Stone stairs & alpine forest",
+    highlights: ["Ulleri staircase ascent", "National flower blooms", "First view of Hiunchuli"],
+    align: "right",
   },
   {
-    day: 3,
-    title: "Poon Hill Sunrise (3,210m) & Trek to Tadapani",
-    startElev: "2,860m",
-    endElev: "2,630m",
-    altitudeGain: "Peak 3,210m",
-    distance: "11 km",
-    duration: "6 hours",
-    terrain: "Ridge walks, pine forest, forest descends",
-    overnight: "Tadapani Mountain View Lodge",
-    highlights: [
-      "Dawn hike to Poon Hill (3,210m) for golden sunrise over Dhaulagiri & Annapurna I",
-      "360-degree panorama of over 14 Himalayan giants",
-      "Enchanting forest ridge walk through Deurali Pass",
-    ],
-    description:
-      "Early 4:30 AM pre-dawn trek to Poon Hill to watch golden rays illuminate Dhaulagiri (8,167m) and Annapurna I (8,091m). Return to Ghorepani for breakfast before trekking onwards to Tadapani.",
+    id: "step-3",
+    stepNum: 3,
+    dayTitle: "Day 3: Pre-Dawn Poon Hill Sunrise",
+    location: "Ghorepani → Poon Hill (3,210m) → Tadapani (2,630m)",
+    altitude: "3,210m Viewpoint",
+    oxygen: "68% O₂",
+    oxygenColor: "text-[#F97316] bg-[#F97316]/10 border-[#F97316]/30",
+    scene: "360° Golden Sunrise over Dhaulagiri & Annapurna I",
+    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+    description: "Pre-dawn hike to Poon Hill to watch morning sun rays paint 14 Himalayan giants gold before trekking to Tadapani.",
+    terrain: "Mountain ridges & pine forest",
+    highlights: ["Poon Hill 3,210m summit", "Dhaulagiri & Annapurna I panorama", "Deurali Pass ridge walk"],
+    align: "left",
   },
   {
-    day: 4,
-    title: "Tadapani to Chhomrong Village",
-    startElev: "2,630m",
-    endElev: "2,170m",
-    altitudeGain: "-460m net",
-    distance: "10 km",
-    duration: "5 hours",
-    terrain: "River gorge descends & stone steps ascent",
-    overnight: "Chhomrong Gurung Lodge",
-    highlights: [
-      "Close-up views of Machhapuchhre (Fishtail, 6,993m)",
-      "Crossing the Kimrong Khola river via wooden bridge",
-      "Exploring Chhomrong - gateway village to the Annapurna Sanctuary",
-    ],
-    description:
-      "Descend into the steep Kimrong Khola gorge through sub-tropical forest, followed by a steady stair climb to Chhomrong village perched right underneath Fishtail peak.",
+    id: "step-4",
+    stepNum: 4,
+    dayTitle: "Day 4: Descent into Kimrong Gorge",
+    location: "Tadapani (2,630m) → Kimrong Khola → Chhomrong (2,170m)",
+    altitude: "2,170m",
+    oxygen: "78% O₂",
+    oxygenColor: "text-[#16A34A] bg-[#16A34A]/10 border-[#16A34A]/30",
+    scene: "Kimrong River Gorge & Close-up View of Sacred Fishtail",
+    image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80",
+    description: "Descend into sub-tropical river canyon and climb up to Chhomrong village sitting under Machhapuchhre.",
+    terrain: "Gorge descent & stone stair ascent",
+    highlights: ["Fishtail peak close-up", "Gurung culture", "Kimrong wooden bridge"],
+    align: "right",
   },
   {
-    day: 5,
-    title: "Chhomrong to Dovan via Bamboo Forest",
-    startElev: "2,170m",
-    endElev: "2,600m",
-    altitudeGain: "+430m",
-    distance: "11 km",
-    duration: "6 hours",
-    terrain: "Steep gorge steps, dense bamboo thickets",
-    overnight: "Dovan Riverside Lodge",
-    highlights: [
-      "2,500 Chhomrong stone steps descent into Modi Khola Valley",
-      "Dense fragrant bamboo and damp mossy oak sanctuaries",
-      "Passing Sinuwa ridge viewpoint and spot monkeys & alpine wildlife",
-    ],
-    description:
-      "Descend Chhomrong's stone staircase and cross the Chhomrong Khola. Ascend Sinuwa ridge and plunge deep into the narrow, cool Modi Khola river valley.",
+    id: "step-5",
+    stepNum: 5,
+    dayTitle: "Day 5: Chhomrong Steps & Bamboo",
+    location: "Chhomrong (2,170m) → Sinuwa → Dovan (2,600m)",
+    altitude: "2,600m",
+    oxygen: "74% O₂",
+    oxygenColor: "text-[#4F9CF9] bg-[#4F9CF9]/10 border-[#4F9CF9]/30",
+    scene: "2,500 Chhomrong Stone Steps & Fragrant Bamboo Sanctuary",
+    image: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80",
+    description: "Descend Chhomrong's stone staircase, cross the river, climb Sinuwa ridge, and enter deep bamboo thickets.",
+    terrain: "2,500 Stone stairs & bamboo sanctuary",
+    highlights: ["2,500 Chhomrong steps", "Cool bamboo canyon", "Langur monkey spot"],
+    align: "left",
   },
   {
-    day: 6,
-    title: "Dovan to Deurali Alpine Sanctuary Base",
-    startElev: "2,600m",
-    endElev: "3,200m",
-    altitudeGain: "+600m",
-    distance: "8 km",
-    duration: "5 hours",
-    terrain: "Narrow river canyon, avalanche paths, rocky trails",
-    overnight: "Deurali Guest House",
-    highlights: [
-      "Himalaya Hotel & Hinku Cave natural overhang",
-      "Transition from dense tree line to alpine scrub landscape",
-      "Rushing glacier melt river and dramatic sheer rock walls",
-    ],
-    description:
-      "Trek steadily upwards alongside the roaring Modi River. Pass Hinku Cave and reach Deurali where the alpine valley opens up into dramatic glacial rock amphitheaters.",
+    id: "step-6",
+    stepNum: 6,
+    dayTitle: "Day 6: Canyon Ascent to Deurali",
+    location: "Dovan (2,600m) → Hinku Cave → Deurali (3,200m)",
+    altitude: "3,200m",
+    oxygen: "68% O₂",
+    oxygenColor: "text-[#F97316] bg-[#F97316]/10 border-[#F97316]/30",
+    scene: "Hinku Cave Overhang & Glacial Rock Amphitheater",
+    image: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=800&q=80",
+    description: "Trek along Modi River gorge past Hinku Cave where trees give way to alpine rocks and glacial walls.",
+    terrain: "Glacial river canyon & alpine scrub",
+    highlights: ["Hinku Cave overhang", "Modi Khola gorge", "Transition to alpine zone"],
+    align: "right",
   },
   {
-    day: 7,
-    title: "Deurali to Machhapuchhre BC & Annapurna Base Camp",
-    startElev: "3,200m",
-    endElev: "4,130m",
-    altitudeGain: "+930m",
-    distance: "9 km",
-    duration: "6 hours",
-    terrain: "Glacial moraine, alpine meadow, snow/ice paths",
-    overnight: "Annapurna Base Camp Sanctuary Lodge",
-    highlights: [
-      "Reaching Machhapuchhre Base Camp (MBC - 3,700m)",
-      "Entering the sacred 360-degree Annapurna Mountain Sanctuary",
-      "Sunset over Annapurna I (8,091m) & Annapurna South directly above",
-    ],
-    description:
-      "A monumentally rewarding day! Trek up the narrow valley floor to MBC (3,700m), then make the final gradual climb into Annapurna Base Camp (4,130m) surrounded by towering 8,000m summits.",
+    id: "step-7",
+    stepNum: 7,
+    dayTitle: "Day 7: Machhapuchhre BC & ABC Summit",
+    location: "Deurali (3,200m) → MBC (3,700m) → ABC (4,130m)",
+    altitude: "4,130m Peak Base Camp",
+    oxygen: "62% O₂",
+    oxygenColor: "text-red-400 bg-red-500/10 border-red-500/30 font-bold animate-pulse",
+    scene: "360° Sacred Annapurna Mountain Sanctuary Amphitheater",
+    image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80",
+    description: "The ultimate expedition milestone! Enter the sacred 360-degree sanctuary surrounded by 8,000m summits.",
+    terrain: "Glacial moraine & snow/ice paths",
+    highlights: ["Machhapuchhre BC 3,700m", "360° 8,091m Annapurna I view", "Annapurna Guesthouse stay"],
+    align: "center",
   },
   {
-    day: 8,
-    title: "ABC Sunrise View & Descend to Bamboo",
-    startElev: "4,130m",
-    endElev: "2,310m",
-    altitudeGain: "-1,820m",
-    distance: "15 km",
-    duration: "7 hours",
-    terrain: "Descending mountain trails & stone steps",
-    overnight: "Bamboo Eco Lodge",
-    highlights: [
-      "Unforgettable sunrise over the Annapurna glacier massifs",
-      "360 degree morning photography at 4,130m altitude",
-      "Descending through MBC, Deurali, and Himalaya down to Bamboo",
-    ],
-    description:
-      "Wake up early to catch the golden morning light painting Annapurna I, South, and Machhapuchhre. After breakfast, begin the long descending journey back to Bamboo village.",
+    id: "step-8",
+    stepNum: 8,
+    dayTitle: "Day 8: Morning Glacier Descent",
+    location: "ABC (4,130m) → MBC → Deurali → Bamboo (2,310m)",
+    altitude: "2,310m",
+    oxygen: "76% O₂",
+    oxygenColor: "text-[#16A34A] bg-[#16A34A]/10 border-[#16A34A]/30",
+    scene: "Sunrise Light Over Glaciers & Valley Descent",
+    image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80",
+    description: "Enjoy sunrise photos at 4,130m before beginning the long, satisfying descent back into Bamboo valley.",
+    terrain: "Descending mountain paths & stone steps",
+    highlights: ["ABC sunrise photos", "Rapid oxygen recovery", "Bamboo Eco Lodge"],
+    align: "left",
   },
   {
-    day: 9,
-    title: "Bamboo to Jhinu Danda Hot Springs",
-    startElev: "2,310m",
-    endElev: "1,780m",
-    altitudeGain: "-530m",
-    distance: "10 km",
-    duration: "5 hours",
-    terrain: "Stone stairs, river bridge, forest path",
-    overnight: "Jhinu Danda Hot Spring Lodge",
-    highlights: [
-      "Ascending Sinuwa and Chhomrong stairs",
-      "Soaking sore trekking muscles in natural riverside geothermal hot springs",
-      "Walk across the spectacular long Jhinu suspension bridge",
-    ],
-    description:
-      "Trek back up and over Sinuwa and Chhomrong village, then descend steeply to Jhinu Danda. Spend the afternoon soaking in natural hot springs right beside the Modi River.",
+    id: "step-9",
+    stepNum: 9,
+    dayTitle: "Day 9: Jhinu Geothermal Hot Springs",
+    location: "Bamboo (2,310m) → Chhomrong → Jhinu Danda (1,780m)",
+    altitude: "1,780m",
+    oxygen: "82% O₂",
+    oxygenColor: "text-[#16A34A] bg-[#16A34A]/10 border-[#16A34A]/30",
+    scene: "Riverside Geothermal Hot Springs & Suspension Bridge",
+    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80",
+    description: "Trek over Chhomrong ridge down to Jhinu Danda and soak tired muscles in natural hot thermal pools.",
+    terrain: "Stone stairs & riverside trail",
+    highlights: ["Natural hot spring bath", "Jhinu suspension bridge", "Gurung dinner"],
+    align: "right",
   },
   {
-    day: 10,
-    title: "Jhinu Danda to Nayapul & Drive back to Pokhara",
-    startElev: "1,780m",
-    endElev: "820m",
-    altitudeGain: "-960m",
-    distance: "9 km",
-    duration: "4 hours",
-    terrain: "Dirt roads, river valley trail & drive",
-    overnight: "Pokhara Lakeside Hotel",
-    highlights: [
-      "Final stretch walking past Gurung farmlands and mountain rivers",
-      "Completion of 115 km Annapurna Sanctuary Circuit",
-      "Celebration dinner and lake relaxation in Pokhara",
-    ],
-    description:
-      "Walk the final easy trail along the Modi Khola to Nayapul/Siwai. Meet private transport for a scenic 2-hour drive back to Pokhara, marking the triumphant conclusion of your trek!",
+    id: "step-10",
+    stepNum: 10,
+    dayTitle: "Day 10: Circuit Conclusion Drive",
+    location: "Jhinu Danda → Nayapul → Pokhara Lakeside (820m)",
+    altitude: "820m Finish",
+    oxygen: "91% O₂",
+    oxygenColor: "text-[#16A34A] bg-[#16A34A]/10 border-[#16A34A]/30",
+    scene: "Modi Khola Circuit Conclusion & Celebration",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
+    description: "Final short walk along Modi Khola to Nayapul and private vehicle transfer to Pokhara Lakeside.",
+    terrain: "Flat river trail & paved highway drive",
+    highlights: ["Circuit completion", "Celebration meal", "Pokhara lake relaxation"],
+    align: "center",
   },
 ];
 
 export function ItineraryExplorer() {
-  const [selectedDay, setSelectedDay] = useState<number>(7);
-
-  const activeDayData =
-    ITINERARY_DATA.find((d) => d.day === selectedDay) || ITINERARY_DATA[6];
+  const [activeStepId, setActiveStepId] = useState<string>("step-7");
 
   return (
-    <section id="itinerary" className="py-24 bg-[#F8FAFC] text-[#0F172A] relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="itinerary" className="py-24 bg-[#F8FAFC] text-[#0F172A] relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
+        <div className="text-center max-w-3xl mx-auto space-y-4 mb-20">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#4F9CF9]/10 text-[#4F9CF9] text-xs font-bold uppercase tracking-wider">
-            <span>Detailed Day-by-Day Trekking Route</span>
+            <span>Alpine Mountain Route Telemetry</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
-            10-Day Annapurna Base Camp Route Map
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0F172A] tracking-tight">
+            Annapurna Expedition Route Pathway
           </h2>
           <p className="text-[#64748B] text-base sm:text-lg">
-            Follow the elevation profile from sub-tropical valley floors at 820m up into the glacier amphitheater of ABC at 4,130m.
+            Continuous mountain trail connecting every expedition stop from Pokhara (820m) up to the 4,130m base camp summit with real-time oxygen level telemetry.
           </p>
         </div>
 
-        {/* Day Buttons Horizontal Selector */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar scroll-smooth">
-          {ITINERARY_DATA.map((item) => {
-            const isSelected = item.day === selectedDay;
-            const isApexDay = item.day === 7;
+        {/* CENTERED TRAIL ROADMAP CONTAINER WITH DASHED LINE TOUCHING EVERY NODE PIN */}
+        <div className="relative max-w-5xl mx-auto py-6">
+          {/* Continuous Center Dashed Trail Line */}
+          <div className="absolute left-6 md:left-1/2 top-10 bottom-10 w-1.5 border-l-4 border-dashed border-[#F97316] transform -translate-x-1/2 z-0 pointer-events-none" />
 
-            return (
-              <button
-                key={item.day}
-                onClick={() => setSelectedDay(item.day)}
-                className={`flex-shrink-0 px-4 py-3 rounded-2xl transition-all text-left flex flex-col justify-between border ${
-                  isSelected
-                    ? "bg-[#0F172A] text-white border-[#0F172A] shadow-lg shadow-[#0F172A]/20 scale-105"
-                    : "bg-white text-[#0F172A] border-slate-200 hover:border-[#4F9CF9]/50 hover:bg-white/80"
-                }`}
-              >
-                <div className="flex items-center justify-between gap-3 text-xs">
-                  <span
-                    className={`font-mono font-bold ${
-                      isSelected ? "text-[#4F9CF9]" : "text-[#64748B]"
+          <div className="space-y-16 relative z-10">
+            {CENTERED_ROUTE_NODES.map((node) => {
+              const isActive = node.id === activeStepId;
+              const isSummit = node.stepNum === 7;
+              const isLeft = node.align === "left";
+              const isCenter = node.align === "center";
+
+              return (
+                <div key={node.id} className="relative flex flex-col md:flex-row items-center w-full">
+                  {/* CENTER TRAIL PIN CIRCLE - DIRECTLY ON THE LINE */}
+                  <div
+                    onClick={() => setActiveStepId(node.id)}
+                    className="absolute left-6 md:left-1/2 transform -translate-x-1/2 z-30 cursor-pointer group"
+                  >
+                    <div
+                      className={`w-12 h-12 rounded-full border-4 shadow-xl flex items-center justify-center font-mono font-extrabold text-xs transition-transform duration-300 group-hover:scale-125 ${
+                        isSummit
+                          ? "bg-[#F97316] text-white border-white ring-4 ring-[#F97316]/30 animate-bounce"
+                          : isActive
+                          ? "bg-[#0F172A] text-white border-[#4F9CF9] scale-110"
+                          : "bg-white text-[#0F172A] border-[#0F172A]"
+                      }`}
+                    >
+                      {node.stepNum}
+                    </div>
+                  </div>
+
+                  {/* DESKTOP CONNECTOR DOTTED BRANCH LINE TOUCHING CARD TO CENTER PIN */}
+                  {!isCenter && (
+                    <div
+                      className={`hidden md:block absolute top-6 z-20 border-t-2 border-dashed border-[#F97316] w-24 ${
+                        isLeft ? "right-1/2 mr-6" : "left-1/2 ml-6"
+                      }`}
+                    />
+                  )}
+
+                  {/* WAYPOINT CARD CONTAINER */}
+                  <div
+                    className={`w-full md:w-[calc(50%-4rem)] ml-14 md:ml-0 ${
+                      isCenter
+                        ? "md:mx-auto md:w-[540px] pt-14 md:pt-16"
+                        : isLeft
+                        ? "md:mr-auto"
+                        : "md:ml-auto"
                     }`}
                   >
-                    DAY {item.day}
-                  </span>
-                  {isApexDay && (
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#F97316] text-white">
-                      SUMMIT
-                    </span>
-                  )}
-                </div>
-                <div className="text-sm font-bold mt-1 line-clamp-1 max-w-[140px]">
-                  {item.endElev}
-                </div>
-              </button>
-            );
-          })}
-        </div>
+                    <div
+                      onClick={() => setActiveStepId(node.id)}
+                      className={`bg-white rounded-3xl p-6 sm:p-7 border shadow-xl hover:shadow-2xl transition-all duration-300 space-y-4 cursor-pointer relative overflow-hidden group ${
+                        isActive
+                          ? "border-[#0F172A] ring-4 ring-[#0F172A]/10 scale-105 bg-slate-50"
+                          : "border-slate-200 hover:border-[#4F9CF9]"
+                      }`}
+                    >
+                      {/* Step Header Badges */}
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="px-3 py-1 rounded-full bg-[#0F172A] text-white text-[11px] font-mono font-bold">
+                          {node.dayTitle}
+                        </span>
 
-        {/* Selected Day Main Display Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Detail Panel */}
-          <div className="lg:col-span-8 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6">
-            <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-100">
-              <div>
-                <span className="text-xs font-bold font-mono text-[#F97316] uppercase tracking-wider">
-                  Day {activeDayData.day} of 10
-                </span>
-                <h3 className="text-2xl font-extrabold text-[#0F172A] mt-1">
-                  {activeDayData.title}
-                </h3>
-              </div>
+                        <span className={`px-3 py-1 rounded-full text-[11px] font-mono border ${node.oxygenColor}`}>
+                          {node.oxygen}
+                        </span>
+                      </div>
 
-              <div className="flex items-center gap-3">
-                <div className="bg-[#F8FAFC] px-4 py-2 rounded-xl border border-slate-200 text-center">
-                  <span className="block text-[10px] font-mono text-[#64748B]">Target Altitude</span>
-                  <span className="text-lg font-bold text-[#0F172A]">{activeDayData.endElev}</span>
-                </div>
-              </div>
-            </div>
+                      {/* Location & Altitude */}
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <h3 className="text-lg sm:text-xl font-extrabold text-[#0F172A] group-hover:text-[#4F9CF9] transition-colors">
+                            {node.location}
+                          </h3>
+                          <span className="px-2.5 py-1 rounded-lg bg-[#4F9CF9]/10 text-[#4F9CF9] text-xs font-mono font-bold shrink-0">
+                            {node.altitude}
+                          </span>
+                        </div>
+                      </div>
 
-            {/* Metrics Ribbon */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-[#F8FAFC] border border-slate-200/80">
-              <div>
-                <span className="text-xs text-[#64748B] block">Walking Time</span>
-                <span className="text-sm font-bold text-[#0F172A]">{activeDayData.duration}</span>
-              </div>
-              <div>
-                <span className="text-xs text-[#64748B] block">Distance</span>
-                <span className="text-sm font-bold text-[#0F172A]">{activeDayData.distance}</span>
-              </div>
-              <div>
-                <span className="text-xs text-[#64748B] block">Elevation Gain</span>
-                <span className="text-sm font-bold text-[#16A34A]">{activeDayData.altitudeGain}</span>
-              </div>
-              <div>
-                <span className="text-xs text-[#64748B] block">Overnight Stay</span>
-                <span className="text-sm font-bold text-[#4F9CF9]">{activeDayData.overnight}</span>
-              </div>
-            </div>
+                      {/* Image Thumbnail in Center of Card */}
+                      <div className="relative h-48 sm:h-52 rounded-2xl overflow-hidden shadow-inner">
+                        <img
+                          src={node.image}
+                          alt={node.dayTitle}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                        <span className="absolute bottom-3 left-3 text-white font-bold text-xs flex items-center gap-2">
+                          <svg className="w-4 h-4 text-[#4F9CF9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                          <span>{node.scene}</span>
+                        </span>
+                      </div>
 
-            {/* Day Description */}
-            <div className="space-y-2">
-              <h4 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">Trek Overview</h4>
-              <p className="text-[#64748B] leading-relaxed text-base">
-                {activeDayData.description}
-              </p>
-            </div>
+                      {/* Description */}
+                      <p className="text-xs sm:text-sm text-[#64748B] leading-relaxed">
+                        {node.description}
+                      </p>
 
-            {/* Key Highlights */}
-            <div className="space-y-3">
-              <h4 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">Key Highlights</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {activeDayData.highlights.map((highlight, idx) => (
-                  <div key={idx} className="flex items-start gap-2 text-sm text-[#0F172A] bg-[#F8FAFC] p-3 rounded-xl border border-slate-200">
-                    <svg className="w-4 h-4 text-[#16A34A] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>{highlight}</span>
+                      {/* Highlights */}
+                      <div className="pt-2 border-t border-slate-100 flex flex-wrap gap-2">
+                        {node.highlights.map((h, hIdx) => (
+                          <span key={hIdx} className="px-2.5 py-1 rounded-lg bg-[#F8FAFC] text-[11px] font-semibold text-[#0F172A] border border-slate-200">
+                            ✓ {h}
+                          </span>
+                        ))}
+                      </div>
+
+                      {isSummit && (
+                        <div className="absolute top-0 right-0 bg-[#F97316] text-white px-4 py-1 rounded-bl-2xl text-[10px] font-bold uppercase tracking-widest shadow-lg">
+                          ANNAPURNA SANCTUARY 4,130m
+                        </div>
+                      )}
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Terrain Bar */}
-            <div className="pt-2 text-xs text-[#64748B] flex items-center gap-2">
-              <span className="font-bold text-[#0F172A]">Terrain:</span>
-              <span>{activeDayData.terrain}</span>
-            </div>
-          </div>
-
-          {/* Right Altitude Visualizer & Stats Box */}
-          <div className="lg:col-span-4 space-y-6">
-            {/* Dark Alpine Summary Card */}
-            <div className="bg-[#0F172A] text-white p-6 sm:p-8 rounded-3xl space-y-6 border border-white/10 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#4F9CF9]/20 rounded-full blur-2xl pointer-events-none" />
-
-              <h3 className="text-xl font-bold flex items-center justify-between">
-                <span>Elevation Profile</span>
-                <span className="text-xs font-mono text-[#4F9CF9]">ABC HIGHWAY</span>
-              </h3>
-
-              <div className="space-y-4">
-                <div className="flex items-center justify-between text-xs text-slate-300">
-                  <span>Pokhara (820m)</span>
-                  <span className="font-bold text-[#F97316]">ABC (4,130m)</span>
                 </div>
-
-                {/* Simulated Altitude Chart Bar */}
-                <div className="h-4 w-full bg-white/10 rounded-full overflow-hidden flex">
-                  <div
-                    className="h-full bg-gradient-to-r from-[#4F9CF9] via-[#16A34A] to-[#F97316] transition-all duration-500"
-                    style={{
-                      width: `${(activeDayData.day / 10) * 100}%`,
-                    }}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
-                  <span>Progress: {activeDayData.day * 10}%</span>
-                  <span>Max Peak: 4,130m</span>
-                </div>
-              </div>
-
-              {/* Acclimatization Note */}
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-300 space-y-2">
-                <div className="font-bold text-[#4F9CF9] flex items-center gap-1.5">
-                  <svg className="w-4 h-4 text-[#4F9CF9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                  <span>Safety Acclimatization</span>
-                </div>
-                <p>
-                  Our route incorporates gradual altitude scaling with safety stops at Ghorepani (2,860m) and Deurali (3,200m) before pushing to 4,130m.
-                </p>
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
       </div>
