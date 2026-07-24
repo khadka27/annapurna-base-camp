@@ -74,3 +74,14 @@ model HeroConfig {
   seasonalBanner String
   autoSlideSpeed Int    @default(5000)
 }
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  category    String   // Wellness & Safety, Logistics & Transport, Dining & Comfort, Connectivity
+  price       Float    @default(0)
+  icon        String   @default("🏔️")
+  description String
+  included    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}

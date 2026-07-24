@@ -90,6 +90,16 @@ export function GlassNavbar() {
               Luxury Rooms
             </Link>
             <Link
+              href="/services"
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                pathname === "/services"
+                  ? "bg-white/15 text-white font-bold"
+                  : "text-slate-200 hover:text-white hover:bg-white/10"
+              }`}
+            >
+              Services
+            </Link>
+            <Link
               href="/gallery"
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                 pathname === "/gallery"

@@ -59,28 +59,42 @@ export interface CouponItem {
   active: boolean;
 }
 
+export interface ServiceItem {
+  id: string;
+  title: string;
+  category: "Wellness & Safety" | "Logistics & Transport" | "Dining & Comfort" | "Connectivity";
+  price: number;
+  icon: string;
+  description: string;
+  included: boolean;
+}
+
 interface CmsContextType {
   darkMode: boolean;
   toggleDarkMode: () => void;
 
   heroConfig: HeroConfig;
-  updateHeroConfig: (newConfig: Partial<HeroConfig>) => void;
+  updateHeroConfig: (newConfig: Partial<HeroConfig>) => Promise<void>;
 
   rooms: RoomItem[];
-  addRoom: (room: Omit<RoomItem, "id">) => void;
+  addRoom: (room: Omit<RoomItem, "id">) => Promise<void>;
   updateRoom: (id: string, room: Partial<RoomItem>) => void;
-  deleteRoom: (id: string) => void;
+  deleteRoom: (id: string) => Promise<void>;
 
   bookings: BookingRecord[];
-  addBooking: (booking: Omit<BookingRecord, "id" | "createdAt">) => BookingRecord;
-  updateBookingStatus: (id: string, status: BookingRecord["status"]) => void;
+  addBooking: (booking: Omit<BookingRecord, "id" | "createdAt">) => Promise<BookingRecord>;
+  updateBookingStatus: (id: string, status: BookingRecord["status"]) => Promise<void>;
 
   gallery: GalleryItem[];
-  addGalleryItem: (item: Omit<GalleryItem, "id">) => void;
-  deleteGalleryItem: (id: string) => void;
+  addGalleryItem: (item: Omit<GalleryItem, "id">) => Promise<void>;
+  deleteGalleryItem: (id: string) => Promise<void>;
 
   coupons: CouponItem[];
-  addCoupon: (coupon: CouponItem) => void;
+  addCoupon: (coupon: CouponItem) => Promise<void>;
+
+  services: ServiceItem[];
+  addService: (service: Omit<ServiceItem, "id">) => Promise<void>;
+  deleteService: (id: string) => Promise<void>;
 
   selectedRoomForBooking: RoomItem | null;
   setSelectedRoomForBooking: (room: RoomItem | null) => void;
@@ -90,11 +104,11 @@ interface CmsContextType {
 }
 
 const DEFAULT_HERO: HeroConfig = {
-  title: "Wake Up Among the Himalayas",
+  title: "Annapurna Base Camp Sanctuary Guesthouse",
   subtitle:
-    "Experience unforgettable mountain hospitality at Annapurna Guesthouse, nestled in the heart of Annapurna Base Camp. Wake to breathtaking Himalayan sunrises, enjoy warm hospitality, and relax after your trek in one of Nepal's most iconic destinations.",
-  badge: "Stay Above the Clouds • Annapurna Base Camp • 4,130m",
-  seasonalBanner: "Spring 2026 Himalayan Expedition Season Open • Exclusive Booking",
+    "Experience high-altitude luxury at 4,130m elevation in the heart of the Himalayas with heated suites, panoramic glacier views & authentic Sherpa hospitality.",
+  badge: "4,130M HIGHEST LUXURY LODGE IN NEPAL",
+  seasonalBanner: "🏔️ 2026 TREK SEASON OPEN — RESERVE GLACIER SUITES ONLINE",
   autoSlideSpeed: 5000,
   showOverlay: true,
   slides: [
@@ -116,267 +130,209 @@ const DEFAULT_HERO: HeroConfig = {
   ],
 };
 
-const DEFAULT_ROOMS: RoomItem[] = [
-  {
-    id: "room-1",
-    name: "Royal Annapurna Glacier Suite",
-    category: "suite",
-    pricePerNight: 480,
-    capacity: 2,
-    size: "65 m²",
-    view: "360° Unobstructed Peak View",
-    rating: 4.98,
-    description:
-      "Our signature glass suite perched at 4,130m. Features heated floors, private outdoor deck, panoramic skylight stargazing, and private oxygen enrichment.",
-    images: [
-      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
-    ],
-    amenities: ["Heated Floors", "Oxygen System", "Private Balcony", "King Bed", "En-suite Thermal Bath"],
-    featured: true,
-    available: true,
-    discountBadge: "MOST LUXURIOUS",
-  },
-  {
-    id: "room-2",
-    name: "Fishtail Horizon Panorama Room",
-    category: "panorama",
-    pricePerNight: 340,
-    capacity: 2,
-    size: "48 m²",
-    view: "Machhapuchhre Twin Summit",
-    rating: 4.95,
-    description:
-      "Direct floor-to-ceiling glass wall framing Machhapuchhre (6,993m). Includes wool duvets, gourmet breakfast service, and private workstation.",
-    images: [
-      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
-    ],
-    amenities: ["Floor-to-Ceiling Windows", "Floor Heating", "Merino Wool Duvets", "Mountain Teas"],
-    featured: true,
-    available: true,
-  },
-  {
-    id: "room-3",
-    name: "Highland Sanctuary Twin Deluxe",
-    category: "deluxe",
-    pricePerNight: 240,
-    capacity: 2,
-    size: "36 m²",
-    view: "Annapurna South Massif",
-    rating: 4.89,
-    description:
-      "Spacious twin bedding tailored for mountain expedition partners. Cozy pine wood finish, electric blanket warming, and hot shower access.",
-    images: [
-      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1200&q=80",
-    ],
-    amenities: ["Dual Twin Beds", "Thermal Heating", "Electric Blankets", "Mountain Water Purifier"],
-    featured: false,
-    available: true,
-  },
-  {
-    id: "room-4",
-    name: "Base Camp Alpine Lodge Room",
-    category: "lodge",
-    pricePerNight: 160,
-    capacity: 2,
-    size: "28 m²",
-    view: "Valley Glacier Stream",
-    rating: 4.85,
-    description:
-      "Cozy luxury lodge room combining authentic Sherpa/Gurung timber architecture with warm insulated comfort.",
-    images: [
-      "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=1200&q=80",
-    ],
-    amenities: ["Organic Cotton Linens", "Hydronic Heating", "Daily Tea Service"],
-    featured: false,
-    available: true,
-  },
-];
-
-const DEFAULT_BOOKINGS: BookingRecord[] = [
-  {
-    id: "BK-8492",
-    guestName: "Elena Rostova",
-    guestEmail: "elena@luxurytrips.com",
-    guestPhone: "+1 (555) 234-5678",
-    roomId: "room-1",
-    roomName: "Royal Annapurna Glacier Suite",
-    checkIn: "2026-10-10",
-    checkOut: "2026-10-13",
-    guestsCount: 2,
-    couponCode: "ANNAPURNA10",
-    discountAmount: 144,
-    totalAmount: 1296,
-    status: "Confirmed",
-    createdAt: "2026-07-20",
-  },
-  {
-    id: "BK-9014",
-    guestName: "Marcus Vance",
-    guestEmail: "marcus.vance@expedition.org",
-    guestPhone: "+44 20 7946 0912",
-    roomId: "room-2",
-    roomName: "Fishtail Horizon Panorama Room",
-    checkIn: "2026-10-15",
-    checkOut: "2026-10-17",
-    guestsCount: 2,
-    discountAmount: 0,
-    totalAmount: 680,
-    status: "Confirmed",
-    createdAt: "2026-07-22",
-  },
-];
-
-const DEFAULT_GALLERY: GalleryItem[] = [
-  {
-    id: "gal-1",
-    title: "Sunrise over Annapurna I (8,091m)",
-    category: "Sanctuary",
-    imageUrl: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "gal-2",
-    title: "Glacier Suite Evening Panorama",
-    category: "Suites",
-    imageUrl: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "gal-3",
-    title: "Gourmet Dining Room at 4,130m",
-    category: "Dining",
-    imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "gal-4",
-    title: "Machhapuchhre Sacred Summit",
-    category: "Peaks",
-    imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "gal-5",
-    title: "Heated Thermal Bath with Mountain View",
-    category: "Suites",
-    imageUrl: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "gal-6",
-    title: "Night Stargazing over Base Camp",
-    category: "Sanctuary",
-    imageUrl: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80",
-  },
-];
-
-const DEFAULT_COUPONS: CouponItem[] = [
-  { code: "ANNAPURNA10", discountPercent: 10, active: true },
-  { code: "VIPEXPEDITION15", discountPercent: 15, active: true },
-];
-
 const CmsContext = createContext<CmsContextType | undefined>(undefined);
 
 export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const [heroConfig, setHeroConfig] = useState<HeroConfig>(DEFAULT_HERO);
-  const [rooms, setRooms] = useState<RoomItem[]>(DEFAULT_ROOMS);
-  const [bookings, setBookings] = useState<BookingRecord[]>(DEFAULT_BOOKINGS);
-  const [gallery, setGallery] = useState<GalleryItem[]>(DEFAULT_GALLERY);
-  const [coupons, setCoupons] = useState<CouponItem[]>(DEFAULT_COUPONS);
+  const [rooms, setRooms] = useState<RoomItem[]>([]);
+  const [bookings, setBookings] = useState<BookingRecord[]>([]);
+  const [gallery, setGallery] = useState<GalleryItem[]>([]);
+  const [coupons, setCoupons] = useState<CouponItem[]>([]);
+  const [services, setServices] = useState<ServiceItem[]>([]);
   const [selectedRoomForBooking, setSelectedRoomForBooking] = useState<RoomItem | null>(null);
   const [adminOpen, setAdminOpen] = useState<boolean>(false);
 
+  // Fetch Live Data from PostgreSQL Database on Mount
   useEffect(() => {
-    try {
-      const savedHero = localStorage.getItem("abc_hero");
-      if (savedHero) setHeroConfig(JSON.parse(savedHero));
+    async function loadDatabaseData() {
+      try {
+        const [roomsRes, bookingsRes, galleryRes, couponsRes, heroRes, servicesRes] = await Promise.all([
+          fetch("/api/rooms").then((r) => r.json()),
+          fetch("/api/bookings").then((r) => r.json()),
+          fetch("/api/gallery").then((r) => r.json()),
+          fetch("/api/coupons").then((r) => r.json()),
+          fetch("/api/hero").then((r) => r.json()),
+          fetch("/api/services").then((r) => r.json()),
+        ]);
 
-      const savedRooms = localStorage.getItem("abc_rooms");
-      if (savedRooms) setRooms(JSON.parse(savedRooms));
-
-      const savedBookings = localStorage.getItem("abc_bookings");
-      if (savedBookings) setBookings(JSON.parse(savedBookings));
-
-      const savedGallery = localStorage.getItem("abc_gallery");
-      if (savedGallery) setGallery(JSON.parse(savedGallery));
-    } catch {
-      // Fallback
+        if (roomsRes.success && Array.isArray(roomsRes.rooms)) {
+          setRooms(roomsRes.rooms);
+        }
+        if (bookingsRes.success && Array.isArray(bookingsRes.bookings)) {
+          setBookings(bookingsRes.bookings);
+        }
+        if (galleryRes.success && Array.isArray(galleryRes.gallery)) {
+          setGallery(galleryRes.gallery);
+        }
+        if (couponsRes.success && Array.isArray(couponsRes.coupons)) {
+          setCoupons(couponsRes.coupons);
+        }
+        if (servicesRes.success && Array.isArray(servicesRes.services)) {
+          setServices(servicesRes.services);
+        }
+        if (heroRes.success && heroRes.hero) {
+          setHeroConfig((prev) => ({
+            ...prev,
+            title: heroRes.hero.title || prev.title,
+            subtitle: heroRes.hero.subtitle || prev.subtitle,
+            badge: heroRes.hero.badge || prev.badge,
+            autoSlideSpeed: heroRes.hero.autoSlideSpeed || prev.autoSlideSpeed,
+          }));
+        }
+      } catch (err) {
+        console.error("Error fetching live PostgreSQL data:", err);
+      }
     }
+
+    loadDatabaseData();
   }, []);
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
-  const updateHeroConfig = (newConfig: Partial<HeroConfig>) => {
-    setHeroConfig((prev) => {
-      const updated = { ...prev, ...newConfig };
-      localStorage.setItem("abc_hero", JSON.stringify(updated));
-      return updated;
-    });
+  const updateHeroConfig = async (newConfig: Partial<HeroConfig>) => {
+    setHeroConfig((prev) => ({ ...prev, ...newConfig }));
+    try {
+      await fetch("/api/hero", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newConfig),
+      });
+    } catch (err) {
+      console.error("Failed to update hero config in DB:", err);
+    }
   };
 
-  const addRoom = (roomData: Omit<RoomItem, "id">) => {
-    const newRoom: RoomItem = { ...roomData, id: `room-${Date.now()}` };
-    setRooms((prev) => {
-      const updated = [newRoom, ...prev];
-      localStorage.setItem("abc_rooms", JSON.stringify(updated));
-      return updated;
-    });
+  const addRoom = async (roomData: Omit<RoomItem, "id">) => {
+    try {
+      const res = await fetch("/api/rooms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(roomData),
+      });
+      const data = await res.json();
+      if (data.success && data.room) {
+        setRooms((prev) => [data.room, ...prev]);
+      }
+    } catch (err) {
+      console.error("Failed to add room to database:", err);
+    }
   };
 
   const updateRoom = (id: string, roomData: Partial<RoomItem>) => {
-    setRooms((prev) => {
-      const updated = prev.map((r) => (r.id === id ? { ...r, ...roomData } : r));
-      localStorage.setItem("abc_rooms", JSON.stringify(updated));
-      return updated;
-    });
+    setRooms((prev) => prev.map((r) => (r.id === id ? { ...r, ...roomData } : r)));
   };
 
-  const deleteRoom = (id: string) => {
-    setRooms((prev) => {
-      const updated = prev.filter((r) => r.id !== id);
-      localStorage.setItem("abc_rooms", JSON.stringify(updated));
-      return updated;
-    });
+  const deleteRoom = async (id: string) => {
+    setRooms((prev) => prev.filter((r) => r.id !== id));
+    try {
+      await fetch(`/api/rooms?id=${id}`, { method: "DELETE" });
+    } catch (err) {
+      console.error("Failed to delete room from database:", err);
+    }
   };
 
-  const addBooking = (bookingData: Omit<BookingRecord, "id" | "createdAt">) => {
-    const newBooking: BookingRecord = {
+  const addBooking = async (bookingData: Omit<BookingRecord, "id" | "createdAt">): Promise<BookingRecord> => {
+    const tempRec: BookingRecord = {
       ...bookingData,
       id: `BK-${Math.floor(1000 + Math.random() * 9000)}`,
       createdAt: new Date().toISOString().split("T")[0],
     };
-    setBookings((prev) => {
-      const updated = [newBooking, ...prev];
-      localStorage.setItem("abc_bookings", JSON.stringify(updated));
-      return updated;
-    });
-    return newBooking;
+
+    setBookings((prev) => [tempRec, ...prev]);
+
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bookingData),
+      });
+      const data = await res.json();
+      if (data.success && data.booking) {
+        setBookings((prev) => prev.map((b) => (b.id === tempRec.id ? data.booking : b)));
+        return data.booking;
+      }
+    } catch (err) {
+      console.error("Failed to persist booking to database:", err);
+    }
+
+    return tempRec;
   };
 
-  const updateBookingStatus = (id: string, status: BookingRecord["status"]) => {
-    setBookings((prev) => {
-      const updated = prev.map((b) => (b.id === id ? { ...b, status } : b));
-      localStorage.setItem("abc_bookings", JSON.stringify(updated));
-      return updated;
-    });
+  const updateBookingStatus = async (id: string, status: BookingRecord["status"]) => {
+    setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
+    try {
+      await fetch("/api/bookings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status }),
+      });
+    } catch (err) {
+      console.error("Failed to update booking status in database:", err);
+    }
   };
 
-  const addGalleryItem = (itemData: Omit<GalleryItem, "id">) => {
-    const newItem: GalleryItem = { ...itemData, id: `gal-${Date.now()}` };
-    setGallery((prev) => {
-      const updated = [newItem, ...prev];
-      localStorage.setItem("abc_gallery", JSON.stringify(updated));
-      return updated;
-    });
+  const addGalleryItem = async (itemData: Omit<GalleryItem, "id">) => {
+    try {
+      const res = await fetch("/api/gallery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(itemData),
+      });
+      const data = await res.json();
+      if (data.success && data.item) {
+        setGallery((prev) => [data.item, ...prev]);
+      }
+    } catch (err) {
+      console.error("Failed to add gallery item to database:", err);
+    }
   };
 
-  const deleteGalleryItem = (id: string) => {
-    setGallery((prev) => {
-      const updated = prev.filter((item) => item.id !== id);
-      localStorage.setItem("abc_gallery", JSON.stringify(updated));
-      return updated;
-    });
+  const deleteGalleryItem = async (id: string) => {
+    setGallery((prev) => prev.filter((item) => item.id !== id));
+    try {
+      await fetch(`/api/gallery?id=${id}`, { method: "DELETE" });
+    } catch (err) {
+      console.error("Failed to delete gallery item from database:", err);
+    }
   };
 
-  const addCoupon = (coupon: CouponItem) => {
-    setCoupons((prev) => [...prev, coupon]);
+  const addCoupon = async (coupon: CouponItem) => {
+    setCoupons((prev) => [coupon, ...prev]);
+    try {
+      await fetch("/api/coupons", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(coupon),
+      });
+    } catch (err) {
+      console.error("Failed to save coupon in database:", err);
+    }
+  };
+
+  const addService = async (serviceData: Omit<ServiceItem, "id">) => {
+    try {
+      const res = await fetch("/api/services", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(serviceData),
+      });
+      const data = await res.json();
+      if (data.success && data.service) {
+        setServices((prev) => [...prev, data.service]);
+      }
+    } catch (err) {
+      console.error("Failed to add service to database:", err);
+    }
+  };
+
+  const deleteService = async (id: string) => {
+    setServices((prev) => prev.filter((s) => s.id !== id));
+    try {
+      await fetch(`/api/services?id=${id}`, { method: "DELETE" });
+    } catch (err) {
+      console.error("Failed to delete service from database:", err);
+    }
   };
 
   return (
@@ -398,6 +354,9 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deleteGalleryItem,
         coupons,
         addCoupon,
+        services,
+        addService,
+        deleteService,
         selectedRoomForBooking,
         setSelectedRoomForBooking,
         adminOpen,

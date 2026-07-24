@@ -21,10 +21,21 @@ export default function AdminDashboardPage() {
     deleteGalleryItem,
     coupons,
     addCoupon,
+    services,
+    addService,
+    deleteService,
   } = useCms();
 
   const [authenticated, setAuthenticated] = useState(false);
-  const [activeTab, setActiveTab] = useState<"analytics" | "rooms" | "bookings" | "hero" | "gallery" | "coupons">("analytics");
+  const [activeTab, setActiveTab] = useState<"analytics" | "rooms" | "bookings" | "hero" | "gallery" | "coupons" | "services">("analytics");
+
+  // New Service state
+  const [newSrvTitle, setNewSrvTitle] = useState("");
+  const [newSrvCategory, setNewSrvCategory] = useState<ServiceItem["category"]>("Wellness & Safety");
+  const [newSrvPrice, setNewSrvPrice] = useState(0);
+  const [newSrvIcon, setNewSrvIcon] = useState("🫁");
+  const [newSrvDescription, setNewSrvDescription] = useState("");
+  const [newSrvIncluded, setNewSrvIncluded] = useState(true);
 
   // Hero form state
   const [heroTitle, setHeroTitle] = useState(heroConfig.title);
@@ -43,9 +54,41 @@ export default function AdminDashboardPage() {
   const [newGalCategory, setNewGalCategory] = useState<GalleryItem["category"]>("Sanctuary");
   const [newGalUrl, setNewGalUrl] = useState("");
 
+  // Uploading Loading State
+  const [uploadingRoomImage, setUploadingRoomImage] = useState(false);
+  const [uploadingGalImage, setUploadingGalImage] = useState(false);
+
   // New Coupon state
   const [newCouponCode, setNewCouponCode] = useState("");
   const [newCouponDiscount, setNewCouponDiscount] = useState(15);
+
+  const handleFileUpload = async (
+    file: File,
+    setUrl: (url: string) => void,
+    setUploading: (uploading: boolean) => void
+  ) => {
+    if (!file) return;
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setUrl(data.url);
+      } else {
+        alert("Upload failed: " + (data.message || "Unknown error"));
+      }
+    } catch (err) {
+      alert("Error uploading file to server");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   useEffect(() => {
     // Simple client-side auth guard check
@@ -334,14 +377,39 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs text-slate-300 block mb-1">Photo Image URL</label>
-                  <input
-                    type="url"
-                    required
-                    value={newRoomImage}
-                    onChange={(e) => setNewRoomImage(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
-                  />
+                  <label className="text-xs text-slate-300 block mb-1">Suite Photo (URL or Upload from Device)</label>
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        required
+                        value={newRoomImage}
+                        onChange={(e) => setNewRoomImage(e.target.value)}
+                        placeholder="https://... or /uploads/..."
+                        className="flex-grow px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                      />
+                      <label className="px-4 py-2 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
+                        <span>{uploadingRoomImage ? "⏳ Uploading..." : "📁 Upload Local File"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            if (e.target.files?.[0]) {
+                              handleFileUpload(e.target.files[0], setNewRoomImage, setUploadingRoomImage);
+                            }
+                          }}
+                        />
+                      </label>
+                    </div>
+
+                    {newRoomImage && (
+                      <div className="flex items-center gap-3 pt-1">
+                        <img src={newRoomImage} alt="Room Preview" className="w-14 h-10 object-cover rounded-lg border border-white/20" />
+                        <span className="text-[10px] font-mono text-slate-400 truncate">Saved to: {newRoomImage}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <button
                   type="submit"
@@ -489,15 +557,39 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs text-slate-300 block mb-1">Photo Image URL</label>
-                  <input
-                    type="url"
-                    required
-                    value={newGalUrl}
-                    onChange={(e) => setNewGalUrl(e.target.value)}
-                    placeholder="https://..."
-                    className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
-                  />
+                  <label className="text-xs text-slate-300 block mb-1">Gallery Photo (URL or Upload from Device)</label>
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        required
+                        value={newGalUrl}
+                        onChange={(e) => setNewGalUrl(e.target.value)}
+                        placeholder="https://... or /uploads/..."
+                        className="flex-grow px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                      />
+                      <label className="px-4 py-2 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
+                        <span>{uploadingGalImage ? "⏳ Uploading..." : "📁 Upload Local File"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            if (e.target.files?.[0]) {
+                              handleFileUpload(e.target.files[0], setNewGalUrl, setUploadingGalImage);
+                            }
+                          }}
+                        />
+                      </label>
+                    </div>
+
+                    {newGalUrl && (
+                      <div className="flex items-center gap-3 pt-1">
+                        <img src={newGalUrl} alt="Gallery Preview" className="w-14 h-10 object-cover rounded-lg border border-white/20" />
+                        <span className="text-[10px] font-mono text-slate-400 truncate">Saved to: {newGalUrl}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <button
                   type="submit"

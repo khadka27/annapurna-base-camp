@@ -81,11 +81,11 @@ export default function DynamicRoomBookingPage({
     }
   };
 
-  const handleConfirmBooking = (e: React.FormEvent) => {
+  const handleConfirmBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!guestName || !guestEmail || !guestPhone) return;
 
-    const newRec = addBooking({
+    const newRec = await addBooking({
       guestName,
       guestEmail,
       guestPhone,

@@ -40,10 +40,10 @@ export function BookingModal() {
     }
   };
 
-  const handleReservationSubmit = (e: React.FormEvent) => {
+  const handleReservationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const record = addBooking({
+    const record = await addBooking({
       guestName,
       guestEmail,
       guestPhone,

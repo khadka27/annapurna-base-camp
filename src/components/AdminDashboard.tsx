@@ -20,9 +20,20 @@ export function AdminDashboard() {
     deleteGalleryItem,
     coupons,
     addCoupon,
+    services,
+    addService,
+    deleteService,
   } = useCms();
 
-  const [activeTab, setActiveTab] = useState<"analytics" | "rooms" | "bookings" | "hero" | "gallery" | "coupons">("analytics");
+  const [activeTab, setActiveTab] = useState<"analytics" | "rooms" | "bookings" | "hero" | "gallery" | "coupons" | "services">("analytics");
+
+  // New Service state
+  const [newSrvTitle, setNewSrvTitle] = useState("");
+  const [newSrvCategory, setNewSrvCategory] = useState<ServiceItem["category"]>("Wellness & Safety");
+  const [newSrvPrice, setNewSrvPrice] = useState(0);
+  const [newSrvIcon, setNewSrvIcon] = useState("🫁");
+  const [newSrvDescription, setNewSrvDescription] = useState("");
+  const [newSrvIncluded, setNewSrvIncluded] = useState(true);
 
   // Hero form state
   const [heroTitle, setHeroTitle] = useState(heroConfig.title);
@@ -41,9 +52,41 @@ export function AdminDashboard() {
   const [newGalCategory, setNewGalCategory] = useState<GalleryItem["category"]>("Sanctuary");
   const [newGalUrl, setNewGalUrl] = useState("");
 
+  // Uploading Loading State
+  const [uploadingRoomImage, setUploadingRoomImage] = useState(false);
+  const [uploadingGalImage, setUploadingGalImage] = useState(false);
+
   // New Coupon state
   const [newCouponCode, setNewCouponCode] = useState("");
   const [newCouponDiscount, setNewCouponDiscount] = useState(15);
+
+  const handleFileUpload = async (
+    file: File,
+    setUrl: (url: string) => void,
+    setUploading: (uploading: boolean) => void
+  ) => {
+    if (!file) return;
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setUrl(data.url);
+      } else {
+        alert("Upload failed: " + (data.message || "Unknown error"));
+      }
+    } catch (err) {
+      alert("Error uploading file to server");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   if (!adminOpen) return null;
 
@@ -107,6 +150,22 @@ export function AdminDashboard() {
     alert(`Created coupon ${newCouponCode.toUpperCase()} (${newCouponDiscount}% OFF)`);
   };
 
+  const handleCreateService = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newSrvTitle || !newSrvDescription) return;
+    addService({
+      title: newSrvTitle,
+      category: newSrvCategory,
+      price: Number(newSrvPrice),
+      icon: newSrvIcon,
+      description: newSrvDescription,
+      included: newSrvIncluded,
+    });
+    setNewSrvTitle("");
+    setNewSrvDescription("");
+    alert(`Published service "${newSrvTitle}"!`);
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-2xl animate-fade-in overflow-y-auto">
       <div className="bg-[#0F172A] border border-white/20 rounded-3xl w-full max-w-5xl text-white overflow-hidden shadow-2xl relative my-6">
@@ -138,6 +197,7 @@ export function AdminDashboard() {
           {[
             { id: "analytics", label: "Analytics Overview" },
             { id: "rooms", label: "Rooms CRUD" },
+            { id: "services", label: "Services Manager" },
             { id: "bookings", label: "Bookings Engine" },
             { id: "hero", label: "Hero Content CMS" },
             { id: "gallery", label: "Gallery Manager" },
@@ -329,14 +389,39 @@ export function AdminDashboard() {
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs text-slate-300 block mb-1">Photo Image URL</label>
-                  <input
-                    type="url"
-                    required
-                    value={newRoomImage}
-                    onChange={(e) => setNewRoomImage(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
-                  />
+                  <label className="text-xs text-slate-300 block mb-1">Suite Photo (URL or Upload from Device)</label>
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        required
+                        value={newRoomImage}
+                        onChange={(e) => setNewRoomImage(e.target.value)}
+                        placeholder="https://... or /uploads/..."
+                        className="flex-grow px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                      />
+                      <label className="px-4 py-2 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
+                        <span>{uploadingRoomImage ? "⏳ Uploading..." : "📁 Upload Local File"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            if (e.target.files?.[0]) {
+                              handleFileUpload(e.target.files[0], setNewRoomImage, setUploadingRoomImage);
+                            }
+                          }}
+                        />
+                      </label>
+                    </div>
+
+                    {newRoomImage && (
+                      <div className="flex items-center gap-3 pt-1">
+                        <img src={newRoomImage} alt="Room Preview" className="w-14 h-10 object-cover rounded-lg border border-white/20" />
+                        <span className="text-[10px] font-mono text-slate-400 truncate">Saved to: {newRoomImage}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <button
                   type="submit"
@@ -357,6 +442,122 @@ export function AdminDashboard() {
                       </div>
                       <button
                         onClick={() => deleteRoom(r.id)}
+                        className="px-3 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* SERVICES MANAGER */}
+          {activeTab === "services" && (
+            <div className="space-y-8">
+              <form onSubmit={handleCreateService} className="bg-white/5 p-6 rounded-2xl border border-white/10 space-y-4">
+                <h3 className="text-sm font-bold text-[#4F9CF9] uppercase tracking-wider">+ Add New Guesthouse Service</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label className="text-xs text-slate-300 block mb-1">Service Title</label>
+                    <input
+                      type="text"
+                      required
+                      value={newSrvTitle}
+                      onChange={(e) => setNewSrvTitle(e.target.value)}
+                      placeholder="e.g. Helicopter Charter Service"
+                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-slate-300 block mb-1">Category</label>
+                    <select
+                      value={newSrvCategory}
+                      onChange={(e) => setNewSrvCategory(e.target.value as any)}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs focus:outline-none cursor-pointer"
+                    >
+                      <option value="Wellness & Safety" className="bg-[#0F172A]">Wellness & Safety</option>
+                      <option value="Logistics & Transport" className="bg-[#0F172A]">Logistics & Transport</option>
+                      <option value="Dining & Comfort" className="bg-[#0F172A]">Dining & Comfort</option>
+                      <option value="Connectivity" className="bg-[#0F172A]">Connectivity</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-xs text-slate-300 block mb-1">Icon / Emoji</label>
+                    <input
+                      type="text"
+                      required
+                      value={newSrvIcon}
+                      onChange={(e) => setNewSrvIcon(e.target.value)}
+                      placeholder="🫁 or 🚁"
+                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs text-slate-300 block mb-1">Price ($0 for Complimentary)</label>
+                    <input
+                      type="number"
+                      required
+                      value={newSrvPrice}
+                      onChange={(e) => {
+                        const val = Number(e.target.value);
+                        setNewSrvPrice(val);
+                        setNewSrvIncluded(val === 0);
+                      }}
+                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-slate-300 block mb-1">Perk Type</label>
+                    <select
+                      value={newSrvIncluded ? "true" : "false"}
+                      onChange={(e) => setNewSrvIncluded(e.target.value === "true")}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs focus:outline-none cursor-pointer"
+                    >
+                      <option value="true" className="bg-[#0F172A]">Complimentary Perk</option>
+                      <option value="false" className="bg-[#0F172A]">Add-On Service</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs text-slate-300 block mb-1">Service Description</label>
+                  <textarea
+                    rows={2}
+                    required
+                    value={newSrvDescription}
+                    onChange={(e) => setNewSrvDescription(e.target.value)}
+                    placeholder="Describe service features..."
+                    className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 rounded-xl bg-[#16A34A] text-white font-bold text-xs hover:bg-[#138a3e]"
+                >
+                  Publish Service
+                </button>
+              </form>
+
+              <div className="space-y-3">
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Active Services ({services.length})</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {services.map((srv) => (
+                    <div key={srv.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl p-2 rounded-xl bg-white/10">{srv.icon}</span>
+                        <div>
+                          <strong className="text-white block text-sm">{srv.title}</strong>
+                          <span className="text-xs text-slate-400">{srv.category} • {srv.included ? "Complimentary" : `$${srv.price}`}</span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => deleteService(srv.id)}
                         className="px-3 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold"
                       >
                         Delete
@@ -484,17 +685,42 @@ export function AdminDashboard() {
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs text-slate-300 block mb-1">Image URL</label>
-                  <input
-                    type="url"
-                    required
-                    value={newGalUrl}
-                    onChange={(e) => setNewGalUrl(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
-                  />
+                  <label className="text-xs text-slate-300 block mb-1">Gallery Photo (URL or Upload from Device)</label>
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        required
+                        value={newGalUrl}
+                        onChange={(e) => setNewGalUrl(e.target.value)}
+                        placeholder="https://... or /uploads/..."
+                        className="flex-grow px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                      />
+                      <label className="px-4 py-2 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
+                        <span>{uploadingGalImage ? "⏳ Uploading..." : "📁 Upload Local File"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            if (e.target.files?.[0]) {
+                              handleFileUpload(e.target.files[0], setNewGalUrl, setUploadingGalImage);
+                            }
+                          }}
+                        />
+                      </label>
+                    </div>
+
+                    {newGalUrl && (
+                      <div className="flex items-center gap-3 pt-1">
+                        <img src={newGalUrl} alt="Gallery Preview" className="w-14 h-10 object-cover rounded-lg border border-white/20" />
+                        <span className="text-[10px] font-mono text-slate-400 truncate">Saved to: {newGalUrl}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <button type="submit" className="px-5 py-2.5 rounded-xl bg-[#16A34A] text-white font-bold text-xs">
-                  Upload Gallery Item
+                <button type="submit" className="px-5 py-2.5 rounded-xl bg-[#16A34A] text-white font-bold text-xs hover:bg-[#138a3e]">
+                  Publish Gallery Photo
                 </button>
               </form>
 

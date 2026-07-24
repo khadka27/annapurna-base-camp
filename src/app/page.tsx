@@ -9,6 +9,7 @@ import { BookingModal } from "@/components/BookingModal";
 import { AdminDashboard } from "@/components/AdminDashboard";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { ServicesShowcase } from "@/components/ServicesShowcase";
 import { useCms } from "@/context/CmsContext";
 
 export default function Home() {
@@ -232,6 +233,9 @@ export default function Home() {
             ))}
           </div>
         </section>
+
+        {/* Services & Amenities Section */}
+        <ServicesShowcase />
 
         {/* Amenities Section */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
