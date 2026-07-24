@@ -124,3 +124,38 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #0F172A;
 }
+
+/* Enhanced Custom Dropdown UI Styling */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234F9CF9'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2.25rem !important;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+select:focus {
+  outline: none;
+  border-color: #4F9CF9 !important;
+  box-shadow: 0 0 0 3px rgba(79, 156, 249, 0.3) !important;
+}
+
+select option {
+  background-color: #0F172A !important;
+  color: #F8FAFC !important;
+  padding: 10px 14px;
+  font-weight: 600;
+}
+
+select option:hover,
+select option:focus,
+select option:active,
+select option:checked {
+  background-color: #1E293B !important;
+  color: #4F9CF9 !important;
+}

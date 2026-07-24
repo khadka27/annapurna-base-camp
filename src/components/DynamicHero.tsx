@@ -180,11 +180,11 @@ export function DynamicHero() {
 
             {/* Guests */}
             <div className="bg-white/10 p-3 rounded-2xl border border-white/15">
-              <label className="text-[10px] font-mono text-slate-300 block uppercase font-bold">Guests</label>
+              <label className="text-[10px] font-mono text-[#4F9CF9] block uppercase font-bold mb-1">Guests</label>
               <select
                 value={guests}
                 onChange={(e) => setGuests(Number(e.target.value))}
-                className="w-full bg-transparent text-white font-semibold text-sm focus:outline-none cursor-pointer"
+                className="w-full bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl px-3 py-1.5 text-white font-semibold text-xs transition-all focus:outline-none cursor-pointer"
               >
                 <option value={1} className="bg-[#0F172A]">1 Guest</option>
                 <option value={2} className="bg-[#0F172A]">2 Guests</option>
@@ -195,11 +195,11 @@ export function DynamicHero() {
 
             {/* Room Type */}
             <div className="bg-white/10 p-3 rounded-2xl border border-white/15">
-              <label className="text-[10px] font-mono text-slate-300 block uppercase font-bold">Room Type</label>
+              <label className="text-[10px] font-mono text-[#4F9CF9] block uppercase font-bold mb-1">Room Type</label>
               <select
                 value={selectedRoomType}
                 onChange={(e) => setSelectedRoomType(e.target.value)}
-                className="w-full bg-transparent text-white font-semibold text-sm focus:outline-none cursor-pointer"
+                className="w-full bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl px-3 py-1.5 text-white font-semibold text-xs transition-all focus:outline-none cursor-pointer"
               >
                 <option value="suite" className="bg-[#0F172A]">Glacier Suite</option>
                 <option value="panorama" className="bg-[#0F172A]">Panorama Room</option>

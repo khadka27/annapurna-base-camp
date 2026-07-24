@@ -319,7 +319,7 @@ export function AdminDashboard() {
                     <select
                       value={newRoomCategory}
                       onChange={(e) => setNewRoomCategory(e.target.value as any)}
-                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs focus:outline-none focus:border-[#4F9CF9] transition-all cursor-pointer shadow-sm"
                     >
                       <option value="suite" className="bg-[#0F172A]">Glacier Suite</option>
                       <option value="panorama" className="bg-[#0F172A]">Panorama Room</option>
@@ -390,7 +390,7 @@ export function AdminDashboard() {
                       <select
                         value={b.status}
                         onChange={(e) => updateBookingStatus(b.id, e.target.value as any)}
-                        className="px-3 py-1.5 rounded-xl bg-white/10 border border-white/15 text-white font-bold"
+                        className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs focus:outline-none focus:border-[#4F9CF9] transition-all cursor-pointer shadow-sm"
                       >
                         <option value="Confirmed" className="bg-[#0F172A]">Confirmed</option>
                         <option value="Pending" className="bg-[#0F172A]">Pending</option>
@@ -474,7 +474,7 @@ export function AdminDashboard() {
                     <select
                       value={newGalCategory}
                       onChange={(e) => setNewGalCategory(e.target.value as any)}
-                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs focus:outline-none focus:border-[#4F9CF9] transition-all cursor-pointer shadow-sm"
                     >
                       <option value="Sanctuary" className="bg-[#0F172A]">Sanctuary</option>
                       <option value="Suites" className="bg-[#0F172A]">Suites</option>
