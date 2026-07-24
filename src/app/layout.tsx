@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { CmsProvider } from "@/context/CmsContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Annapurna Base Camp Trek (4,130m) • Official Route, Gear & Expedition Booking",
-  description: "Experience the ultimate 10-day Annapurna Base Camp trek in Nepal. Explore interactive 360° route maps, altitude profiles, gear preparation checklists, and instant expedition cost calculators.",
+  title: "Annapurna Guesthouse • Luxury Sanctuary Lodging & Base Camp Suite Booking",
+  description: "Experience 5-star mountain luxury at 4,130m altitude in Annapurna Base Camp, Nepal. Heated glacier suites, floor-to-ceiling peak views, live weather telemetry, and instant suite reservation.",
 };
 
 export default function RootLayout({
@@ -28,8 +29,8 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        {children}
+      <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
+        <CmsProvider>{children}</CmsProvider>
       </body>
     </html>
   );

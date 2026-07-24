@@ -315,7 +315,9 @@ export function ItineraryExplorer() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {activeDayData.highlights.map((highlight, idx) => (
                   <div key={idx} className="flex items-start gap-2 text-sm text-[#0F172A] bg-[#F8FAFC] p-3 rounded-xl border border-slate-200">
-                    <span className="text-[#16A34A] font-bold mt-0.5">✓</span>
+                    <svg className="w-4 h-4 text-[#16A34A] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
                     <span>{highlight}</span>
                   </div>
                 ))}
@@ -365,19 +367,15 @@ export function ItineraryExplorer() {
               {/* Acclimatization Note */}
               <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-300 space-y-2">
                 <div className="font-bold text-[#4F9CF9] flex items-center gap-1.5">
-                  <span>🛡️ Safety Acclimatization</span>
+                  <svg className="w-4 h-4 text-[#4F9CF9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  <span>Safety Acclimatization</span>
                 </div>
                 <p>
                   Our route incorporates gradual altitude scaling with safety stops at Ghorepani (2,860m) and Deurali (3,200m) before pushing to 4,130m.
                 </p>
               </div>
-
-              <a
-                href="#calculator"
-                className="w-full py-3.5 rounded-xl font-bold text-center block bg-[#4F9CF9] hover:bg-[#3b8beb] text-white transition-colors"
-              >
-                Customize This Itinerary
-              </a>
             </div>
           </div>
         </div>
