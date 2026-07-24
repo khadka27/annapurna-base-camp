@@ -194,7 +194,7 @@ export function ItineraryExplorer() {
         <div className="relative max-w-5xl mx-auto py-10">
           {/* Organic SVG Bezier Curve Trail Path Directly Weaving Through Card Pins */}
           <svg
-            className="absolute inset-0 w-full h-full pointer-events-none hidden md:block z-0"
+            className="absolute inset-0 w-full h-full pointer-events-none block z-0"
             viewBox="0 0 1000 3100"
             preserveAspectRatio="none"
           >

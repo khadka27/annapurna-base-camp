@@ -181,6 +181,90 @@ export function AdminDashboard() {
                 </div>
               </div>
 
+              {/* Curved Line Revenue Analytics Graph */}
+              <div className="bg-white/5 p-6 rounded-2xl border border-white/10 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">Revenue & Reservation Growth Curve</h3>
+                    <p className="text-xs text-slate-400">Smooth curved performance telemetry (2026 Himalayan Trek Season)</p>
+                  </div>
+                  <span className="px-3 py-1 rounded-full bg-[#16A34A]/20 text-[#16A34A] text-xs font-mono font-bold">
+                    +34.2% Growth Curve
+                  </span>
+                </div>
+
+                {/* SVG Smooth Curved Line Chart */}
+                <div className="relative w-full h-48 pt-4">
+                  <svg className="w-full h-full overflow-visible" viewBox="0 0 600 160" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="smoothCurveArea" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#4F9CF9" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="#4F9CF9" stopOpacity="0.0" />
+                      </linearGradient>
+                      <linearGradient id="smoothLineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#4F9CF9" />
+                        <stop offset="50%" stopColor="#16A34A" />
+                        <stop offset="100%" stopColor="#F97316" />
+                      </linearGradient>
+                    </defs>
+
+                    {/* Horizontal Grid lines */}
+                    <line x1="0" y1="20" x2="600" y2="20" stroke="rgba(255,255,255,0.08)" strokeDasharray="4 4" />
+                    <line x1="0" y1="60" x2="600" y2="60" stroke="rgba(255,255,255,0.08)" strokeDasharray="4 4" />
+                    <line x1="0" y1="100" x2="600" y2="100" stroke="rgba(255,255,255,0.08)" strokeDasharray="4 4" />
+                    <line x1="0" y1="140" x2="600" y2="140" stroke="rgba(255,255,255,0.08)" strokeDasharray="4 4" />
+
+                    {/* Smooth Curved Gradient Area Under the Curve */}
+                    <path
+                      d="M 0 140 
+                         C 80 120, 140 90, 200 100 
+                         C 260 110, 320 40, 380 50 
+                         C 440 60, 500 20, 600 15 
+                         L 600 150 L 0 150 Z"
+                      fill="url(#smoothCurveArea)"
+                    />
+
+                    {/* Main Smooth Curved Bézier Stroke Line */}
+                    <path
+                      d="M 0 140 
+                         C 80 120, 140 90, 200 100 
+                         C 260 110, 320 40, 380 50 
+                         C 440 60, 500 20, 600 15"
+                      fill="none"
+                      stroke="url(#smoothLineGrad)"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                    />
+
+                    {/* Data Points on the Smooth Curve */}
+                    {[
+                      { x: 0, y: 140, val: "$1.2k" },
+                      { x: 100, y: 115, val: "$2.4k" },
+                      { x: 200, y: 100, val: "$3.1k" },
+                      { x: 300, y: 65, val: "$5.8k" },
+                      { x: 380, y: 50, val: "$7.2k" },
+                      { x: 480, y: 30, val: "$9.6k" },
+                      { x: 600, y: 15, val: "$12.4k" },
+                    ].map((pt, i) => (
+                      <g key={i}>
+                        <circle cx={pt.x} cy={pt.y} r="5" fill="#0F172A" stroke="#4F9CF9" strokeWidth="3" />
+                      </g>
+                    ))}
+                  </svg>
+                </div>
+
+                {/* X-Axis Month Labels */}
+                <div className="flex justify-between text-[11px] font-mono text-slate-400 pt-1">
+                  <span>May</span>
+                  <span>Jun</span>
+                  <span>Jul</span>
+                  <span>Aug</span>
+                  <span>Sep</span>
+                  <span>Oct</span>
+                  <span>Nov</span>
+                </div>
+              </div>
+
               <div className="bg-white/5 p-6 rounded-2xl border border-white/10 space-y-4">
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider">Recent Guest Logs</h3>
                 <div className="space-y-2 text-xs">

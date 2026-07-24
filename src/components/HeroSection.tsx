@@ -12,15 +12,34 @@ export function HeroSection() {
         <div className="absolute bottom-0 right-1/4 w-[450px] h-[450px] bg-[#F97316] rounded-full blur-[150px]" />
       </div>
 
-      {/* SVG Alpine Peaks Silhouette Overlay */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 opacity-15 pointer-events-none">
+      {/* SVG Smooth Curved Alpine Peaks & Wave Overlay */}
+      <div className="absolute bottom-0 left-0 right-0 h-36 opacity-20 pointer-events-none overflow-hidden">
         <svg
           className="w-full h-full text-white"
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
-          fill="currentColor"
         >
-          <path d="M0,120 L150,40 L300,100 L480,20 L650,90 L850,10 L1020,80 L1200,30 L1200,120 Z" />
+          <defs>
+            <linearGradient id="heroCurveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#4F9CF9" stopOpacity="0.8" />
+              <stop offset="50%" stopColor="#16A34A" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#F97316" stopOpacity="0.8" />
+            </linearGradient>
+          </defs>
+
+          {/* Smooth Curved Mountain Base Fill */}
+          <path
+            d="M 0,120 C 100,50 200,90 320,45 C 440,0 540,85 680,30 C 820,-25 940,65 1060,20 C 1140,-10 1180,25 1200,35 L 1200,120 Z"
+            fill="currentColor"
+          />
+
+          {/* Flowing Curved Accent Stroke */}
+          <path
+            d="M 0,90 C 150,30 280,100 420,35 C 560,-30 720,70 880,15 C 1020,-35 1120,40 1200,20"
+            fill="none"
+            stroke="url(#heroCurveGrad)"
+            strokeWidth="4"
+          />
         </svg>
       </div>
 

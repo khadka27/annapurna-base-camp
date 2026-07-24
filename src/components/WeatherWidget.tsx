@@ -88,6 +88,69 @@ export function WeatherWidget() {
                 <span className="text-[11px] text-slate-300 block font-mono">Crisp Mountain Air</span>
               </div>
             </div>
+
+            {/* 24-Hour Diurnal Temperature & Oxygen Telemetry Curve */}
+            <div className="lg:col-span-12 bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 space-y-3">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#4F9CF9] animate-pulse" />
+                  <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider">
+                    24-Hour Diurnal Temperature & Oxygen Curve (4,130m)
+                  </h3>
+                </div>
+                <div className="flex items-center gap-4 text-[11px] font-mono">
+                  <span className="flex items-center gap-1 text-[#4F9CF9]">
+                    <span className="w-3 h-0.5 bg-[#4F9CF9] rounded-full inline-block" /> Temp Curve (°C)
+                  </span>
+                  <span className="flex items-center gap-1 text-[#16A34A]">
+                    <span className="w-3 h-0.5 bg-[#16A34A] rounded-full inline-block" /> Oxygen Curve (%)
+                  </span>
+                </div>
+              </div>
+
+              {/* Curved SVG Telemetry Chart */}
+              <div className="relative w-full h-28 pt-2">
+                <svg className="w-full h-full overflow-visible" viewBox="0 0 500 80" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="tempCurveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#4F9CF9" />
+                      <stop offset="50%" stopColor="#F97316" />
+                      <stop offset="100%" stopColor="#4F9CF9" />
+                    </linearGradient>
+                    <linearGradient id="oxCurveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#16A34A" />
+                      <stop offset="100%" stopColor="#4F9CF9" />
+                    </linearGradient>
+                  </defs>
+
+                  {/* Temperature Curve */}
+                  <path
+                    d="M 0 65 C 70 75, 120 40, 200 25 C 280 10, 360 45, 420 60 C 470 72, 500 68, 500 65"
+                    fill="none"
+                    stroke="url(#tempCurveGrad)"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+
+                  {/* Oxygen Curve */}
+                  <path
+                    d="M 0 30 C 90 20, 170 35, 250 25 C 330 15, 410 40, 500 32"
+                    fill="none"
+                    stroke="url(#oxCurveGrad)"
+                    strokeWidth="2.5"
+                    strokeDasharray="6 4"
+                  />
+                </svg>
+              </div>
+
+              <div className="flex justify-between text-[10px] font-mono text-slate-400 border-t border-white/10 pt-2">
+                <span>00:00 (Midnight -12°C)</span>
+                <span>06:00 (Dawn Sunrise -8°C)</span>
+                <span>12:00 (Noon Sun -2°C)</span>
+                <span>18:00 (Dusk -6°C)</span>
+                <span>24:00 (Midnight -11°C)</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
