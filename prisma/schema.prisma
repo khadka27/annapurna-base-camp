@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String   @default("Himalayan Admin")
+  createdAt DateTime @default(now())
+}
+
+model Room {
+  id            String   @id @default(cuid())
+  name          String
+  category      String   // suite, panorama, deluxe, lodge
+  pricePerNight Float
+  capacity      Int      @default(2)
+  size          String
+  view          String
+  rating        Float    @default(4.9)
+  description   String
+  images        String[] // Array of image URLs
+  amenities     String[] // Array of amenities
+  featured      Boolean  @default(false)
+  available     Boolean  @default(true)
+  discountBadge String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Booking {
+  id             String   @id @default(cuid())
+  guestName      String
+  guestEmail     String
+  guestPhone     String
+  roomId         String
+  roomName       String
+  checkIn        String
+  checkOut       String
+  guestsCount    Int      @default(2)
+  couponCode     String?
+  discountAmount Float    @default(0)
+  totalAmount    Float
+  status         String   @default("Confirmed") // Confirmed, Pending, Cancelled
+  createdAt      DateTime @default(now())
+}
+
+model GalleryItem {
+  id        String   @id @default(cuid())
+  title     String
+  category  String   // Sanctuary, Suites, Dining, Peaks
+  imageUrl  String
+  createdAt DateTime @default(now())
+}
+
+model Coupon {
+  id              String   @id @default(cuid())
+  code            String   @unique
+  discountPercent Float
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+}
+
+model HeroConfig {
+  id             String @id @default("default-hero")
+  title          String
+  subtitle       String
+  badge          String
+  seasonalBanner String
+  autoSlideSpeed Int    @default(5000)
+}

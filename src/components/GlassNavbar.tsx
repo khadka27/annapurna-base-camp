@@ -125,8 +125,8 @@ export function GlassNavbar() {
           <div className="hidden sm:flex items-center gap-3">
 
             {/* Admin Dashboard CMS Button */}
-            <button
-              onClick={() => setAdminOpen(true)}
+            <Link
+              href="/admin/dashboard"
               className="px-3.5 py-2 rounded-xl text-xs font-bold text-[#4F9CF9] bg-[#4F9CF9]/15 border border-[#4F9CF9]/30 hover:bg-[#4F9CF9]/25 transition-all flex items-center gap-1.5"
             >
               <svg className="w-3.5 h-3.5 text-[#4F9CF9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -134,7 +134,7 @@ export function GlassNavbar() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               <span>Admin CMS</span>
-            </button>
+            </Link>
 
             {/* Book Stay CTA */}
             <button
@@ -150,12 +150,12 @@ export function GlassNavbar() {
 
           {/* Mobile Menu Toggle */}
           <div className="flex items-center gap-2 lg:hidden">
-            <button
-              onClick={() => setAdminOpen(true)}
+            <Link
+              href="/admin/dashboard"
               className="px-2.5 py-1.5 text-xs font-bold text-[#4F9CF9] bg-[#4F9CF9]/15 rounded-lg"
             >
               CMS
-            </button>
+            </Link>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
