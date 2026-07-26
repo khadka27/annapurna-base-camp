@@ -26,7 +26,7 @@ export function WeatherWidget() {
   });
 
   return (
-    <section id="weather" className="py-14 sm:py-16 bg-[#0F172A] text-white relative overflow-hidden">
+    <section id="weather" className="py-14 sm:py-16 bg-[#395371] text-white relative overflow-hidden">
       {/* Background Ambient Glow Effects */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-[#4F9CF9]/10 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#16A34A]/10 rounded-full blur-[140px] pointer-events-none" />

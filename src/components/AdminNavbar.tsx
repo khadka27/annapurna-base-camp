@@ -31,12 +31,12 @@ export function AdminNavbar({ activeTab, setActiveTab }: AdminNavbarProps) {
   ];
 
   return (
-    <header className="fixed top-4 inset-x-0 z-50 transition-all duration-300 w-[95%] sm:w-[92%] lg:w-[90%] max-w-7xl mx-auto rounded-2xl border border-white/20 bg-[#0F172A]/90 backdrop-blur-2xl shadow-2xl py-3 px-4 sm:px-6">
+    <header className="fixed top-4 inset-x-0 z-50 transition-all duration-300 w-[95%] sm:w-[92%] lg:w-[90%] max-w-7xl mx-auto rounded-2xl border border-white/20 bg-[#395371]/90 backdrop-blur-2xl shadow-2xl py-3 px-4 sm:px-6">
       <div className="flex items-center justify-between">
         {/* Left: Admin Shield Logo & Badge */}
         <Link href="/admin/dashboard" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#1E293B] via-[#4F9CF9] to-[#16A34A] p-0.5 shadow-lg group-hover:scale-105 transition-transform">
-            <div className="w-full h-full bg-[#0F172A] rounded-[10px] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#395371] via-[#4F9CF9] to-[#16A34A] p-0.5 shadow-lg group-hover:scale-105 transition-transform">
+            <div className="w-full h-full bg-[#395371] rounded-[10px] flex items-center justify-center">
               <ShieldCheck className="w-5 h-5 text-[#4F9CF9]" />
             </div>
           </div>

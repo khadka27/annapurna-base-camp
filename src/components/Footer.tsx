@@ -43,25 +43,24 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#0F172A] text-white">
+    <footer className="relative bg-[#395371] text-white">
       {/* 1. TOP BANNER BOX: Did not find the perfect trip? No worries! */}
-      <div className="bg-[#DCE4EC] pt-12 pb-6 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto bg-[#486589] rounded-2xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="bg-[#B6C7D5] pt-10 pb-6 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto bg-[#395371] rounded-2xl p-6 sm:p-8 text-white shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6 border border-white/10">
           <div className="flex items-center gap-5 text-center md:text-left">
-            {/* SVG Tent & Trees Icon */}
-            <div className="w-14 h-14 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
-              <svg className="w-9 h-9 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                {/* Tent */}
+            {/* SVG Compass & Peak Icon Box */}
+            <div className="w-14 h-14 rounded-2xl bg-[#486488] flex items-center justify-center shrink-0 border border-white/20 shadow-inner">
+              <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 21l9-18 9 18H3z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 12h9" />
               </svg>
             </div>
             <div className="space-y-1">
-              <h3 className="text-xl sm:text-2xl font-extrabold text-white">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
                 Did not find the perfect trip? No worries!
               </h3>
-              <p className="text-xs sm:text-sm text-slate-200">
+              <p className="text-xs sm:text-sm text-slate-300">
                 Contact us to start planning your tailor-made dream trip!
               </p>
             </div>
@@ -69,7 +68,7 @@ export function Footer() {
 
           <a
             href="#calculator"
-            className="px-6 py-3 rounded-lg bg-[#E2E8F0] hover:bg-white text-[#102542] font-extrabold text-xs tracking-wider uppercase shadow-md transition-all whitespace-nowrap"
+            className="px-6 py-3 rounded-xl bg-[#CBD7E3] hover:bg-white text-[#1E293B] font-extrabold text-xs tracking-wider uppercase shadow-lg transition-all whitespace-nowrap"
           >
             PLAN YOUR TRIP
           </a>
@@ -77,7 +76,7 @@ export function Footer() {
       </div>
 
       {/* 2. ASSOCIATED WITH & RECOMMENDED ON SECTION */}
-      <div className="bg-[#DCE4EC] py-8 border-b border-slate-300/40 text-slate-800">
+      <div className="bg-[#B6C7D5] py-8 border-b border-slate-400/30 text-slate-900">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Associated with */}
           <div className="space-y-3 text-center md:text-left">
@@ -177,7 +176,7 @@ export function Footer() {
       </div>
 
       {/* 3. LAYERED MOUNTAIN SILHOUETTE GRAPHIC OVERLAY */}
-      <div className="bg-[#DCE4EC] relative h-20 overflow-hidden pointer-events-none">
+      <div className="bg-[#B6C7D5] relative h-20 overflow-hidden pointer-events-none">
         <svg
           className="absolute bottom-0 w-full h-full text-[#102542]"
           viewBox="0 0 1200 120"

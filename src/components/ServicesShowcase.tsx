@@ -14,7 +14,7 @@ export function ServicesShowcase() {
       : services.filter((s) => s.category === activeCategory);
 
   return (
-    <section id="services" className="py-14 sm:py-16 bg-[#0F172A] text-white relative overflow-hidden">
+    <section id="services" className="py-14 sm:py-16 bg-[#395371] text-white relative overflow-hidden">
       {/* Glow Backdrop */}
       <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-[#4F9CF9]/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-[#16A34A]/10 rounded-full blur-[140px] pointer-events-none" />

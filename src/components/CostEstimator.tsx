@@ -59,7 +59,7 @@ export function CostEstimator() {
   };
 
   return (
-    <section id="calculator" className="py-14 sm:py-16 bg-[#0F172A] text-white relative overflow-hidden">
+    <section id="calculator" className="py-14 sm:py-16 bg-[#395371] text-white relative overflow-hidden">
       {/* Glow Effects */}
       <div className="absolute top-0 right-1/3 w-[500px] h-[500px] bg-[#F97316]/10 rounded-full blur-[140px] pointer-events-none" />
 

@@ -59,7 +59,7 @@ const EXPERIENCES = [
 
 export function ExperiencesTimeline() {
   return (
-    <section id="experiences" className="py-24 bg-[#0F172A] text-white relative">
+    <section id="experiences" className="py-24 bg-[#395371] text-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-[#4F9CF9] text-xs font-bold uppercase tracking-wider border border-white/15">

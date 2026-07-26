@@ -33,8 +33,8 @@ export function GlassNavbar() {
     <header
       className={`fixed top-4 inset-x-0 z-50 transition-all duration-300 w-[95%] sm:w-[92%] lg:w-[90%] max-w-7xl mx-auto rounded-2xl border ${
         scrolled
-          ? "bg-[#0F172A]/95 backdrop-blur-2xl border-white/20 shadow-2xl shadow-black/40 py-2.5 px-4 sm:px-6"
-          : "bg-[#0F172A]/85 backdrop-blur-xl border-white/15 shadow-xl py-3 px-4 sm:px-6"
+          ? "bg-[#395371]/95 backdrop-blur-2xl border-white/20 shadow-2xl shadow-black/40 py-2.5 px-4 sm:px-6"
+          : "bg-[#395371]/90 backdrop-blur-xl border-white/15 shadow-xl py-3 px-4 sm:px-6"
       }`}
     >
       <div className="w-full">
@@ -161,7 +161,7 @@ export function GlassNavbar() {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden mt-3 bg-[#0F172A]/95 backdrop-blur-2xl border border-white/15 rounded-2xl px-5 sm:px-6 pt-4 pb-6 space-y-3 shadow-2xl max-h-[80vh] overflow-y-auto">
+        <div className="lg:hidden mt-3 bg-[#395371]/95 backdrop-blur-2xl border border-white/15 rounded-2xl px-5 sm:px-6 pt-4 pb-6 space-y-3 shadow-2xl max-h-[80vh] overflow-y-auto">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}

@@ -172,7 +172,7 @@ export function AdminDashboard() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-2xl animate-fade-in overflow-y-auto">
-      <div className="bg-[#0F172A] border border-white/20 rounded-3xl w-full max-w-5xl text-white overflow-hidden shadow-2xl relative my-6">
+      <div className="bg-[#395371] border border-white/20 rounded-3xl w-full max-w-5xl text-white overflow-hidden shadow-2xl relative my-6">
         {/* Top Bar */}
         <div className="p-6 bg-white/5 border-b border-white/10 flex items-center justify-between">
           <div className="flex items-center gap-3">

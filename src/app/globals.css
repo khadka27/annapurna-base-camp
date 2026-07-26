@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0F172A;
+  --color-primary: #395371;
   --color-secondary: #4F9CF9;
   --color-accent: #16A34A;
   --color-cta: #F97316;
-  --color-background-snow: #F8FAFC;
-  --color-text-slate: #0F172A;
-  --color-muted: #64748B;
+  --color-background-snow: #395371;
+  --color-text-slate: #F8FAFC;
+  --color-muted: #94A3B8;
 }
 
 :root {
-  --primary: #0F172A;
+  --primary: #395371;
   --secondary: #4F9CF9;
   --accent: #16A34A;
   --cta: #F97316;
-  --background: #F8FAFC;
+  --background: #395371;
   --surface: rgba(255, 255, 255, 0.12);
   --card: rgba(255, 255, 255, 0.18);
   --border-glass: rgba(255, 255, 255, 0.22);
-  --text-slate: #0F172A;
-  --muted: #64748B;
+  --text-slate: #F8FAFC;
+  --muted: #94A3B8;
 }
 
 html {
@@ -28,26 +28,26 @@ html {
 }
 
 body {
-  background-color: var(--background);
-  color: var(--text-slate);
+  background-color: #395371;
+  color: #F8FAFC;
   font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
   overflow-x: hidden;
 }
 
 /* Glassmorphism Design System Utilities */
 .glass-card {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(57, 83, 113, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
 }
 
 .glass-card-dark {
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(57, 83, 113, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.25);
 }
 
