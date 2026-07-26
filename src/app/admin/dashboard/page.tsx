@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { GlassNavbar } from "@/components/GlassNavbar";
+import { AdminNavbar } from "@/components/AdminNavbar";
 import { useCms, RoomItem, GalleryItem, ServiceItem } from "@/context/CmsContext";
 import { Building, Eye, LogOut, Folder, Loader2 } from "lucide-react";
 
@@ -44,6 +45,7 @@ export default function AdminDashboardPage() {
   const [heroSubtitle, setHeroSubtitle] = useState(heroConfig.subtitle);
   const [heroBadge, setHeroBadge] = useState(heroConfig.badge);
   const [autoSpeed, setAutoSpeed] = useState(heroConfig.autoSlideSpeed);
+  const [whatsappNumber, setWhatsappNumber] = useState(heroConfig.whatsappNumber || "9779851055520");
 
   // New Room Form state
   const [newRoomName, setNewRoomName] = useState("");
@@ -127,8 +129,9 @@ export default function AdminDashboardPage() {
       subtitle: heroSubtitle,
       badge: heroBadge,
       autoSlideSpeed: Number(autoSpeed),
+      whatsappNumber: whatsappNumber,
     });
-    alert("Hero section CMS updated live!");
+    alert("Hero & WhatsApp settings updated live!");
   };
 
   const handleCreateRoom = (e: React.FormEvent) => {
@@ -195,10 +198,8 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-20">
-      <GlassNavbar />
-
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 w-full">
+    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white">
+      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 w-full">
         {/* Top Header Bar */}
         <div className="bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/15 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
@@ -657,6 +658,22 @@ export default function AdminDashboardPage() {
                   onChange={(e) => setAutoSpeed(Number(e.target.value))}
                   className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
                 />
+              </div>
+
+              <div>
+                <label className="text-xs text-[#25D366] font-bold block mb-1 uppercase tracking-wider">
+                  Expedition Official WhatsApp Phone Number (e.g. 9779851055520)
+                </label>
+                <input
+                  type="text"
+                  value={whatsappNumber}
+                  onChange={(e) => setWhatsappNumber(e.target.value)}
+                  placeholder="9779851055520"
+                  className="w-full px-3 py-2 rounded-xl bg-white/10 border border-[#25D366]/30 text-white text-sm focus:border-[#25D366]"
+                />
+                <span className="text-[11px] text-slate-400 block mt-1">
+                  When guests submit reservations, booking details will be dispatched to this WhatsApp contact.
+                </span>
               </div>
               <button
                 type="submit"

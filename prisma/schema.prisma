@@ -73,6 +73,7 @@ model HeroConfig {
   badge          String
   seasonalBanner String
   autoSlideSpeed Int    @default(5000)
+  whatsappNumber String @default("9779851055520")
 }
 
 model Service {

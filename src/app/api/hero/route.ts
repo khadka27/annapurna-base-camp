@@ -23,6 +23,7 @@ export async function PUT(request: Request) {
         badge: body.badge,
         seasonalBanner: body.seasonalBanner || "Spring 2026 Himalayan Expedition Season Open",
         autoSlideSpeed: Number(body.autoSlideSpeed || 5000),
+        whatsappNumber: body.whatsappNumber || "9779851055520",
       },
       create: {
         id: "default-hero",
@@ -31,6 +32,7 @@ export async function PUT(request: Request) {
         badge: body.badge,
         seasonalBanner: body.seasonalBanner || "Spring 2026 Himalayan Expedition Season Open",
         autoSlideSpeed: Number(body.autoSlideSpeed || 5000),
+        whatsappNumber: body.whatsappNumber || "9779851055520",
       },
     });
     return NextResponse.json({ success: true, hero });

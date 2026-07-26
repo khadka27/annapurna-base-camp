@@ -9,6 +9,7 @@ export interface HeroConfig {
   seasonalBanner: string;
   autoSlideSpeed: number;
   showOverlay: boolean;
+  whatsappNumber?: string;
   slides: { id: string; image: string; tag: string }[];
 }
 
@@ -111,6 +112,7 @@ const DEFAULT_HERO: HeroConfig = {
   seasonalBanner: "2026 TREK SEASON OPEN — RESERVE GLACIER SUITES ONLINE",
   autoSlideSpeed: 5000,
   showOverlay: true,
+  whatsappNumber: "9779851055520",
   slides: [
     {
       id: "1",

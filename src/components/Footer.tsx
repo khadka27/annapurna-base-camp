@@ -3,8 +3,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Trees, Star, Award, Phone, Camera, Check, Sparkles, X, CheckSquare, MessageSquare } from "lucide-react";
+import { useCms } from "@/context/CmsContext";
 
 export function Footer() {
+  const { heroConfig } = useCms();
   const [cookieAccepted, setCookieAccepted] = useState(false);
   const [chatOpen, setChatOpen] = useState(true);
   const [chatMessages, setChatMessages] = useState<string[]>([]);
@@ -204,9 +206,14 @@ export function Footer() {
                   Call us, we&apos;re at your service
                 </span>
                 <div className="space-y-1 text-xs text-slate-300 font-mono">
-                  <p className="flex items-center gap-2 hover:text-white transition-colors">
-                    <Phone className="w-3.5 h-3.5 text-emerald-400" /> +977 98510 55520 (Ram Adhikari)
-                  </p>
+                  <a
+                    href={`https://wa.me/${(heroConfig.whatsappNumber || "9779851055520").replace(/[^0-9]/g, "")}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 hover:text-[#25D366] transition-colors"
+                  >
+                    <Phone className="w-3.5 h-3.5 text-emerald-400" /> +{heroConfig.whatsappNumber || "977 98510 55520"} (WhatsApp)
+                  </a>
                   <p className="flex items-center gap-2 hover:text-white transition-colors">
                     <Phone className="w-3.5 h-3.5 text-emerald-400" /> +977 9841 986923 (Rajendra)
                   </p>

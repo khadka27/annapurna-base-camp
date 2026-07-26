@@ -41,6 +41,7 @@ export function AdminDashboard() {
   const [heroSubtitle, setHeroSubtitle] = useState(heroConfig.subtitle);
   const [heroBadge, setHeroBadge] = useState(heroConfig.badge);
   const [autoSpeed, setAutoSpeed] = useState(heroConfig.autoSlideSpeed);
+  const [whatsappNumber, setWhatsappNumber] = useState(heroConfig.whatsappNumber || "9779851055520");
 
   // New Room Form state
   const [newRoomName, setNewRoomName] = useState("");
@@ -101,8 +102,9 @@ export function AdminDashboard() {
       subtitle: heroSubtitle,
       badge: heroBadge,
       autoSlideSpeed: Number(autoSpeed),
+      whatsappNumber: whatsappNumber,
     });
-    alert("Hero section CMS updated live!");
+    alert("Hero & WhatsApp settings updated live!");
   };
 
   const handleCreateRoom = (e: React.FormEvent) => {
@@ -653,6 +655,22 @@ export function AdminDashboard() {
                   onChange={(e) => setAutoSpeed(Number(e.target.value))}
                   className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
                 />
+              </div>
+
+              <div>
+                <label className="text-xs text-[#25D366] font-bold block mb-1 uppercase tracking-wider">
+                  Expedition Official WhatsApp Phone Number (e.g. 9779851055520)
+                </label>
+                <input
+                  type="text"
+                  value={whatsappNumber}
+                  onChange={(e) => setWhatsappNumber(e.target.value)}
+                  placeholder="9779851055520"
+                  className="w-full px-3 py-2 rounded-xl bg-white/10 border border-[#25D366]/30 text-white text-sm focus:border-[#25D366]"
+                />
+                <span className="text-[11px] text-slate-400 block mt-1">
+                  When guests submit reservations, booking details will be dispatched to this WhatsApp contact.
+                </span>
               </div>
               <button
                 type="submit"

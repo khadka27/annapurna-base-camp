@@ -1,14 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
-import { Sparkles, CheckCircle } from "lucide-react";
+import { Sparkles, CheckCircle, MessageCircle } from "lucide-react";
+import { getWhatsAppBookingUrl } from "@/lib/whatsapp";
+import { useCms } from "@/context/CmsContext";
 
 export function CostEstimator() {
+  const { heroConfig } = useCms();
   const [packageType, setPackageType] = useState<"standard" | "comfort" | "luxury">("standard");
   const [groupSize, setGroupSize] = useState<number>(2);
   const [includePorter, setIncludePorter] = useState<boolean>(true);
   const [includeGearRental, setIncludeGearRental] = useState<boolean>(false);
   const [includeHotelExtension, setIncludeHotelExtension] = useState<boolean>(false);
+  const [guestName, setGuestName] = useState<string>("");
+  const [guestEmail, setGuestEmail] = useState<string>("");
+  const [guestPhone, setGuestPhone] = useState<string>("");
   const [submitted, setSubmitted] = useState<boolean>(false);
 
   // Base Prices per person
@@ -32,7 +38,24 @@ export function CostEstimator() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 6000);
+
+    const waUrl = getWhatsAppBookingUrl({
+      bookingId: `ABC-QUOTE-${Math.floor(1000 + Math.random() * 9000)}`,
+      roomName: `Expedition Package (${packageType.toUpperCase()})`,
+      guestName: guestName || "Expedition Trekker",
+      guestEmail: guestEmail || "guest@annapurna.com",
+      guestPhone: guestPhone || "+977-9851055520",
+      checkIn: "Trek Season 2026",
+      checkOut: `${groupSize} Trekkers`,
+      guestsCount: groupSize,
+      totalAmount: totalGrandPrice,
+    }, heroConfig.whatsappNumber);
+
+    try {
+      window.open(waUrl, "_blank");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -273,6 +296,8 @@ export function CostEstimator() {
                     type="text"
                     required
                     placeholder="Your Full Name"
+                    value={guestName}
+                    onChange={(e) => setGuestName(e.target.value)}
                     className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-[#4F9CF9] text-sm"
                   />
                 </div>
@@ -282,6 +307,18 @@ export function CostEstimator() {
                     type="email"
                     required
                     placeholder="Your Email Address"
+                    value={guestEmail}
+                    onChange={(e) => setGuestEmail(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-[#4F9CF9] text-sm"
+                  />
+                </div>
+
+                <div>
+                  <input
+                    type="tel"
+                    placeholder="WhatsApp Phone Number (Optional)"
+                    value={guestPhone}
+                    onChange={(e) => setGuestPhone(e.target.value)}
                     className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-[#4F9CF9] text-sm"
                   />
                 </div>
@@ -298,9 +335,31 @@ export function CostEstimator() {
               </form>
 
               {submitted && (
-                <div className="p-4 rounded-xl bg-[#16A34A]/20 border border-[#16A34A] text-[#16A34A] text-xs text-center font-bold animate-fade-in flex items-center justify-center gap-2">
-                  <CheckCircle className="w-4 h-4 shrink-0" />
-                  <span>Booking inquiry submitted! Our Himalayan expedition leader will email your detailed itinerary within 2 hours.</span>
+                <div className="space-y-3 animate-fade-in">
+                  <div className="p-4 rounded-xl bg-[#16A34A]/20 border border-[#16A34A] text-[#16A34A] text-xs text-center font-bold flex items-center justify-center gap-2">
+                    <CheckCircle className="w-4 h-4 shrink-0" />
+                    <span>Quote inquiry submitted! Confirmation dispatched.</span>
+                  </div>
+
+                  <a
+                    href={getWhatsAppBookingUrl({
+                      bookingId: `ABC-QUOTE-${Math.floor(1000 + Math.random() * 9000)}`,
+                      roomName: `Expedition Package (${packageType.toUpperCase()})`,
+                      guestName: guestName || "Expedition Trekker",
+                      guestEmail: guestEmail || "guest@annapurna.com",
+                      guestPhone: guestPhone || "+977-9851055520",
+                      checkIn: "Trek Season 2026",
+                      checkOut: `${groupSize} Trekkers`,
+                      guestsCount: groupSize,
+                      totalAmount: totalGrandPrice,
+                    }, heroConfig.whatsappNumber)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full py-3.5 rounded-xl font-bold bg-[#25D366] hover:bg-[#20ba5a] text-white transition-all shadow-lg shadow-[#25D366]/25 flex items-center justify-center gap-2 text-xs uppercase tracking-wider block text-center"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-current inline" />
+                    <span>Send Quote Details to WhatsApp</span>
+                  </a>
                 </div>
               )}
             </div>

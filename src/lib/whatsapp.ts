@@ -13,8 +13,10 @@ export interface WhatsAppBookingParams {
   notes?: string;
 }
 
-export function getWhatsAppBookingUrl(params: WhatsAppBookingParams): string {
-  const phoneNumber = "9779851055520"; // Himalayan Chief Expedition Leader (Ram Adhikari)
+export function getWhatsAppBookingUrl(params: WhatsAppBookingParams, targetPhone?: string): string {
+  const defaultPhone = "9779851055520";
+  const rawNumber = targetPhone || defaultPhone;
+  const phoneNumber = rawNumber.replace(/[^0-9]/g, "") || defaultPhone;
 
   const message = `🏔️ *ANNAPURNA BASE CAMP GUESTHOUSE BOOKING*
 

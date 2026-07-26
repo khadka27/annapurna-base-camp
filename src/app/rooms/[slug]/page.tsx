@@ -25,7 +25,7 @@ export default function DynamicRoomBookingPage({
   const resolvedParams = use(params);
   const { slug } = resolvedParams;
 
-  const { rooms, addBooking, coupons } = useCms();
+  const { rooms, addBooking, coupons, heroConfig } = useCms();
 
   // Find room by matching slug or ID
   const room =
@@ -114,7 +114,7 @@ export default function DynamicRoomBookingPage({
       totalAmount: grandTotal,
       discountAmount,
       couponCode: appliedCoupon ? appliedCoupon.code : undefined,
-    });
+    }, heroConfig.whatsappNumber);
 
     try {
       window.open(waUrl, "_blank");
@@ -291,7 +291,7 @@ export default function DynamicRoomBookingPage({
                       totalAmount: confirmedBooking.totalAmount,
                       discountAmount: confirmedBooking.discountAmount,
                       couponCode: confirmedBooking.couponCode,
-                    })}
+                    }, heroConfig.whatsappNumber)}
                     target="_blank"
                     rel="noreferrer"
                     className="w-full py-3.5 rounded-xl font-bold bg-[#25D366] hover:bg-[#20ba5a] text-white transition-all shadow-lg shadow-[#25D366]/25 flex items-center justify-center gap-2 text-xs uppercase tracking-wider block text-center"
