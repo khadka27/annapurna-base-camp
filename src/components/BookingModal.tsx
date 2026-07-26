@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { useCms, BookingRecord } from "@/context/CmsContext";
-import { X } from "lucide-react";
+import { X, MessageCircle } from "lucide-react";
+import { getWhatsAppBookingUrl } from "@/lib/whatsapp";
 
 export function BookingModal() {
   const { selectedRoomForBooking, setSelectedRoomForBooking, addBooking, coupons } = useCms();
@@ -58,6 +59,26 @@ export function BookingModal() {
       totalAmount: finalTotal,
       status: "Confirmed",
     });
+
+    const waUrl = getWhatsAppBookingUrl({
+      bookingId: record.id,
+      roomName: record.roomName,
+      guestName,
+      guestEmail,
+      guestPhone,
+      checkIn,
+      checkOut,
+      guestsCount,
+      totalAmount: finalTotal,
+      discountAmount,
+      couponCode: appliedDiscount > 0 ? couponCode : undefined,
+    });
+
+    try {
+      window.open(waUrl, "_blank");
+    } catch (e) {
+      console.error(e);
+    }
 
     setConfirmedBooking(record);
   };
@@ -131,6 +152,29 @@ export function BookingModal() {
                 <span className="text-2xl font-extrabold text-[#4F9CF9]">${confirmedBooking.totalAmount} USD</span>
               </div>
             </div>
+
+            {/* Send to WhatsApp Direct Action */}
+            <a
+              href={getWhatsAppBookingUrl({
+                bookingId: confirmedBooking.id,
+                roomName: confirmedBooking.roomName,
+                guestName: confirmedBooking.guestName,
+                guestEmail: confirmedBooking.guestEmail,
+                guestPhone: confirmedBooking.guestPhone,
+                checkIn: confirmedBooking.checkIn,
+                checkOut: confirmedBooking.checkOut,
+                guestsCount: confirmedBooking.guestsCount,
+                totalAmount: confirmedBooking.totalAmount,
+                discountAmount: confirmedBooking.discountAmount,
+                couponCode: confirmedBooking.couponCode,
+              })}
+              target="_blank"
+              rel="noreferrer"
+              className="w-full py-3.5 rounded-xl font-bold bg-[#25D366] hover:bg-[#20ba5a] text-white transition-all shadow-lg shadow-[#25D366]/25 flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
+            >
+              <MessageCircle className="w-5 h-5 fill-current" />
+              <span>Send Booking Details to WhatsApp</span>
+            </a>
 
             <div className="flex gap-4 pt-2">
               <button

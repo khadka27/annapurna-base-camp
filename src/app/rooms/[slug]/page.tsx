@@ -7,7 +7,8 @@ import { Footer } from "@/components/Footer";
 import { BookingModal } from "@/components/BookingModal";
 import { AdminDashboard } from "@/components/AdminDashboard";
 import { useCms, RoomItem, BookingRecord } from "@/context/CmsContext";
-import { Check } from "lucide-react";
+import { Check, MessageCircle } from "lucide-react";
+import { getWhatsAppBookingUrl } from "@/lib/whatsapp";
 
 export function getRoomSlug(room: RoomItem): string {
   return room.name
@@ -100,6 +101,26 @@ export default function DynamicRoomBookingPage({
       totalAmount: grandTotal,
       status: "Confirmed",
     });
+
+    const waUrl = getWhatsAppBookingUrl({
+      bookingId: newRec.id,
+      roomName: newRec.roomName,
+      guestName,
+      guestEmail,
+      guestPhone,
+      checkIn,
+      checkOut,
+      guestsCount: Number(guestsCount),
+      totalAmount: grandTotal,
+      discountAmount,
+      couponCode: appliedCoupon ? appliedCoupon.code : undefined,
+    });
+
+    try {
+      window.open(waUrl, "_blank");
+    } catch (err) {
+      console.error(err);
+    }
 
     setConfirmedBooking(newRec);
   };
@@ -256,6 +277,28 @@ export default function DynamicRoomBookingPage({
                       <span className="text-[#16A34A] font-extrabold">${confirmedBooking.totalAmount} USD</span>
                     </div>
                   </div>
+
+                  <a
+                    href={getWhatsAppBookingUrl({
+                      bookingId: confirmedBooking.id,
+                      roomName: confirmedBooking.roomName,
+                      guestName: confirmedBooking.guestName,
+                      guestEmail: confirmedBooking.guestEmail,
+                      guestPhone: confirmedBooking.guestPhone,
+                      checkIn: confirmedBooking.checkIn,
+                      checkOut: confirmedBooking.checkOut,
+                      guestsCount: confirmedBooking.guestsCount,
+                      totalAmount: confirmedBooking.totalAmount,
+                      discountAmount: confirmedBooking.discountAmount,
+                      couponCode: confirmedBooking.couponCode,
+                    })}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full py-3.5 rounded-xl font-bold bg-[#25D366] hover:bg-[#20ba5a] text-white transition-all shadow-lg shadow-[#25D366]/25 flex items-center justify-center gap-2 text-xs uppercase tracking-wider block text-center"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-current inline" />
+                    <span>Send Booking Details to WhatsApp</span>
+                  </a>
 
                   <button
                     onClick={() => setConfirmedBooking(null)}
