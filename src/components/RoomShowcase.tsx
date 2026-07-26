@@ -6,7 +6,7 @@ import { useCms, RoomItem } from "@/context/CmsContext";
 import { getRoomSlug } from "@/app/rooms/[slug]/page";
 
 export function RoomShowcase() {
-  const { rooms } = useCms();
+  const { rooms, bookings } = useCms();
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
   const filteredRooms =
@@ -59,6 +59,9 @@ export function RoomShowcase() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filteredRooms.map((room) => {
             const slug = getRoomSlug(room);
+            const roomBookings = bookings.filter((b) => b.roomId === room.id && b.status === "Confirmed");
+            const activeBooking = roomBookings[0];
+
             return (
               <div
                 key={room.id}
@@ -71,10 +74,20 @@ export function RoomShowcase() {
                     alt={room.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-black/30" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#395371] via-transparent to-black/30" />
 
                   {/* Badge Overlay */}
-                  <div className="absolute top-4 left-4 flex items-center gap-2">
+                  <div className="absolute top-4 left-4 flex flex-wrap items-center gap-2">
+                    {activeBooking ? (
+                      <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-red-600 text-white shadow-md flex items-center gap-1 animate-pulse">
+                        <span>🔴 BOOKED ({activeBooking.checkIn} to {activeBooking.checkOut})</span>
+                      </span>
+                    ) : (
+                      <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-600 text-white shadow-md">
+                        ✓ AVAILABLE
+                      </span>
+                    )}
+
                     {room.discountBadge && (
                       <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-[#F97316] text-white shadow-md">
                         {room.discountBadge}

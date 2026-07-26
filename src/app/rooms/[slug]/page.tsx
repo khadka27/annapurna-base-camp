@@ -25,7 +25,7 @@ export default function DynamicRoomBookingPage({
   const resolvedParams = use(params);
   const { slug } = resolvedParams;
 
-  const { rooms, addBooking, coupons, heroConfig } = useCms();
+  const { rooms, addBooking, coupons, heroConfig, bookings } = useCms();
 
   // Find room by matching slug or ID
   const room =
@@ -43,6 +43,13 @@ export default function DynamicRoomBookingPage({
   const [couponInput, setCouponInput] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; percent: number } | null>(null);
   const [couponError, setCouponError] = useState("");
+
+  const overlappingBooking = bookings.find((b) => {
+    if (!room || b.roomId !== room.id || b.status === "Cancelled") return false;
+    return checkIn < b.checkOut && checkOut > b.checkIn;
+  });
+
+  const isAlreadyBooked = Boolean(overlappingBooking);
 
   const [confirmedBooking, setConfirmedBooking] = useState<BookingRecord | null>(null);
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
@@ -336,18 +343,30 @@ export default function DynamicRoomBookingPage({
 
                   {/* Guests */}
                   <div>
-                    <label className="text-[10px] font-mono text-[#4F9CF9] block uppercase font-bold mb-1">Guests Count</label>
-                    <select
+                    <label className="text-[10px] font-mono text-[#4F9CF9] block uppercase font-bold mb-1">Guests Count (Custom Number)</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={99}
+                      required
                       value={guestsCount}
-                      onChange={(e) => setGuestsCount(Number(e.target.value))}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white text-xs font-semibold focus:outline-none focus:border-[#4F9CF9] transition-all cursor-pointer shadow-sm"
-                    >
-                      <option value={1} className="bg-[#0F172A]">1 Guest</option>
-                      <option value={2} className="bg-[#0F172A]">2 Guests</option>
-                      <option value={3} className="bg-[#0F172A]">3 Guests</option>
-                      <option value={4} className="bg-[#0F172A]">4 Guests</option>
-                    </select>
+                      onChange={(e) => setGuestsCount(Math.max(1, parseInt(e.target.value) || 1))}
+                      placeholder="Enter custom guest count"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white text-xs font-semibold focus:outline-none focus:border-[#4F9CF9] transition-all"
+                    />
                   </div>
+
+                  {/* Availability Warning Banner */}
+                  {isAlreadyBooked && (
+                    <div className="p-3.5 rounded-2xl bg-red-500/20 border border-red-500 text-red-200 text-xs font-semibold space-y-1">
+                      <strong className="block text-red-400 font-bold uppercase tracking-wider text-[11px]">
+                        🔴 ROOM IS ALREADY BOOKED FOR THESE DATES
+                      </strong>
+                      <p className="text-[11px]">
+                        This suite is already reserved from <span className="font-mono text-white">{overlappingBooking?.checkIn}</span> to <span className="font-mono text-white">{overlappingBooking?.checkOut}</span>. Please select different dates.
+                      </p>
+                    </div>
+                  )}
 
                   {/* Guest Info */}
                   <div className="space-y-3 pt-2">
@@ -421,7 +440,7 @@ export default function DynamicRoomBookingPage({
                   {/* Pricing Breakdown */}
                   <div className="bg-white/5 p-4 rounded-2xl border border-white/10 text-xs space-y-2 font-mono pt-3">
                     <div className="flex justify-between text-slate-300">
-                      <span>Rate (${room.pricePerNight} x {nights} nights):</span>
+                      <span>Rate (${room.pricePerNight} x {nights} nights, {guestsCount} guests):</span>
                       <span>${baseTotal} USD</span>
                     </div>
                     {discountAmount > 0 && (
@@ -439,9 +458,10 @@ export default function DynamicRoomBookingPage({
                   {/* CTA Submit Button */}
                   <button
                     type="submit"
-                    className="w-full py-3.5 rounded-2xl bg-[#F97316] hover:bg-[#ea6200] text-white font-extrabold text-sm tracking-wider uppercase shadow-xl shadow-[#F97316]/30 transition-all flex items-center justify-center gap-2"
+                    disabled={isAlreadyBooked}
+                    className="w-full py-3.5 rounded-2xl bg-[#F97316] hover:bg-[#ea6200] disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-extrabold text-sm tracking-wider uppercase shadow-xl shadow-[#F97316]/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>Confirm & Book Suite Now</span>
+                    <span>{isAlreadyBooked ? "🔴 Room Booked for Selected Dates" : "Confirm Reservation & Dispatch WhatsApp"}</span>
                   </button>
                 </form>
               )}

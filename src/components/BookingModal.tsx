@@ -6,7 +6,7 @@ import { X, MessageCircle } from "lucide-react";
 import { getWhatsAppBookingUrl } from "@/lib/whatsapp";
 
 export function BookingModal() {
-  const { selectedRoomForBooking, setSelectedRoomForBooking, addBooking, coupons, heroConfig } = useCms();
+  const { selectedRoomForBooking, setSelectedRoomForBooking, addBooking, coupons, heroConfig, bookings } = useCms();
 
   const [guestName, setGuestName] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
@@ -30,6 +30,13 @@ export function BookingModal() {
   const baseTotal = nights * selectedRoomForBooking.pricePerNight;
   const discountAmount = Math.round((baseTotal * appliedDiscount) / 100);
   const finalTotal = Math.max(0, baseTotal - discountAmount);
+
+  const overlappingBooking = bookings.find((b) => {
+    if (b.roomId !== selectedRoomForBooking.id || b.status === "Cancelled") return false;
+    return checkIn < b.checkOut && checkOut > b.checkIn;
+  });
+
+  const isAlreadyBooked = Boolean(overlappingBooking);
 
   const handleApplyCoupon = () => {
     const match = coupons.find((c) => c.code.toUpperCase() === couponCode.trim().toUpperCase() && c.active);
@@ -110,15 +117,33 @@ export function BookingModal() {
           /* Confirmation Screen */
           <div className="p-6 sm:p-8 space-y-6 text-left overflow-y-auto flex-grow">
             <div className="p-4 rounded-2xl bg-[#16A34A]/20 border border-[#16A34A] text-center space-y-2">
-              <div className="w-10 h-10 rounded-full bg-[#16A34A] text-white flex items-center justify-center mx-auto">
+              <div className="w-10 h-10 rounded-full bg-[#16A34A] text-white flex items-center justify-center mx-auto shadow-lg">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h4 className="text-lg font-bold text-[#16A34A]">Reservation Confirmed!</h4>
-              <p className="text-xs text-slate-300">
-                Booking ID: <strong className="font-mono text-white">{confirmedBooking.id}</strong> • Confirmation emailed to {confirmedBooking.guestEmail}
+              <h4 className="text-lg font-extrabold text-[#16A34A]">Reservation Processed & Message Dispatched!</h4>
+              <p className="text-xs text-slate-200">
+                Booking ID: <strong className="font-mono text-white">{confirmedBooking.id}</strong> • Logged in database & sent to WhatsApp
               </p>
+            </div>
+
+            {/* Instant Automated Desk Auto-Reply */}
+            <div className="p-5 rounded-2xl bg-white/10 border border-emerald-400/40 shadow-xl space-y-3 relative overflow-hidden">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#16A34A] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
+                  <MessageCircle className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block">
+                    ⚡ AUTOMATIC INSTANT CONCIERGE REPLY
+                  </span>
+                  <h5 className="text-sm font-extrabold text-white">Annapurna Sanctuary Desk</h5>
+                </div>
+              </div>
+              <div className="bg-[#1E293B]/80 p-4 rounded-xl border border-white/10 text-xs text-slate-200 leading-relaxed font-sans shadow-inner">
+                &ldquo;Namaste <strong>{confirmedBooking.guestName}</strong>! 🙏 Your booking request for <strong>{confirmedBooking.roomName}</strong> from <strong>{confirmedBooking.checkIn}</strong> to <strong>{confirmedBooking.checkOut}</strong> (ID: <span className="font-mono text-emerald-400">{confirmedBooking.id}</span>) has been logged in our PostgreSQL system and dispatched via WhatsApp. Our Himalayan Concierge Team will confirm your room key shortly!&rdquo;
+              </div>
             </div>
 
             {/* Printable Invoice Box */}
@@ -236,16 +261,17 @@ export function BookingModal() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">Number of Guests</label>
-                <select
+                <label className="text-xs font-bold text-[#4F9CF9] block mb-1">Number of Guests (Custom)</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={99}
+                  required
                   value={guestsCount}
-                  onChange={(e) => setGuestsCount(Number(e.target.value))}
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white text-sm font-semibold focus:outline-none focus:border-[#4F9CF9] transition-all cursor-pointer shadow-sm"
-                >
-                  <option value={1} className="bg-[#0F172A]">1 Guest</option>
-                  <option value={2} className="bg-[#0F172A]">2 Guests</option>
-                  <option value={3} className="bg-[#0F172A]">3 Guests</option>
-                </select>
+                  onChange={(e) => setGuestsCount(Math.max(1, parseInt(e.target.value) || 1))}
+                  placeholder="Enter custom guest count"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white placeholder-slate-400 text-sm focus:outline-none focus:border-[#4F9CF9]"
+                />
               </div>
 
               <div>
@@ -270,6 +296,18 @@ export function BookingModal() {
                 />
               </div>
             </div>
+
+            {/* Availability Warning Banner */}
+            {isAlreadyBooked && (
+              <div className="p-4 rounded-2xl bg-red-500/20 border border-red-500 text-red-200 text-xs font-semibold space-y-1">
+                <strong className="block text-red-400 font-bold uppercase tracking-wider text-xs">
+                  🔴 ROOM IS ALREADY BOOKED FOR THESE DATES
+                </strong>
+                <p>
+                  This suite is already reserved from <span className="font-mono text-white">{overlappingBooking?.checkIn}</span> to <span className="font-mono text-white">{overlappingBooking?.checkOut}</span>. Please choose different dates or select another suite.
+                </p>
+              </div>
+            )}
 
             {/* Coupon Code Row */}
             <div className="pt-2">
@@ -298,7 +336,7 @@ export function BookingModal() {
             {/* Summary Price Box */}
             <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 text-xs">
               <div className="flex justify-between text-slate-300">
-                <span>{selectedRoomForBooking.name} ({nights} Night{nights > 1 ? "s" : ""})</span>
+                <span>{selectedRoomForBooking.name} ({nights} Night{nights > 1 ? "s" : ""}, {guestsCount} Guest{guestsCount > 1 ? "s" : ""})</span>
                 <span className="font-mono">${baseTotal}</span>
               </div>
               {discountAmount > 0 && (
@@ -315,9 +353,10 @@ export function BookingModal() {
 
             <button
               type="submit"
-              className="w-full py-4 rounded-2xl font-extrabold text-base text-white bg-[#F97316] hover:bg-[#ea6200] shadow-xl shadow-[#F97316]/30 transition-all"
+              disabled={isAlreadyBooked}
+              className="w-full py-4 rounded-2xl font-extrabold text-base text-white bg-[#F97316] hover:bg-[#ea6200] disabled:bg-slate-600 disabled:cursor-not-allowed shadow-xl shadow-[#F97316]/30 transition-all uppercase tracking-wider cursor-pointer"
             >
-              Complete Reservation
+              {isAlreadyBooked ? "🔴 Room Booked for Selected Dates" : "Confirm Reservation & Dispatch WhatsApp"}
             </button>
           </form>
         )}
