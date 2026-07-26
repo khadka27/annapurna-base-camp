@@ -4,6 +4,7 @@ import React from "react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { useCms } from "@/context/CmsContext";
 import { Calendar, CheckCircle, Clock, XCircle } from "lucide-react";
+import { CustomSelect } from "@/components/CustomSelect";
 
 export default function AdminBookingsPage() {
   const { bookings, updateBookingStatus } = useCms();
@@ -137,15 +138,15 @@ export default function AdminBookingsPage() {
                           </>
                         )}
                       </span>
-                      <select
+                      <CustomSelect
                         value={b.status}
-                        onChange={(e) => updateBookingStatus(b.id, e.target.value as any)}
-                        className="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs focus:outline-none focus:border-[#4F9CF9] transition-all cursor-pointer shadow-sm"
-                      >
-                        <option value="Confirmed" className="bg-[#0F172A]">Confirmed</option>
-                        <option value="Pending" className="bg-[#0F172A]">Pending</option>
-                        <option value="Cancelled" className="bg-[#0F172A]">Cancelled</option>
-                      </select>
+                        onChange={(v) => updateBookingStatus(b.id, v as any)}
+                        options={[
+                          { value: "Confirmed", label: "Confirmed" },
+                          { value: "Pending", label: "Pending" },
+                          { value: "Cancelled", label: "Cancelled" },
+                        ]}
+                      />
                     </div>
                   )}
                 </div>

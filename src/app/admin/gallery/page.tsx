@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { useCms, GalleryItem } from "@/context/CmsContext";
 import { Camera, Plus, Trash2, Folder, Loader2 } from "lucide-react";
+import { CustomSelect } from "@/components/CustomSelect";
 
 export default function AdminGalleryPage() {
   const { gallery, addGalleryItem, deleteGalleryItem } = useCms();
@@ -89,17 +90,17 @@ export default function AdminGalleryPage() {
               />
             </div>
             <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1">Category</label>
-              <select
+              <CustomSelect
+                label="Category"
                 value={newGalCategory}
-                onChange={(e) => setNewGalCategory(e.target.value as any)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs focus:outline-none cursor-pointer"
-              >
-                <option value="Sanctuary" className="bg-[#0F172A]">Sanctuary</option>
-                <option value="Suites" className="bg-[#0F172A]">Suites</option>
-                <option value="Dining" className="bg-[#0F172A]">Dining</option>
-                <option value="Peaks" className="bg-[#0F172A]">Peaks</option>
-              </select>
+                onChange={(v) => setNewGalCategory(v as any)}
+                options={[
+                  { value: "Sanctuary", label: "Sanctuary" },
+                  { value: "Suites", label: "Suites" },
+                  { value: "Dining", label: "Dining" },
+                  { value: "Peaks", label: "Peaks" },
+                ]}
+              />
             </div>
           </div>
 

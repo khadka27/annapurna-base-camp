@@ -5,6 +5,7 @@ import { AdminNavbar } from "@/components/AdminNavbar";
 import { useCms, ServiceItem } from "@/context/CmsContext";
 import { Zap, Plus, Trash2 } from "lucide-react";
 import { DynamicIcon } from "@/components/DynamicIcon";
+import { CustomSelect } from "@/components/CustomSelect";
 
 export default function AdminServicesPage() {
   const { services, addService, deleteService } = useCms();
@@ -75,17 +76,17 @@ export default function AdminServicesPage() {
               />
             </div>
             <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1">Category</label>
-              <select
+              <CustomSelect
+                label="Category"
                 value={newSrvCategory}
-                onChange={(e) => setNewSrvCategory(e.target.value as any)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs focus:outline-none cursor-pointer"
-              >
-                <option value="Wellness & Safety" className="bg-[#0F172A]">Wellness & Safety</option>
-                <option value="Logistics & Transport" className="bg-[#0F172A]">Logistics & Transport</option>
-                <option value="Dining & Comfort" className="bg-[#0F172A]">Dining & Comfort</option>
-                <option value="Connectivity" className="bg-[#0F172A]">Connectivity</option>
-              </select>
+                onChange={(v) => setNewSrvCategory(v as any)}
+                options={[
+                  { value: "Wellness & Safety", label: "Wellness & Safety" },
+                  { value: "Logistics & Transport", label: "Logistics & Transport" },
+                  { value: "Dining & Comfort", label: "Dining & Comfort" },
+                  { value: "Connectivity", label: "Connectivity" },
+                ]}
+              />
             </div>
             <div>
               <label className="text-xs font-bold text-slate-300 block mb-1">Lucide Icon Key</label>
@@ -111,15 +112,15 @@ export default function AdminServicesPage() {
               />
             </div>
             <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1">Perk Type</label>
-              <select
+              <CustomSelect
+                label="Perk Type"
                 value={newSrvIncluded ? "true" : "false"}
-                onChange={(e) => setNewSrvIncluded(e.target.value === "true")}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs focus:outline-none cursor-pointer"
-              >
-                <option value="true" className="bg-[#0F172A]">Complimentary Perk</option>
-                <option value="false" className="bg-[#0F172A]">Add-On Service</option>
-              </select>
+                onChange={(v) => setNewSrvIncluded(v === "true")}
+                options={[
+                  { value: "true", label: "Complimentary Perk" },
+                  { value: "false", label: "Add-On Service" },
+                ]}
+              />
             </div>
           </div>
 

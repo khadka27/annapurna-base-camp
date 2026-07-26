@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { CustomSelect } from "@/components/CustomSelect";
 
 export function ContactFormClient() {
   const [fullName, setFullName] = useState("");
@@ -118,20 +119,19 @@ export function ContactFormClient() {
           />
         </div>
 
-        <div className="space-y-1">
-          <label className="text-xs font-bold text-[#4F9CF9] block">Inquiry Type</label>
-          <select
-            value={inquiryType}
-            onChange={(e) => setInquiryType(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs focus:outline-none focus:border-[#4F9CF9] cursor-pointer"
-          >
-            <option value="Room Reservation" className="bg-[#0F172A]">Room Reservation</option>
-            <option value="Trekking Guide Package" className="bg-[#0F172A]">Trekking Guide Package</option>
-            <option value="Altitude & Weather Guidance" className="bg-[#0F172A]">Altitude & Weather Guidance</option>
-            <option value="Emergency Rescue Support" className="bg-[#0F172A]">Emergency Rescue Support</option>
-            <option value="General Inquiry" className="bg-[#0F172A]">General Inquiry</option>
-          </select>
-        </div>
+        <CustomSelect
+          label="Inquiry Type"
+          value={inquiryType}
+          onChange={setInquiryType}
+          options={[
+            { value: "Room Reservation", label: "Room Reservation" },
+            { value: "Trekking Guide Package", label: "Trekking Guide Package" },
+            { value: "Altitude & Weather Guidance", label: "Altitude & Weather Guidance" },
+            { value: "Emergency Rescue Support", label: "Emergency Rescue Support" },
+            { value: "General Inquiry", label: "General Inquiry" },
+          ]}
+          required
+        />
       </div>
 
       <div className="space-y-1">

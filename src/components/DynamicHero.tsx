@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useCms } from "@/context/CmsContext";
+import { CustomSelect } from "@/components/CustomSelect";
 
 export function DynamicHero() {
   const { heroConfig, setSelectedRoomForBooking, rooms } = useCms();
@@ -185,32 +186,32 @@ export function DynamicHero() {
 
             {/* Guests */}
             <div className="bg-white/10 p-3 rounded-2xl border border-white/15">
-              <label className="text-[10px] font-mono text-[#4F9CF9] block uppercase font-bold mb-1">Guests</label>
-              <select
-                value={guests}
-                onChange={(e) => setGuests(Number(e.target.value))}
-                className="w-full bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl px-3 py-1.5 text-white font-semibold text-xs transition-all focus:outline-none cursor-pointer"
-              >
-                <option value={1} className="bg-[#395371]">1 Guest</option>
-                <option value={2} className="bg-[#395371]">2 Guests</option>
-                <option value={3} className="bg-[#395371]">3 Guests</option>
-                <option value={4} className="bg-[#395371]">4+ Guests</option>
-              </select>
+              <CustomSelect
+                label="Guests"
+                value={String(guests)}
+                onChange={(v) => setGuests(Number(v))}
+                options={[
+                  { value: "1", label: "1 Guest" },
+                  { value: "2", label: "2 Guests" },
+                  { value: "3", label: "3 Guests" },
+                  { value: "4", label: "4+ Guests" },
+                ]}
+              />
             </div>
 
             {/* Room Type */}
             <div className="bg-white/10 p-3 rounded-2xl border border-white/15">
-              <label className="text-[10px] font-mono text-[#4F9CF9] block uppercase font-bold mb-1">Room Type</label>
-              <select
+              <CustomSelect
+                label="Room Type"
                 value={selectedRoomType}
-                onChange={(e) => setSelectedRoomType(e.target.value)}
-                className="w-full bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl px-3 py-1.5 text-white font-semibold text-xs transition-all focus:outline-none cursor-pointer"
-              >
-                <option value="suite" className="bg-[#395371]">Glacier Suite</option>
-                <option value="panorama" className="bg-[#395371]">Panorama Room</option>
-                <option value="deluxe" className="bg-[#395371]">Deluxe Twin</option>
-                <option value="lodge" className="bg-[#395371]">Alpine Lodge</option>
-              </select>
+                onChange={setSelectedRoomType}
+                options={[
+                  { value: "suite", label: "Glacier Suite" },
+                  { value: "panorama", label: "Panorama Room" },
+                  { value: "deluxe", label: "Deluxe Twin" },
+                  { value: "lodge", label: "Alpine Lodge" },
+                ]}
+              />
             </div>
 
             {/* Search Availability CTA */}
