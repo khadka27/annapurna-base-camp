@@ -26,13 +26,13 @@ export function WeatherWidget() {
   });
 
   return (
-    <section id="weather" className="py-24 bg-[#0F172A] text-white relative overflow-hidden">
+    <section id="weather" className="py-14 sm:py-16 bg-[#0F172A] text-white relative overflow-hidden">
       {/* Background Ambient Glow Effects */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-[#4F9CF9]/10 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#16A34A]/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="bg-white/5 backdrop-blur-2xl text-white rounded-3xl p-6 sm:p-10 border border-white/15 shadow-2xl relative overflow-hidden space-y-10">
+        <div className="bg-white/5 backdrop-blur-2xl text-white rounded-3xl p-6 sm:p-8 border border-white/15 shadow-2xl relative overflow-hidden space-y-8">
           {/* Subtle Corner Accent Glow */}
           <div className="absolute -top-24 -right-24 w-80 h-80 bg-[#4F9CF9]/20 rounded-full blur-3xl pointer-events-none" />
 

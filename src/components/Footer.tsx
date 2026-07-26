@@ -1,18 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Trees, Star, Award, Phone, Camera, Check, Sparkles, X, CheckSquare, MessageSquare } from "lucide-react";
 import { useCms } from "@/context/CmsContext";
 
 export function Footer() {
   const { heroConfig } = useCms();
-  const [cookieAccepted, setCookieAccepted] = useState(false);
+  const [cookieAccepted, setCookieAccepted] = useState<boolean>(true);
   const [chatOpen, setChatOpen] = useState(true);
   const [chatMessages, setChatMessages] = useState<string[]>([]);
   const [subscriberName, setSubscriberName] = useState("");
   const [subscriberEmail, setSubscriberEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+
+  useEffect(() => {
+    // Check if user has already accepted/rejected cookie consent
+    const consent = localStorage.getItem("cookie_consent");
+    if (!consent) {
+      setCookieAccepted(false);
+    }
+  }, []);
+
+  const handleDismissCookie = () => {
+    localStorage.setItem("cookie_consent", "true");
+    setCookieAccepted(true);
+  };
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -470,14 +483,14 @@ export function Footer() {
             </a>
 
             <button
-              onClick={() => setCookieAccepted(true)}
+              onClick={handleDismissCookie}
               className="px-4 py-1.5 rounded-lg bg-[#102542] hover:bg-[#1A3860] text-white font-bold text-xs transition-colors shadow-sm"
             >
               Allow Cookies
             </button>
 
             <button
-              onClick={() => setCookieAccepted(true)}
+              onClick={handleDismissCookie}
               className="w-6 h-6 rounded-full bg-slate-300 hover:bg-slate-400 text-slate-700 font-bold text-xs flex items-center justify-center transition-colors"
               aria-label="Close Cookie Banner"
             >

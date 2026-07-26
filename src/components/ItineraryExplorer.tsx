@@ -176,10 +176,10 @@ export function ItineraryExplorer() {
   const [activeStepId, setActiveStepId] = useState<string>("step-7");
 
   return (
-    <section id="itinerary" className="py-24 bg-[#F8FAFC] text-[#0F172A] relative overflow-hidden">
+    <section id="itinerary" className="py-14 sm:py-16 bg-[#F8FAFC] text-[#0F172A] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-20">
+        <div className="text-center max-w-3xl mx-auto space-y-4 mb-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#4F9CF9]/10 text-[#4F9CF9] text-xs font-bold uppercase tracking-wider">
             <span>Winding Alpine Mountain Switchback</span>
           </div>
