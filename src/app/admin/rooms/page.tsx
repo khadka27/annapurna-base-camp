@@ -36,9 +36,21 @@ export default function AdminRoomsPage() {
 
   const handleCreateRoom = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newRoomName) return;
+    if (!newRoomName.trim() || newRoomName.trim().length < 3) {
+      alert("Please enter a valid room title (at least 3 characters).");
+      return;
+    }
+    if (Number(newRoomPrice) <= 0) {
+      alert("Price per night must be a positive number greater than 0.");
+      return;
+    }
+    if (!newRoomImage.trim()) {
+      alert("Please upload or enter a room image URL.");
+      return;
+    }
+
     await addRoom({
-      name: newRoomName,
+      name: newRoomName.trim(),
       category: newRoomCategory,
       pricePerNight: Number(newRoomPrice),
       capacity: 2,

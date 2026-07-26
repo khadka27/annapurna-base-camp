@@ -28,7 +28,7 @@ export async function POST(request: Request) {
         couponCode: body.couponCode || null,
         discountAmount: Number(body.discountAmount || 0),
         totalAmount: Number(body.totalAmount),
-        status: body.status || "Confirmed",
+        status: body.status || "Pending",
       },
     });
     return NextResponse.json({ success: true, booking });

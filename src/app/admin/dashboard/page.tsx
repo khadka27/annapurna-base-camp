@@ -350,11 +350,29 @@ export default function AdminDashboardPage() {
                         <strong className="text-white block">{b.guestName} ({b.roomName})</strong>
                         <span className="text-slate-400">{b.checkIn} → {b.checkOut} • {b.guestEmail}</span>
                       </div>
-                      <div className="text-right">
-                        <span className="font-mono font-bold text-[#4F9CF9] text-sm block">${b.totalAmount}</span>
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${b.status === "Confirmed" ? "bg-[#16A34A]/20 text-[#16A34A]" : "bg-red-500/20 text-red-400"}`}>
-                          {b.status}
-                        </span>
+                      <div className="flex items-center gap-3">
+                        <div className="text-right">
+                          <span className="font-mono font-bold text-[#4F9CF9] text-sm block">${b.totalAmount}</span>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${b.status === "Confirmed" ? "bg-[#16A34A]/20 text-[#16A34A]" : b.status === "Pending" ? "bg-amber-500/20 text-amber-300" : "bg-red-500/20 text-red-400"}`}>
+                            {b.status}
+                          </span>
+                        </div>
+                        {b.status === "Pending" && (
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => updateBookingStatus(b.id, "Confirmed")}
+                              className="px-2.5 py-1 rounded-lg bg-[#16A34A] text-white text-[10px] font-bold hover:bg-[#138a3e] cursor-pointer"
+                            >
+                              Approve
+                            </button>
+                            <button
+                              onClick={() => updateBookingStatus(b.id, "Cancelled")}
+                              className="px-2.5 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-red-300 text-[10px] font-bold hover:bg-red-500/40 cursor-pointer"
+                            >
+                              Reject
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}

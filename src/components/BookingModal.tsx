@@ -18,6 +18,7 @@ export function BookingModal() {
   const [appliedDiscount, setAppliedDiscount] = useState(0);
   const [couponStatusMsg, setCouponStatusMsg] = useState("");
 
+  const [formError, setFormError] = useState("");
   const [confirmedBooking, setConfirmedBooking] = useState<BookingRecord | null>(null);
 
   if (!selectedRoomForBooking) return null;
@@ -51,6 +52,44 @@ export function BookingModal() {
 
   const handleReservationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError("");
+
+    if (!guestName.trim() || guestName.trim().length < 2) {
+      setFormError("Please enter a valid guest full name (minimum 2 characters).");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(guestEmail.trim())) {
+      setFormError("Please enter a valid email address (e.g. name@domain.com).");
+      return;
+    }
+
+    if (!guestPhone.trim() || guestPhone.trim().length < 6) {
+      setFormError("Please enter a valid contact phone number.");
+      return;
+    }
+
+    const todayStr = new Date().toISOString().split("T")[0];
+    if (checkIn < todayStr) {
+      setFormError("Check-in date cannot be in the past. Please select today or a future date.");
+      return;
+    }
+
+    if (checkOut <= checkIn) {
+      setFormError("Check-out date must be at least 1 day after check-in.");
+      return;
+    }
+
+    if (guestsCount < 1) {
+      setFormError("Number of guests must be at least 1 person.");
+      return;
+    }
+
+    if (isAlreadyBooked) {
+      setFormError("This suite is already reserved for these dates. Please choose different dates.");
+      return;
+    }
 
     const record = await addBooking({
       guestName,
@@ -64,7 +103,7 @@ export function BookingModal() {
       couponCode: appliedDiscount > 0 ? couponCode : undefined,
       discountAmount,
       totalAmount: finalTotal,
-      status: "Confirmed",
+      status: "Pending",
     });
 
     const waUrl = getWhatsAppBookingUrl({
@@ -114,35 +153,34 @@ export function BookingModal() {
         </div>
 
         {confirmedBooking ? (
-          /* Confirmation Screen */
+          /* Confirmation Screen with Toast Status */
           <div className="p-6 sm:p-8 space-y-6 text-left overflow-y-auto flex-grow">
-            <div className="p-4 rounded-2xl bg-[#16A34A]/20 border border-[#16A34A] text-center space-y-2">
-              <div className="w-10 h-10 rounded-full bg-[#16A34A] text-white flex items-center justify-center mx-auto shadow-lg">
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                </svg>
+            {/* Success Toast Banner */}
+            <div className="p-4 rounded-2xl bg-amber-500/20 border border-amber-400 text-center space-y-2 animate-bounce">
+              <div className="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center mx-auto shadow-lg">
+                <span className="text-lg">⏳</span>
               </div>
-              <h4 className="text-lg font-extrabold text-[#16A34A]">Reservation Processed & Message Dispatched!</h4>
+              <h4 className="text-lg font-extrabold text-amber-300">Booking Submitted! Status: Pending Admin Approval</h4>
               <p className="text-xs text-slate-200">
-                Booking ID: <strong className="font-mono text-white">{confirmedBooking.id}</strong> • Logged in database & sent to WhatsApp
+                Booking ID: <strong className="font-mono text-white">{confirmedBooking.id}</strong> • Logged as <span className="font-bold text-amber-300 uppercase">Pending</span> in database & dispatched via WhatsApp.
               </p>
             </div>
 
-            {/* Instant Automated Desk Auto-Reply */}
-            <div className="p-5 rounded-2xl bg-white/10 border border-emerald-400/40 shadow-xl space-y-3 relative overflow-hidden">
+            {/* Instant Automated Desk Auto-Reply Toast */}
+            <div className="p-5 rounded-2xl bg-white/10 border border-amber-400/40 shadow-xl space-y-3 relative overflow-hidden">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#16A34A] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
+                <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold shrink-0 shadow-md">
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block">
-                    ⚡ AUTOMATIC INSTANT CONCIERGE REPLY
+                  <span className="text-[10px] font-mono font-bold text-amber-300 uppercase tracking-widest block">
+                    ⚡ AUTOMATIC INSTANT CONCIERGE AUTO-REPLY
                   </span>
-                  <h5 className="text-sm font-extrabold text-white">Annapurna Sanctuary Desk</h5>
+                  <h5 className="text-sm font-extrabold text-white">Annapurna Base Camp Desk</h5>
                 </div>
               </div>
               <div className="bg-[#1E293B]/80 p-4 rounded-xl border border-white/10 text-xs text-slate-200 leading-relaxed font-sans shadow-inner">
-                &ldquo;Namaste <strong>{confirmedBooking.guestName}</strong>! 🙏 Your booking request for <strong>{confirmedBooking.roomName}</strong> from <strong>{confirmedBooking.checkIn}</strong> to <strong>{confirmedBooking.checkOut}</strong> (ID: <span className="font-mono text-emerald-400">{confirmedBooking.id}</span>) has been logged in our PostgreSQL system and dispatched via WhatsApp. Our Himalayan Concierge Team will confirm your room key shortly!&rdquo;
+                &ldquo;Namaste <strong>{confirmedBooking.guestName}</strong>! 🙏 Your booking request for <strong>{confirmedBooking.roomName}</strong> from <strong>{confirmedBooking.checkIn}</strong> to <strong>{confirmedBooking.checkOut}</strong> (ID: <span className="font-mono text-amber-300">{confirmedBooking.id}</span>) is now <strong>PENDING ADMIN APPROVAL</strong>. The admin will review and confirm your reservation shortly!&rdquo;
               </div>
             </div>
 
@@ -223,6 +261,11 @@ export function BookingModal() {
         ) : (
           /* Booking Form */
           <form onSubmit={handleReservationSubmit} className="p-6 sm:p-8 space-y-6 overflow-y-auto flex-grow">
+            {formError && (
+              <div className="p-3.5 rounded-2xl bg-red-500/20 border border-red-500 text-red-200 text-xs font-semibold flex items-center gap-2">
+                <span>⚠️ {formError}</span>
+              </div>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-bold text-slate-300 block mb-1">Full Name</label>

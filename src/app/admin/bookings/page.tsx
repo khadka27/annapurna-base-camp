@@ -91,7 +91,7 @@ export default function AdminBookingsPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-end sm:items-center gap-4">
                   <div className="text-right">
                     <span className="text-xl font-extrabold text-[#16A34A] block font-mono">${b.totalAmount} USD</span>
                     {b.discountAmount > 0 && (
@@ -99,15 +99,55 @@ export default function AdminBookingsPage() {
                     )}
                   </div>
 
-                  <select
-                    value={b.status}
-                    onChange={(e) => updateBookingStatus(b.id, e.target.value as any)}
-                    className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs focus:outline-none focus:border-[#4F9CF9] transition-all cursor-pointer shadow-sm"
-                  >
-                    <option value="Confirmed" className="bg-[#0F172A]">Confirmed</option>
-                    <option value="Pending" className="bg-[#0F172A]">Pending</option>
-                    <option value="Cancelled" className="bg-[#0F172A]">Cancelled</option>
-                  </select>
+                  {b.status === "Pending" ? (
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => updateBookingStatus(b.id, "Confirmed")}
+                        className="px-4 py-2 rounded-xl bg-[#16A34A] hover:bg-[#138a3e] text-white font-extrabold text-xs shadow-lg shadow-[#16A34A]/25 transition-all flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <CheckCircle className="w-4 h-4" />
+                        <span>Approve Booking</span>
+                      </button>
+                      <button
+                        onClick={() => updateBookingStatus(b.id, "Cancelled")}
+                        className="px-3.5 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/40 text-red-300 font-bold text-xs border border-red-500/30 transition-all flex items-center gap-1 cursor-pointer"
+                      >
+                        <XCircle className="w-4 h-4" />
+                        <span>Reject</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`px-3 py-1.5 rounded-xl font-mono font-bold text-xs border flex items-center gap-1.5 ${
+                          b.status === "Confirmed"
+                            ? "bg-[#16A34A]/20 border-[#16A34A]/40 text-emerald-300"
+                            : "bg-red-500/20 border-red-500/40 text-red-300"
+                        }`}
+                      >
+                        {b.status === "Confirmed" ? (
+                          <>
+                            <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>APPROVED</span>
+                          </>
+                        ) : (
+                          <>
+                            <XCircle className="w-3.5 h-3.5 text-red-400" />
+                            <span>REJECTED</span>
+                          </>
+                        )}
+                      </span>
+                      <select
+                        value={b.status}
+                        onChange={(e) => updateBookingStatus(b.id, e.target.value as any)}
+                        className="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs focus:outline-none focus:border-[#4F9CF9] transition-all cursor-pointer shadow-sm"
+                      >
+                        <option value="Confirmed" className="bg-[#0F172A]">Confirmed</option>
+                        <option value="Pending" className="bg-[#0F172A]">Pending</option>
+                        <option value="Cancelled" className="bg-[#0F172A]">Cancelled</option>
+                      </select>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

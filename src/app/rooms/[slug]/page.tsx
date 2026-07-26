@@ -51,12 +51,13 @@ export default function DynamicRoomBookingPage({
 
   const isAlreadyBooked = Boolean(overlappingBooking);
 
+  const [bookingFormError, setBookingFormError] = useState("");
   const [confirmedBooking, setConfirmedBooking] = useState<BookingRecord | null>(null);
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
 
   if (!room) {
     return (
-      <div className="min-h-screen bg-[#0F172A] text-white flex flex-col items-center justify-center p-6">
+      <div className="min-h-screen bg-[#395371] text-white flex flex-col items-center justify-center p-6">
         <h1 className="text-2xl font-bold mb-4">Room Not Found</h1>
         <Link href="/rooms" className="px-6 py-2.5 rounded-xl bg-[#F97316] text-white font-bold text-sm">
           Return to Rooms Catalog
@@ -92,7 +93,44 @@ export default function DynamicRoomBookingPage({
 
   const handleConfirmBooking = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!guestName || !guestEmail || !guestPhone) return;
+    setBookingFormError("");
+
+    if (!guestName.trim() || guestName.trim().length < 2) {
+      setBookingFormError("Please enter a valid guest full name (minimum 2 characters).");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(guestEmail.trim())) {
+      setBookingFormError("Please enter a valid email address (e.g. name@domain.com).");
+      return;
+    }
+
+    if (!guestPhone.trim() || guestPhone.trim().length < 6) {
+      setBookingFormError("Please enter a valid contact phone number.");
+      return;
+    }
+
+    const todayStr = new Date().toISOString().split("T")[0];
+    if (checkIn < todayStr) {
+      setBookingFormError("Check-in date cannot be in the past.");
+      return;
+    }
+
+    if (checkOut <= checkIn) {
+      setBookingFormError("Check-out date must be at least 1 day after check-in.");
+      return;
+    }
+
+    if (guestsCount < 1) {
+      setBookingFormError("Number of guests must be at least 1 person.");
+      return;
+    }
+
+    if (isAlreadyBooked) {
+      setBookingFormError("This room is already reserved for these dates.");
+      return;
+    }
 
     const newRec = await addBooking({
       guestName,
@@ -106,7 +144,7 @@ export default function DynamicRoomBookingPage({
       couponCode: appliedCoupon ? appliedCoupon.code : undefined,
       discountAmount,
       totalAmount: grandTotal,
-      status: "Confirmed",
+      status: "Pending",
     });
 
     const waUrl = getWhatsAppBookingUrl({
@@ -245,14 +283,14 @@ export default function DynamicRoomBookingPage({
               {confirmedBooking ? (
                 /* CONFIRMED BOOKING RECEIPT SCREEN */
                 <div className="space-y-6 text-center animate-fade-in py-4">
-                  <div className="w-16 h-16 rounded-full bg-[#16A34A]/20 text-[#16A34A] flex items-center justify-center mx-auto ring-4 ring-[#16A34A]/30">
-                    <Check className="w-8 h-8 stroke-[3]" />
+                  <div className="w-16 h-16 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto ring-4 ring-amber-500/30">
+                    <span className="text-2xl font-bold">⏳</span>
                   </div>
                   <div className="space-y-2">
-                    <span className="text-xs font-mono text-[#16A34A] uppercase font-bold">RESERVATION CONFIRMED</span>
+                    <span className="text-xs font-mono text-amber-400 uppercase font-bold">RESERVATION STATUS: PENDING ADMIN APPROVAL</span>
                     <h4 className="text-2xl font-extrabold text-white">Booking Ref: {confirmedBooking.id}</h4>
-                    <p className="text-xs text-slate-300">
-                      Thank you, <strong className="text-white">{confirmedBooking.guestName}</strong>! Your stay at Annapurna Base Camp has been reserved live.
+                    <p className="text-xs text-slate-200">
+                      Namaste <strong className="text-white">{confirmedBooking.guestName}</strong>! Your reservation is logged as <span className="font-bold text-amber-300">PENDING</span>. Our admin team will review and approve your stay shortly.
                     </p>
                   </div>
 
@@ -317,6 +355,11 @@ export default function DynamicRoomBookingPage({
               ) : (
                 /* INTERACTIVE BOOKING FORM */
                 <form onSubmit={handleConfirmBooking} className="space-y-4">
+                  {bookingFormError && (
+                    <div className="p-3 rounded-xl bg-red-500/20 border border-red-500 text-red-200 text-xs font-semibold">
+                      ⚠️ {bookingFormError}
+                    </div>
+                  )}
                   {/* Check-In / Check-Out */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
