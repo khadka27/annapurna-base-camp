@@ -108,7 +108,7 @@ export function BookingModal() {
 
         {confirmedBooking ? (
           /* Confirmation Screen */
-          <div className="p-8 space-y-6 text-left">
+          <div className="p-6 sm:p-8 space-y-6 text-left overflow-y-auto flex-grow">
             <div className="p-4 rounded-2xl bg-[#16A34A]/20 border border-[#16A34A] text-center space-y-2">
               <div className="w-10 h-10 rounded-full bg-[#16A34A] text-white flex items-center justify-center mx-auto">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -197,7 +197,7 @@ export function BookingModal() {
           </div>
         ) : (
           /* Booking Form */
-          <form onSubmit={handleReservationSubmit} className="p-6 sm:p-8 space-y-6">
+          <form onSubmit={handleReservationSubmit} className="p-6 sm:p-8 space-y-6 overflow-y-auto flex-grow">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-bold text-slate-300 block mb-1">Full Name</label>
