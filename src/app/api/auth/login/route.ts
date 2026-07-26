@@ -1,18 +1,21 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { email, password } = body;
 
-    // Check credentials (Admin default: admin@annapurna.com / admin123 or configurable)
-    const validEmail = process.env.ADMIN_EMAIL || "admin@annapurna.com";
-    const validPassword = process.env.ADMIN_PASSWORD || "admin123";
+    const user = await prisma.adminUser.findFirst({
+      where: {
+        email: { equals: email.toLowerCase().trim(), mode: "insensitive" },
+      },
+    });
 
-    if (email === validEmail && password === validPassword) {
+    if (user && user.password === password) {
       const response = NextResponse.json({
         success: true,
-        user: { email, name: "Annapurna Admin" },
+        user: { email: user.email, name: user.name },
         token: "admin-session-token-4130m",
       });
 

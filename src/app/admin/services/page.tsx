@@ -33,7 +33,7 @@ export default function AdminServicesPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white">
+    <div className="min-h-screen flex flex-col bg-[#395371] text-white">
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 w-full">
         {/* Header */}
         <div className="bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/15 shadow-2xl flex items-center justify-between">

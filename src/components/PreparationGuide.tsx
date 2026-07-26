@@ -56,17 +56,17 @@ export function PreparationGuide() {
   const progressPercent = Math.round((completedCount / PACKING_ITEMS.length) * 100);
 
   return (
-    <section id="preparation" className="py-14 sm:py-16 bg-[#F8FAFC] text-[#0F172A]">
+    <section id="preparation" className="py-14 sm:py-16 bg-[#395371] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#16A34A]/10 text-[#16A34A] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-[#16A34A] text-xs font-bold uppercase tracking-wider border border-white/15">
             <span>Safety & Equipment Readiness</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             Gear Checklist & Altitude Safety
           </h2>
-          <p className="text-[#64748B] text-base sm:text-lg">
+          <p className="text-slate-300 text-base sm:text-lg">
             Prepare for high-altitude conditions with our interactive packing checklist and medical AMS acclimatization protocols.
           </p>
         </div>

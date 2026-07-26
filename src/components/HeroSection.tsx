@@ -5,7 +5,7 @@ import { Mountain, Clock, Footprints, Sun } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <section id="overview" className="relative bg-[#0F172A] text-white pt-12 pb-24 md:py-28 overflow-hidden">
+    <section id="overview" className="relative bg-[#395371] text-white pt-12 pb-24 md:py-28 overflow-hidden">
       {/* Background Alpine Atmosphere Graphic Overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-20">
         <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-[#4F9CF9] rounded-full blur-[140px]" />

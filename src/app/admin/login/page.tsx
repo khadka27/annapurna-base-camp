@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-[#395371] text-white relative overflow-hidden">
 
       {/* Background Atmosphere Lights */}
       <div className="absolute inset-0 pointer-events-none opacity-25">

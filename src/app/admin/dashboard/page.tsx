@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { useCms, RoomItem, GalleryItem, ServiceItem } from "@/context/CmsContext";
-import { Building, Eye, LogOut, Folder, Loader2 } from "lucide-react";
+import { Building, Eye, LogOut, Folder, Loader2, KeyRound } from "lucide-react";
 
 export default function AdminDashboardPage() {
   const router = useRouter();
@@ -198,7 +198,7 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white">
+    <div className="min-h-screen flex flex-col bg-[#395371] text-white">
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 w-full">
         {/* Top Header Bar */}
         <div className="bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/15 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
@@ -220,6 +220,13 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="flex items-center gap-3">
+            <Link
+              href="/admin/account"
+              className="px-4 py-2.5 rounded-xl bg-[#16A34A]/20 hover:bg-[#16A34A]/40 font-bold text-xs text-emerald-200 transition-colors border border-[#16A34A]/30 flex items-center gap-1.5"
+            >
+              <KeyRound className="w-4 h-4 text-emerald-400" />
+              <span>Account Settings</span>
+            </Link>
             <Link
               href="/"
               className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 font-bold text-xs text-slate-200 transition-colors border border-white/15 flex items-center gap-1.5"

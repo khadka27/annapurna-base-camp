@@ -14,18 +14,18 @@ export function MasonryGallery() {
       : gallery.filter((g) => g.category === activeCategory);
 
   return (
-    <section id="gallery" className="py-14 sm:py-16 bg-[#F8FAFC] text-[#0F172A]">
+    <section id="gallery" className="py-14 sm:py-16 bg-[#395371] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#4F9CF9]/10 text-[#4F9CF9] text-xs font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-[#4F9CF9] text-xs font-bold uppercase tracking-wider border border-white/15">
               <span>Visual Journey</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0F172A] tracking-tight">
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
               Annapurna Sanctuary Gallery
             </h2>
-            <p className="text-[#64748B] text-base sm:text-lg">
+            <p className="text-slate-300 text-base sm:text-lg">
               Explore photography of our luxury suites, mountain view deck, gourmet dishes, and 8,000m summits.
             </p>
           </div>

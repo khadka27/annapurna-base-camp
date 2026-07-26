@@ -88,7 +88,7 @@ export function DynamicHero() {
   const activeSlideObj = heroConfig.slides[currentSlide] || heroConfig.slides[0];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-28 pb-16 overflow-hidden bg-[#0F172A]">
+    <section className="relative min-h-screen flex items-center justify-center pt-28 pb-16 overflow-hidden bg-[#395371]">
       {/* Background Slideshow */}
       {heroConfig.slides.map((slide, idx) => (
         <div
@@ -103,7 +103,7 @@ export function DynamicHero() {
             className="w-full h-full object-cover transform scale-105 transition-transform duration-[10000ms]"
           />
           {heroConfig.showOverlay && (
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-[#0F172A]/60 to-[#0F172A]/40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#395371] via-[#395371]/60 to-[#395371]/30" />
           )}
         </div>
       ))}
@@ -186,10 +186,10 @@ export function DynamicHero() {
                 onChange={(e) => setGuests(Number(e.target.value))}
                 className="w-full bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl px-3 py-1.5 text-white font-semibold text-xs transition-all focus:outline-none cursor-pointer"
               >
-                <option value={1} className="bg-[#0F172A]">1 Guest</option>
-                <option value={2} className="bg-[#0F172A]">2 Guests</option>
-                <option value={3} className="bg-[#0F172A]">3 Guests</option>
-                <option value={4} className="bg-[#0F172A]">4+ Guests</option>
+                <option value={1} className="bg-[#395371]">1 Guest</option>
+                <option value={2} className="bg-[#395371]">2 Guests</option>
+                <option value={3} className="bg-[#395371]">3 Guests</option>
+                <option value={4} className="bg-[#395371]">4+ Guests</option>
               </select>
             </div>
 
@@ -201,10 +201,10 @@ export function DynamicHero() {
                 onChange={(e) => setSelectedRoomType(e.target.value)}
                 className="w-full bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl px-3 py-1.5 text-white font-semibold text-xs transition-all focus:outline-none cursor-pointer"
               >
-                <option value="suite" className="bg-[#0F172A]">Glacier Suite</option>
-                <option value="panorama" className="bg-[#0F172A]">Panorama Room</option>
-                <option value="deluxe" className="bg-[#0F172A]">Deluxe Twin</option>
-                <option value="lodge" className="bg-[#0F172A]">Alpine Lodge</option>
+                <option value="suite" className="bg-[#395371]">Glacier Suite</option>
+                <option value="panorama" className="bg-[#395371]">Panorama Room</option>
+                <option value="deluxe" className="bg-[#395371]">Deluxe Twin</option>
+                <option value="lodge" className="bg-[#395371]">Alpine Lodge</option>
               </select>
             </div>
 

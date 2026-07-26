@@ -38,7 +38,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white">
+    <div className="min-h-screen flex flex-col bg-[#395371] text-white">
       {/* Navbar with 20px padding */}
       <GlassNavbar />
 
@@ -56,7 +56,7 @@ export default function Home() {
                 style={{ backgroundImage: `url('/images/Annapurna-Base-Camp.jpg')` }}
               />
               {/* Dark Gradient & Glass Overlay for contrast and readability */}
-              <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A]/90 via-[#0F172A]/80 to-[#0F172A]/95 backdrop-blur-[2px]" />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#395371]/90 via-[#395371]/80 to-[#395371]/95 backdrop-blur-[2px]" />
 
               {/* Content Container */}
               <div className="relative z-10 p-8 sm:p-14 space-y-6">
@@ -175,7 +175,7 @@ export default function Home() {
         {/* Experience Section */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal variant="zoom-in">
-            <div className="bg-[#0F172A] border border-white/15 p-8 sm:p-12 rounded-3xl space-y-6 text-center max-w-4xl mx-auto">
+            <div className="bg-[#395371] border border-white/15 p-8 sm:p-12 rounded-3xl space-y-6 text-center max-w-4xl mx-auto shadow-2xl">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-[#4F9CF9] text-xs font-mono font-bold uppercase">
                 <span>Himalayan Panoramic Majesty</span>
               </div>
@@ -508,7 +508,7 @@ export default function Home() {
         {/* Final CTA */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal variant="zoom-in">
-            <div className="bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#0F172A] p-8 sm:p-14 rounded-3xl border border-white/20 text-center space-y-6 shadow-2xl relative overflow-hidden">
+            <div className="bg-gradient-to-r from-[#395371] via-[#2A405A] to-[#395371] p-8 sm:p-14 rounded-3xl border border-white/20 text-center space-y-6 shadow-2xl relative overflow-hidden">
               <div className="space-y-3 max-w-3xl mx-auto">
                 <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
                   Your Himalayan Adventure Starts Here

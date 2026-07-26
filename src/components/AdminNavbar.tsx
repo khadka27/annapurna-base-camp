@@ -28,6 +28,7 @@ export function AdminNavbar({ activeTab, setActiveTab }: AdminNavbarProps) {
     { label: "Gallery Manager", href: "/admin/gallery", id: "gallery" },
     { label: "Discount Coupons", href: "/admin/coupons", id: "coupons" },
     { label: "Hero Settings", href: "/admin/hero", id: "hero" },
+    { label: "Account Settings", href: "/admin/account", id: "account" },
   ];
 
   return (
