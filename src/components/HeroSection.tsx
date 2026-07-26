@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Mountain, Clock, Footprints, Sun } from "lucide-react";
 
 export function HeroSection() {
   return (
@@ -137,7 +138,7 @@ export function HeroSection() {
             {/* Stat Card 1: Altitude */}
             <div className="glass-card-dark p-5 rounded-2xl border border-white/15 space-y-2 hover:border-[#4F9CF9]/50 transition-all group">
               <div className="w-10 h-10 rounded-xl bg-[#4F9CF9]/20 text-[#4F9CF9] flex items-center justify-center font-bold">
-                🏔️
+                <Mountain className="w-5 h-5" />
               </div>
               <div className="text-3xl font-extrabold text-white group-hover:text-[#4F9CF9] transition-colors">
                 4,130 <span className="text-sm font-normal text-slate-400">m</span>
@@ -149,7 +150,7 @@ export function HeroSection() {
             {/* Stat Card 2: Duration */}
             <div className="glass-card-dark p-5 rounded-2xl border border-white/15 space-y-2 hover:border-[#F97316]/50 transition-all group">
               <div className="w-10 h-10 rounded-xl bg-[#F97316]/20 text-[#F97316] flex items-center justify-center font-bold">
-                ⏱️
+                <Clock className="w-5 h-5" />
               </div>
               <div className="text-3xl font-extrabold text-white group-hover:text-[#F97316] transition-colors">
                 10 - 12 <span className="text-sm font-normal text-slate-400">Days</span>
@@ -161,7 +162,7 @@ export function HeroSection() {
             {/* Stat Card 3: Distance */}
             <div className="glass-card-dark p-5 rounded-2xl border border-white/15 space-y-2 hover:border-[#16A34A]/50 transition-all group">
               <div className="w-10 h-10 rounded-xl bg-[#16A34A]/20 text-[#16A34A] flex items-center justify-center font-bold">
-                🥾
+                <Footprints className="w-5 h-5" />
               </div>
               <div className="text-3xl font-extrabold text-white group-hover:text-[#16A34A] transition-colors">
                 115 <span className="text-sm font-normal text-slate-400">km</span>
@@ -173,7 +174,7 @@ export function HeroSection() {
             {/* Stat Card 4: Season */}
             <div className="glass-card-dark p-5 rounded-2xl border border-white/15 space-y-2 hover:border-white/40 transition-all group">
               <div className="w-10 h-10 rounded-xl bg-white/10 text-white flex items-center justify-center font-bold">
-                ☀️
+                <Sun className="w-5 h-5 text-amber-400" />
               </div>
               <div className="text-2xl font-extrabold text-white">
                 Oct - May

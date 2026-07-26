@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CmsProvider } from "@/context/CmsContext";
+import { NextAuthProvider } from "@/components/NextAuthProvider";
 import { SnowEffect } from "@/components/SnowEffect";
 
 const geistSans = Geist({
@@ -31,10 +32,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
-        <CmsProvider>
-          <SnowEffect />
-          {children}
-        </CmsProvider>
+        <NextAuthProvider>
+          <CmsProvider>
+            <SnowEffect />
+            {children}
+          </CmsProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );

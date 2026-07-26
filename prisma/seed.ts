@@ -11,7 +11,7 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log("🌱 Starting Annapurna Base Camp Database Seed...");
+  console.log("[SEED] Starting Annapurna Base Camp Database Seed...");
 
   // 1. Seed Admin User
   await prisma.adminUser.upsert({
@@ -23,7 +23,7 @@ async function main() {
       name: "Himalayan Chief Admin",
     },
   });
-  console.log("✅ Admin User seeded (admin@annapurna.com / admin123)");
+  console.log("[OK] Admin User seeded (admin@annapurna.com / admin123)");
 
   // 2. Seed Hero Config
   await prisma.heroConfig.upsert({
@@ -33,7 +33,7 @@ async function main() {
       subtitle:
         "Experience high-altitude luxury at 4,130m elevation in the heart of the Himalayas with heated suites, panoramic glacier views & authentic Sherpa hospitality.",
       badge: "4,130M HIGHEST LUXURY LODGE IN NEPAL",
-      seasonalBanner: "🏔️ 2026 TREK SEASON OPEN — RESERVE GLACIER SUITES ONLINE",
+      seasonalBanner: "2026 TREK SEASON OPEN — RESERVE GLACIER SUITES ONLINE",
       autoSlideSpeed: 5000,
     },
     create: {
@@ -42,11 +42,11 @@ async function main() {
       subtitle:
         "Experience high-altitude luxury at 4,130m elevation in the heart of the Himalayas with heated suites, panoramic glacier views & authentic Sherpa hospitality.",
       badge: "4,130M HIGHEST LUXURY LODGE IN NEPAL",
-      seasonalBanner: "🏔️ 2026 TREK SEASON OPEN — RESERVE GLACIER SUITES ONLINE",
+      seasonalBanner: "2026 TREK SEASON OPEN — RESERVE GLACIER SUITES ONLINE",
       autoSlideSpeed: 5000,
     },
   });
-  console.log("✅ Hero Config seeded");
+  console.log("[OK] Hero Config seeded");
 
   // 3. Seed Luxury Rooms
   const roomsData = [
@@ -295,16 +295,16 @@ async function main() {
       create: cp,
     });
   }
-  console.log(`✅ ${couponsData.length} Promo Coupons seeded`);
+  console.log(`[OK] ${couponsData.length} Promo Coupons seeded`);
 
   // 7. Seed Services
   const servicesData = [
     {
       id: "srv-1",
-      title: "Oxygen Pure Altitude Therapy Bar",
+      title: "High-Altitude Supplemental Oxygen",
       category: "Wellness & Safety",
       price: 0,
-      icon: "🫁",
+      icon: "activity",
       description: "Continuous medical-grade oxygen enrichment chambers and pulse oximeter telemetry monitoring at 4,130m elevation.",
       included: true,
     },
@@ -313,7 +313,7 @@ async function main() {
       title: "Emergency Helicopter Evacuation Charter",
       category: "Logistics & Transport",
       price: 1200,
-      icon: "🚁",
+      icon: "helicopter",
       description: "Direct helipad access at base camp with rapid standby transport to Pokhara & Kathmandu alpine hospitals.",
       included: false,
     },
@@ -322,7 +322,7 @@ async function main() {
       title: "Radiant Thermal Bathhouse & Hot Spa",
       category: "Wellness & Safety",
       price: 0,
-      icon: "♨️",
+      icon: "flame",
       description: "Solar-heated thermal soaking tubs with organic Himalayan herbal salts to soothe tired muscles after long trek days.",
       included: true,
     },
@@ -331,7 +331,7 @@ async function main() {
       title: "Gourmet Sherpa Dining & Bakery",
       category: "Dining & Comfort",
       price: 0,
-      icon: "🍲",
+      icon: "utensils",
       description: "Freshly prepared artisan Dal Bhat, yak cheese fondue, warm apple pies, and organic mountain herbal brews.",
       included: true,
     },
@@ -340,7 +340,7 @@ async function main() {
       title: "Starlink High-Speed Satellite Wi-Fi",
       category: "Connectivity",
       price: 0,
-      icon: "📡",
+      icon: "wifi",
       description: "Low-latency satellite broadband internet throughout all rooms and lounge areas for seamless global connectivity.",
       included: true,
     },
@@ -349,7 +349,7 @@ async function main() {
       title: "Sherpa Summit Guides & Gear Rental",
       category: "Logistics & Transport",
       price: 85,
-      icon: "🧗‍♂️",
+      icon: "activity",
       description: "Certified IFMGA mountain guides, crampons, thermal down parkas, and trekking pole rentals.",
       included: false,
     },
@@ -362,9 +362,9 @@ async function main() {
       create: srv,
     });
   }
-  console.log(`✅ ${servicesData.length} Guesthouse Services seeded`);
+  console.log(`[OK] ${servicesData.length} Guesthouse Services seeded`);
 
-  console.log("🎉 Database seeding completed successfully!");
+  console.log("[OK] Database seeding completed successfully!");
 }
 
 main()
@@ -373,7 +373,7 @@ main()
     await pool.end();
   })
   .catch(async (e) => {
-    console.error("❌ Seeding failed:", e);
+    console.error("[ERROR] Seeding failed:", e);
     await prisma.$disconnect();
     await pool.end();
     process.exit(1);

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Check } from "lucide-react";
 
 interface WaypointNode {
   id: string;
@@ -310,8 +311,9 @@ export function ItineraryExplorer() {
                     {/* Highlights */}
                     <div className="pt-2 border-t border-slate-100 flex flex-wrap gap-2">
                       {node.highlights.map((h, hIdx) => (
-                        <span key={hIdx} className="px-2.5 py-1 rounded-lg bg-[#F8FAFC] text-[11px] font-semibold text-[#0F172A] border border-slate-200">
-                          ✓ {h}
+                        <span key={hIdx} className="px-2.5 py-1 rounded-lg bg-[#F8FAFC] text-[11px] font-semibold text-[#0F172A] border border-slate-200 flex items-center gap-1">
+                          <Check className="w-3 h-3 text-[#16A34A] stroke-[3]" />
+                          <span>{h}</span>
                         </span>
                       ))}
                     </div>

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { Trees, Star, Award, Phone, Camera, Check, Sparkles, X, CheckSquare, MessageSquare } from "lucide-react";
 
 export function Footer() {
   const [cookieAccepted, setCookieAccepted] = useState(false);
@@ -105,7 +106,7 @@ export function Footer() {
               {/* Logo 4: KEEP */}
               <div className="flex items-center gap-2 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-sm border border-slate-200">
                 <div className="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center font-bold">
-                  🌲
+                  <Trees className="w-3.5 h-3.5" />
                 </div>
                 <div className="text-[10px] font-bold text-slate-800 leading-tight">
                   KEEP PROJECT
@@ -132,7 +133,11 @@ export function Footer() {
                     GOOGLE
                   </div>
                   <div className="flex text-amber-400 text-[10px] gap-0.5 mt-0.5">
-                    ★★★★★
+                    <Star className="w-2.5 h-2.5 fill-amber-400" />
+                    <Star className="w-2.5 h-2.5 fill-amber-400" />
+                    <Star className="w-2.5 h-2.5 fill-amber-400" />
+                    <Star className="w-2.5 h-2.5 fill-amber-400" />
+                    <Star className="w-2.5 h-2.5 fill-amber-400" />
                   </div>
                 </div>
               </div>
@@ -140,7 +145,7 @@ export function Footer() {
               {/* TripAdvisor Badge */}
               <div className="bg-white/90 px-3.5 py-2 rounded-xl shadow-sm border border-slate-200 flex items-center gap-2.5">
                 <div className="w-6 h-6 rounded-full bg-[#34E0A1] text-[#004F32] font-extrabold text-xs flex items-center justify-center">
-                  🦉
+                  <Award className="w-3.5 h-3.5" />
                 </div>
                 <div>
                   <div className="text-xs font-extrabold text-[#004F32] tracking-tight">
@@ -200,10 +205,10 @@ export function Footer() {
                 </span>
                 <div className="space-y-1 text-xs text-slate-300 font-mono">
                   <p className="flex items-center gap-2 hover:text-white transition-colors">
-                    <span className="text-emerald-400">📞</span> +977 98510 55520 (Ram Adhikari)
+                    <Phone className="w-3.5 h-3.5 text-emerald-400" /> +977 98510 55520 (Ram Adhikari)
                   </p>
                   <p className="flex items-center gap-2 hover:text-white transition-colors">
-                    <span className="text-emerald-400">📞</span> +977 9841 986923 (Rajendra)
+                    <Phone className="w-3.5 h-3.5 text-emerald-400" /> +977 9841 986923 (Rajendra)
                   </p>
                 </div>
               </div>
@@ -252,7 +257,7 @@ export function Footer() {
                     rel="noreferrer"
                     className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 hover:opacity-90 flex items-center justify-center text-white text-xs font-bold transition-all shadow-md"
                   >
-                    📸
+                    <Camera className="w-4 h-4 text-white" />
                   </a>
                   {/* LinkedIn */}
                   <a
@@ -348,7 +353,13 @@ export function Footer() {
                   type="submit"
                   className="w-full py-2.5 rounded-lg bg-[#E67E22] hover:bg-[#D35400] text-white font-extrabold text-xs uppercase tracking-wider shadow-md transition-all"
                 >
-                  {subscribed ? "SUBSCRIBED! ✓" : "SUBSCRIBE"}
+                  {subscribed ? (
+                    <span className="flex items-center justify-center gap-1.5">
+                      <Check className="w-4 h-4 stroke-[3]" /> SUBSCRIBED!
+                    </span>
+                  ) : (
+                    "SUBSCRIBE"
+                  )}
                 </button>
               </form>
 
@@ -367,14 +378,15 @@ export function Footer() {
             {/* Hi how can we help bubble */}
             <div className="bg-white text-slate-800 p-3 rounded-2xl shadow-2xl border border-slate-200 text-xs font-semibold flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span>👋</span>
+                <Sparkles className="w-4 h-4 text-amber-500" />
                 <span>Hi! How can we help?</span>
               </div>
               <button
                 onClick={() => setChatOpen(false)}
                 className="text-slate-400 hover:text-slate-600 text-xs font-bold"
+                aria-label="Close chat"
               >
-                ✕
+                <X className="w-3.5 h-3.5" />
               </button>
             </div>
 
@@ -446,8 +458,8 @@ export function Footer() {
 
           {/* Actions on Right */}
           <div className="flex items-center gap-3">
-            <a href="#welcome" className="text-slate-600 hover:text-slate-900 flex items-center gap-1 font-semibold underline">
-              <span>☑</span> Privacy Policy
+            <a href="#welcome" className="text-slate-600 hover:text-slate-900 flex items-center gap-1 font-semibold underline text-xs">
+              <CheckSquare className="w-3.5 h-3.5 text-slate-700" /> Privacy Policy
             </a>
 
             <button
@@ -462,7 +474,7 @@ export function Footer() {
               className="w-6 h-6 rounded-full bg-slate-300 hover:bg-slate-400 text-slate-700 font-bold text-xs flex items-center justify-center transition-colors"
               aria-label="Close Cookie Banner"
             >
-              ✕
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>

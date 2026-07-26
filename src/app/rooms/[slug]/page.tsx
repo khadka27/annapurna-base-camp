@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { BookingModal } from "@/components/BookingModal";
 import { AdminDashboard } from "@/components/AdminDashboard";
 import { useCms, RoomItem, BookingRecord } from "@/context/CmsContext";
+import { Check } from "lucide-react";
 
 export function getRoomSlug(room: RoomItem): string {
   return room.name
@@ -216,8 +217,8 @@ export default function DynamicRoomBookingPage({
               {confirmedBooking ? (
                 /* CONFIRMED BOOKING RECEIPT SCREEN */
                 <div className="space-y-6 text-center animate-fade-in py-4">
-                  <div className="w-16 h-16 rounded-full bg-[#16A34A]/20 text-[#16A34A] flex items-center justify-center text-3xl mx-auto ring-4 ring-[#16A34A]/30">
-                    ✓
+                  <div className="w-16 h-16 rounded-full bg-[#16A34A]/20 text-[#16A34A] flex items-center justify-center mx-auto ring-4 ring-[#16A34A]/30">
+                    <Check className="w-8 h-8 stroke-[3]" />
                   </div>
                   <div className="space-y-2">
                     <span className="text-xs font-mono text-[#16A34A] uppercase font-bold">RESERVATION CONFIRMED</span>
@@ -362,8 +363,9 @@ export default function DynamicRoomBookingPage({
                       </button>
                     </div>
                     {appliedCoupon && (
-                      <span className="text-[11px] font-mono text-[#16A34A] block mt-1">
-                        ✓ Applied {appliedCoupon.code} ({appliedCoupon.percent}% OFF)
+                      <span className="text-[11px] font-mono text-[#16A34A] flex items-center gap-1 mt-1">
+                        <Check className="w-3.5 h-3.5 stroke-[3]" />
+                        <span>Applied {appliedCoupon.code} ({appliedCoupon.percent}% OFF)</span>
                       </span>
                     )}
                     {couponError && (

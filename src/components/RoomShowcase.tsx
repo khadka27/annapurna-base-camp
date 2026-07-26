@@ -32,7 +32,7 @@ export function RoomShowcase() {
           </div>
 
           {/* Category Pill Filters */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+          <div className="flex flex-wrap items-center gap-2 max-w-full md:justify-end">
             {[
               { id: "all", label: "All Rooms" },
               { id: "suite", label: "Glacier Suites" },

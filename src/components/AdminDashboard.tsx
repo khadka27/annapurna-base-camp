@@ -3,6 +3,7 @@
 
 import React, { useState } from "react";
 import { useCms, RoomItem, GalleryItem, ServiceItem } from "@/context/CmsContext";
+import { X, Folder, Loader2 } from "lucide-react";
 
 export function AdminDashboard() {
   const {
@@ -157,7 +158,7 @@ export function AdminDashboard() {
       title: newSrvTitle,
       category: newSrvCategory,
       price: Number(newSrvPrice),
-      icon: newSrvIcon || "🏔️",
+      icon: newSrvIcon || "mountain",
       description: newSrvDescription || `${newSrvTitle} service at Annapurna Base Camp Sanctuary.`,
       included: newSrvIncluded,
     });
@@ -187,14 +188,16 @@ export function AdminDashboard() {
 
           <button
             onClick={() => setAdminOpen(false)}
-            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 font-bold text-xs text-slate-200"
+            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 font-bold text-xs text-slate-200 flex items-center gap-1.5"
+            aria-label="Close Dashboard"
           >
-            Close Dashboard ✕
+            <span>Close Dashboard</span>
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-2 px-6 pt-4 border-b border-white/10 overflow-x-auto">
+        <div className="flex flex-wrap items-center gap-2 px-6 pt-4 border-b border-white/10">
           {[
             { id: "analytics", label: "Analytics Overview" },
             { id: "rooms", label: "Rooms CRUD" },
@@ -402,7 +405,13 @@ export function AdminDashboard() {
                         className="flex-grow px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
                       />
                       <label className="px-4 py-2 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
-                        <span>{uploadingRoomImage ? "⏳ Uploading..." : "📁 Upload Local File"}</span>
+                        <span>
+                          {uploadingRoomImage ? (
+                            <span className="flex items-center gap-1.5"><Loader2 className="w-4 h-4 animate-spin" /> Uploading...</span>
+                          ) : (
+                            <span className="flex items-center gap-1.5"><Folder className="w-4 h-4 text-[#4F9CF9]" /> Upload Local File</span>
+                          )}
+                        </span>
                         <input
                           type="file"
                           accept="image/*"
@@ -491,7 +500,7 @@ export function AdminDashboard() {
                       required
                       value={newSrvIcon}
                       onChange={(e) => setNewSrvIcon(e.target.value)}
-                      placeholder="🫁 or 🚁"
+                      placeholder="activity or helicopter"
                       className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
                     />
                   </div>
@@ -698,7 +707,13 @@ export function AdminDashboard() {
                         className="flex-grow px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
                       />
                       <label className="px-4 py-2 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
-                        <span>{uploadingGalImage ? "⏳ Uploading..." : "📁 Upload Local File"}</span>
+                        <span>
+                          {uploadingGalImage ? (
+                            <span className="flex items-center gap-1.5"><Loader2 className="w-4 h-4 animate-spin" /> Uploading...</span>
+                          ) : (
+                            <span className="flex items-center gap-1.5"><Folder className="w-4 h-4 text-[#4F9CF9]" /> Upload Local File</span>
+                          )}
+                        </span>
                         <input
                           type="file"
                           accept="image/*"

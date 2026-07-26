@@ -109,20 +109,33 @@ body {
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F8FAFC;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #64748B;
-  border-radius: 4px;
+  background: rgba(100, 116, 139, 0.3);
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0F172A;
+  background: rgba(79, 156, 249, 0.6);
+}
+
+/* Hide Scrollbar Utility Class */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* Enhanced Custom Dropdown UI Styling */

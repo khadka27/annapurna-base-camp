@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useCms, BookingRecord } from "@/context/CmsContext";
+import { X } from "lucide-react";
 
 export function BookingModal() {
   const { selectedRoomForBooking, setSelectedRoomForBooking, addBooking, coupons } = useCms();
@@ -78,8 +79,9 @@ export function BookingModal() {
           <button
             onClick={closeModal}
             className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-300 hover:text-white"
+            aria-label="Close modal"
           >
-            ✕
+            <X className="w-5 h-5" />
           </button>
         </div>
 

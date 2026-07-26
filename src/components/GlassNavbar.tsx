@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCms } from "@/context/CmsContext";
+import { X, Menu } from "lucide-react";
 
 export function GlassNavbar() {
   const { darkMode, toggleDarkMode, setAdminOpen, setSelectedRoomForBooking, rooms } = useCms();
@@ -170,8 +171,9 @@ export function GlassNavbar() {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-xl text-slate-200 bg-white/10 border border-white/15"
+              aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? "✕" : "☰"}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Check, Activity, Calendar } from "lucide-react";
 
 interface PackingItem {
   id: string;
@@ -132,7 +133,7 @@ export function PreparationGuide() {
                           isChecked ? "bg-[#16A34A] text-white" : "border border-slate-400 bg-white"
                         }`}
                       >
-                        {isChecked && "✓"}
+                        {isChecked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
                       <span className={`text-sm font-medium ${isChecked ? "line-through text-slate-500" : ""}`}>
                         {item.name}
@@ -155,7 +156,7 @@ export function PreparationGuide() {
             {/* AMS Safety Protocol Card */}
             <div className="bg-[#0F172A] text-white p-6 sm:p-8 rounded-3xl border border-white/10 space-y-4 shadow-xl">
               <div className="w-10 h-10 rounded-xl bg-[#F97316]/20 text-[#F97316] flex items-center justify-center text-xl font-bold">
-                🩺
+                <Activity className="w-5 h-5 text-[#F97316]" />
               </div>
               <h3 className="text-xl font-bold text-white">AMS Altitude Safety Guidelines</h3>
               <p className="text-slate-300 text-sm leading-relaxed">
@@ -192,7 +193,8 @@ export function PreparationGuide() {
             {/* Best Season Card */}
             <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-3">
               <h4 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider flex items-center gap-2">
-                <span>🗓️ Recommended Seasons</span>
+                <Calendar className="w-4 h-4 text-[#4F9CF9]" />
+                <span>Recommended Seasons</span>
               </h4>
 
               <div className="grid grid-cols-2 gap-3 text-xs">

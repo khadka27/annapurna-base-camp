@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 import { GlassNavbar } from "@/components/GlassNavbar";
+import { AlertTriangle } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -18,20 +20,17 @@ export default function AdminLoginPage() {
     setErrorMsg("");
 
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
       });
 
-      const data = await res.json();
-
-      if (data.success) {
-        // Store login indicator in localStorage for immediate client-side route guard
+      if (res?.ok && !res?.error) {
         localStorage.setItem("admin_auth", "true");
         router.push("/admin/dashboard");
       } else {
-        setErrorMsg(data.message || "Invalid login credentials.");
+        setErrorMsg(res?.error || "Invalid admin login credentials.");
       }
     } catch (err) {
       setErrorMsg("Network or server authentication error.");
@@ -68,8 +67,9 @@ export default function AdminLoginPage() {
           </div>
 
           {errorMsg && (
-            <div className="p-3 rounded-2xl bg-red-500/20 border border-red-500/30 text-red-300 text-xs font-mono text-center">
-              ⚠️ {errorMsg}
+            <div className="p-3 rounded-2xl bg-red-500/20 border border-red-500/30 text-red-300 text-xs font-mono flex items-center justify-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+              <span>{errorMsg}</span>
             </div>
           )}
 

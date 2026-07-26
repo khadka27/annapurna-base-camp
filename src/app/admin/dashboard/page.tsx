@@ -3,11 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 import { GlassNavbar } from "@/components/GlassNavbar";
 import { useCms, RoomItem, GalleryItem, ServiceItem } from "@/context/CmsContext";
+import { Building, Eye, LogOut, Folder, Loader2 } from "lucide-react";
 
 export default function AdminDashboardPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const {
     heroConfig,
     updateHeroConfig,
@@ -26,7 +29,6 @@ export default function AdminDashboardPage() {
     deleteService,
   } = useCms();
 
-  const [authenticated, setAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState<"analytics" | "rooms" | "bookings" | "hero" | "gallery" | "coupons" | "services">("analytics");
 
   // New Service state
@@ -91,21 +93,20 @@ export default function AdminDashboardPage() {
   };
 
   useEffect(() => {
-    // Simple client-side auth guard check
-    const isAuth = localStorage.getItem("admin_auth") === "true";
-    if (!isAuth) {
-      router.push("/admin/login");
-    } else {
-      setAuthenticated(true);
+    if (status === "unauthenticated") {
+      const isAuthFallback = localStorage.getItem("admin_auth") === "true";
+      if (!isAuthFallback) {
+        router.push("/admin/login");
+      }
     }
-  }, [router]);
+  }, [status, router]);
 
-  if (!authenticated) {
+  if (status === "loading") {
     return (
       <div className="min-h-screen bg-[#0F172A] text-white flex items-center justify-center p-6">
         <div className="text-center space-y-3 font-mono">
           <span className="w-3 h-3 rounded-full bg-[#4F9CF9] animate-ping inline-block" />
-          <p className="text-sm text-slate-300">Checking Admin Authorization Permissions...</p>
+          <p className="text-sm text-slate-300">Validating NextAuth Session Security...</p>
         </div>
       </div>
     );
@@ -116,8 +117,7 @@ export default function AdminDashboardPage() {
 
   const handleLogout = async () => {
     localStorage.removeItem("admin_auth");
-    await fetch("/api/auth/login", { method: "DELETE" });
-    router.push("/admin/login");
+    await signOut({ callbackUrl: "/admin/login" });
   };
 
   const handleSaveHero = (e: React.FormEvent) => {
@@ -184,7 +184,7 @@ export default function AdminDashboardPage() {
       title: newSrvTitle,
       category: newSrvCategory,
       price: Number(newSrvPrice),
-      icon: newSrvIcon || "🏔️",
+      icon: newSrvIcon || "mountain",
       description: newSrvDescription || `${newSrvTitle} service at Annapurna Base Camp Sanctuary.`,
       included: newSrvIncluded,
     });
@@ -203,7 +203,7 @@ export default function AdminDashboardPage() {
         <div className="bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/15 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-[#4F9CF9] text-[#0F172A] flex items-center justify-center font-bold shadow-lg">
-              🏰
+              <Building className="w-6 h-6 text-[#0F172A]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -221,21 +221,23 @@ export default function AdminDashboardPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 font-bold text-xs text-slate-200 transition-colors border border-white/15"
+              className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 font-bold text-xs text-slate-200 transition-colors border border-white/15 flex items-center gap-1.5"
             >
-              👁 View Public Site
+              <Eye className="w-4 h-4 text-[#4F9CF9]" />
+              <span>View Public Site</span>
             </Link>
             <button
               onClick={handleLogout}
-              className="px-4 py-2.5 rounded-xl bg-red-500/20 hover:bg-red-500/40 text-red-300 font-bold text-xs border border-red-500/30 transition-colors"
+              className="px-4 py-2.5 rounded-xl bg-red-500/20 hover:bg-red-500/40 text-red-300 font-bold text-xs border border-red-500/30 transition-colors flex items-center gap-1.5"
             >
-              Sign Out 🚪
+              <span>Sign Out</span>
+              <LogOut className="w-4 h-4" />
             </button>
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-2 pb-2 border-b border-white/10 overflow-x-auto no-scrollbar">
+        <div className="flex flex-wrap items-center gap-2 pb-2 border-b border-white/10">
           {[
             { id: "analytics", label: "Analytics Overview" },
             { id: "rooms", label: "Rooms CRUD" },
@@ -407,7 +409,13 @@ export default function AdminDashboardPage() {
                         className="flex-grow px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
                       />
                       <label className="px-4 py-2 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
-                        <span>{uploadingRoomImage ? "⏳ Uploading..." : "📁 Upload Local File"}</span>
+                        <span>
+                          {uploadingRoomImage ? (
+                            <span className="flex items-center gap-1.5"><Loader2 className="w-4 h-4 animate-spin" /> Uploading...</span>
+                          ) : (
+                            <span className="flex items-center gap-1.5"><Folder className="w-4 h-4 text-[#4F9CF9]" /> Upload Local File</span>
+                          )}
+                        </span>
                         <input
                           type="file"
                           accept="image/*"
@@ -496,7 +504,7 @@ export default function AdminDashboardPage() {
                       required
                       value={newSrvIcon}
                       onChange={(e) => setNewSrvIcon(e.target.value)}
-                      placeholder="🫁 or 🚁"
+                      placeholder="activity or helicopter"
                       className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
                     />
                   </div>
@@ -703,7 +711,13 @@ export default function AdminDashboardPage() {
                         className="flex-grow px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
                       />
                       <label className="px-4 py-2 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
-                        <span>{uploadingGalImage ? "⏳ Uploading..." : "📁 Upload Local File"}</span>
+                        <span>
+                          {uploadingGalImage ? (
+                            <span className="flex items-center gap-1.5"><Loader2 className="w-4 h-4 animate-spin" /> Uploading...</span>
+                          ) : (
+                            <span className="flex items-center gap-1.5"><Folder className="w-4 h-4 text-[#4F9CF9]" /> Upload Local File</span>
+                          )}
+                        </span>
                         <input
                           type="file"
                           accept="image/*"

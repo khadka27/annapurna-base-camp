@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Sparkles, CheckCircle } from "lucide-react";
 
 export function CostEstimator() {
   const [packageType, setPackageType] = useState<"standard" | "comfort" | "luxury">("standard");
@@ -120,8 +121,9 @@ export function CostEstimator() {
                   2. Number of Trekkers
                 </label>
                 {isGroupDiscount && (
-                  <span className="text-xs font-bold text-[#16A34A] px-2.5 py-1 rounded-full bg-[#16A34A]/20">
-                    🎉 10% Group Discount Applied
+                  <span className="text-xs font-bold text-[#16A34A] px-2.5 py-1 rounded-full bg-[#16A34A]/20 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>10% Group Discount Applied</span>
                   </span>
                 )}
               </div>
@@ -296,8 +298,9 @@ export function CostEstimator() {
               </form>
 
               {submitted && (
-                <div className="p-4 rounded-xl bg-[#16A34A]/20 border border-[#16A34A] text-[#16A34A] text-xs text-center font-bold animate-fade-in">
-                  ✓ Booking inquiry submitted! Our Himalayan expedition leader will email your detailed itinerary within 2 hours.
+                <div className="p-4 rounded-xl bg-[#16A34A]/20 border border-[#16A34A] text-[#16A34A] text-xs text-center font-bold animate-fade-in flex items-center justify-center gap-2">
+                  <CheckCircle className="w-4 h-4 shrink-0" />
+                  <span>Booking inquiry submitted! Our Himalayan expedition leader will email your detailed itinerary within 2 hours.</span>
                 </div>
               )}
             </div>

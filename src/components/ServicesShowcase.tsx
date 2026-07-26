@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useCms } from "@/context/CmsContext";
+import { DynamicIcon } from "@/components/DynamicIcon";
 
 export function ServicesShowcase() {
   const { services } = useCms();
@@ -34,7 +35,7 @@ export function ServicesShowcase() {
           </div>
 
           {/* Category Pill Filters */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+          <div className="flex flex-wrap items-center gap-2 max-w-full md:justify-end">
             {[
               { id: "all", label: "All Services" },
               { id: "Wellness & Safety", label: "Wellness & Safety" },
@@ -66,8 +67,8 @@ export function ServicesShowcase() {
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/15 text-3xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    {service.icon}
+                  <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/15 text-3xl flex items-center justify-center group-hover:scale-110 transition-transform text-[#4F9CF9]">
+                    <DynamicIcon name={service.icon} className="w-7 h-7" />
                   </div>
 
                   <span

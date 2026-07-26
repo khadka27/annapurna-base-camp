@@ -80,7 +80,7 @@ model Service {
   title       String
   category    String   // Wellness & Safety, Logistics & Transport, Dining & Comfort, Connectivity
   price       Float    @default(0)
-  icon        String   @default("🏔️")
+  icon        String   @default("mountain")
   description String
   included    Boolean  @default(true)
   createdAt   DateTime @default(now())

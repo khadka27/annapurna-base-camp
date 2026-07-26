@@ -108,7 +108,7 @@ const DEFAULT_HERO: HeroConfig = {
   subtitle:
     "Experience high-altitude luxury at 4,130m elevation in the heart of the Himalayas with heated suites, panoramic glacier views & authentic Sherpa hospitality.",
   badge: "4,130M HIGHEST LUXURY LODGE IN NEPAL",
-  seasonalBanner: "🏔️ 2026 TREK SEASON OPEN — RESERVE GLACIER SUITES ONLINE",
+  seasonalBanner: "2026 TREK SEASON OPEN — RESERVE GLACIER SUITES ONLINE",
   autoSlideSpeed: 5000,
   showOverlay: true,
   slides: [
