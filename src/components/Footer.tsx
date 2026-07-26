@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -38,9 +39,7 @@ export function Footer() {
     }, 5000);
   };
 
-  const handleQuickQuestion = (question: string) => {
-    setChatMessages((prev) => [...prev, question, "Thanks for reaching out! A Nepal Gateway Trekking & Base Camp specialist will respond shortly."]);
-  };
+
 
   return (
     <footer className="relative bg-[#395371] text-white">

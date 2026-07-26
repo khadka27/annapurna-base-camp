@@ -52,11 +52,11 @@ export default function Home() {
             <div className="relative rounded-3xl overflow-hidden border border-white/20 shadow-2xl text-center max-w-4xl mx-auto group">
               {/* Background Image */}
               <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-105"
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 pointer-events-none transform-gpu group-hover:scale-105"
                 style={{ backgroundImage: `url('/images/Annapurna-Base-Camp.jpg')` }}
               />
               {/* Dark Gradient & Glass Overlay for contrast and readability */}
-              <div className="absolute inset-0 bg-gradient-to-b from-[#395371]/90 via-[#395371]/80 to-[#395371]/95 backdrop-blur-[2px]" />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#395371]/90 via-[#395371]/80 to-[#395371]/95 backdrop-blur-[2px] pointer-events-none" />
 
               {/* Content Container */}
               <div className="relative z-10 p-8 sm:p-14 space-y-6">
@@ -307,18 +307,26 @@ export default function Home() {
         {/* Trek Information */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal variant="fade-up">
-            <div className="bg-gradient-to-tr from-[#0F172A] to-[#1E293B] p-8 sm:p-12 rounded-3xl border border-white/15 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="space-y-3 max-w-xl">
-                <span className="text-xs font-mono text-[#F97316] uppercase font-bold">EXPEDITION GUIDE</span>
-                <h2 className="text-3xl font-extrabold text-white">Planning the Annapurna Base Camp Trek?</h2>
-                <p className="text-slate-300 text-sm">
+            <div className="relative p-8 sm:p-12 rounded-3xl border border-white/15 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden group">
+              {/* Background Image /images/abc.avif */}
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 pointer-events-none transform-gpu group-hover:scale-105"
+                style={{ backgroundImage: `url('/images/abc.avif')` }}
+              />
+              {/* Dark Gradient Overlay for Readability */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#395371]/95 via-[#395371]/85 to-[#395371]/90 backdrop-blur-[1px] pointer-events-none" />
+
+              <div className="relative z-10 space-y-3 max-w-xl">
+                <span className="text-xs font-mono text-[#F97316] uppercase font-bold tracking-wider">EXPEDITION GUIDE</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Planning the Annapurna Base Camp Trek?</h2>
+                <p className="text-slate-200 text-sm leading-relaxed">
                   Whether you&apos;re starting your journey from Pokhara or already exploring the Annapurna region, Annapurna Guesthouse is the perfect overnight destination before celebrating your arrival at one of Nepal&apos;s most famous base camps. Our experienced team can also provide local trekking information and recommendations during your stay.
                 </p>
               </div>
 
               <Link
                 href="/trek"
-                className="px-8 py-3.5 rounded-xl font-bold text-sm text-white bg-[#F97316] hover:bg-[#ea6200] transition-colors shrink-0"
+                className="relative z-10 px-8 py-3.5 rounded-xl font-bold text-sm text-white bg-[#F97316] hover:bg-[#ea6200] shadow-lg shadow-[#F97316]/30 transition-all shrink-0 uppercase tracking-wider"
               >
                 ABC Trek Guide
               </Link>
@@ -508,27 +516,35 @@ export default function Home() {
         {/* Final CTA */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal variant="zoom-in">
-            <div className="bg-gradient-to-r from-[#395371] via-[#2A405A] to-[#395371] p-8 sm:p-14 rounded-3xl border border-white/20 text-center space-y-6 shadow-2xl relative overflow-hidden">
-              <div className="space-y-3 max-w-3xl mx-auto">
+            <div className="relative p-8 sm:p-14 rounded-3xl border border-white/20 text-center space-y-6 shadow-2xl overflow-hidden group">
+              {/* Background Image /images/Annapurna-Base-Camp.jpg */}
+              <div
+                className="absolute inset-0 bg-cover bg-[center_top] transition-transform duration-700 pointer-events-none transform-gpu group-hover:scale-105"
+                style={{ backgroundImage: `url('/images/Annapurna-Base-Camp.jpg')` }}
+              />
+              {/* Dark Gradient Overlay for Readability */}
+              <div className="absolute inset-0 bg-gradient-to-b from-[#395371]/90 via-[#395371]/95 to-[#395371] backdrop-blur-[2px] pointer-events-none" />
+
+              <div className="relative z-10 space-y-3 max-w-3xl mx-auto">
                 <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
                   Your Himalayan Adventure Starts Here
                 </h2>
-                <p className="text-slate-300 text-base sm:text-lg">
+                <p className="text-slate-200 text-base sm:text-lg leading-relaxed">
                   Experience authentic mountain hospitality, breathtaking Himalayan landscapes, and unforgettable memories at Annapurna Guesthouse. Reserve your stay today and make your Annapurna Base Camp journey even more special.
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+              <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
                 <button
                   onClick={() => setSelectedRoomForBooking(rooms[0])}
-                  className="w-full sm:w-auto px-8 py-4 rounded-xl font-extrabold text-base text-white bg-[#F97316] hover:bg-[#ea6200] shadow-xl shadow-[#F97316]/30 transition-all"
+                  className="w-full sm:w-auto px-8 py-4 rounded-xl font-extrabold text-base text-white bg-[#F97316] hover:bg-[#ea6200] shadow-xl shadow-[#F97316]/30 transition-all uppercase tracking-wider cursor-pointer"
                 >
                   Book Your Stay
                 </button>
 
                 <Link
-                  href="/trek"
-                  className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-base text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all"
+                  href="/contact"
+                  className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-base text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all uppercase tracking-wider"
                 >
                   Contact Us
                 </Link>
