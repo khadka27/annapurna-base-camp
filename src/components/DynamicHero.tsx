@@ -155,7 +155,7 @@ export function DynamicHero() {
 
         {/* Booking Search Widget */}
         <div className="max-w-5xl mx-auto bg-white/10 backdrop-blur-2xl p-4 sm:p-6 rounded-3xl border border-white/25 shadow-2xl space-y-3 mt-8">
-          <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 sm:grid-cols-5 gap-3 text-left">
+          <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-left">
             {/* Check-In */}
             <div className="bg-white/10 p-3 rounded-2xl border border-white/15">
               <label className="text-[10px] font-mono text-slate-300 block uppercase font-bold">Check-In</label>

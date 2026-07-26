@@ -275,7 +275,7 @@ export function WeatherWidget() {
             </div>
 
             {/* Time Marker Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 text-center text-xs font-mono">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 pt-2 text-center text-xs font-mono">
               <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 space-y-0.5">
                 <span className="text-slate-400 block text-[10px]">00:00 MIDNIGHT</span>
                 <span className="text-white font-bold text-xs">-12°C • 60% O₂</span>

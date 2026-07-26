@@ -174,7 +174,14 @@ export function GlassNavbar() {
             onClick={() => setMobileMenuOpen(false)}
             className="block text-slate-200 hover:text-white text-base font-semibold"
           >
-            Luxury Rooms Page
+            Luxury Rooms
+          </Link>
+          <Link
+            href="/services"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-slate-200 hover:text-white text-base font-semibold"
+          >
+            Services & Perks
           </Link>
           <Link
             href="/gallery"
