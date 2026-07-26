@@ -9,7 +9,7 @@ import { Footer } from "@/components/Footer";
 
 export default function RoomsPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-16">
+    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-20">
       <GlassNavbar />
       <main className="flex-grow">
         {/* Page Hero Header with Lodge Image Background */}
