@@ -40,11 +40,11 @@ export function GlassNavbar() {
       <div className="w-full">
         <div className="flex items-center justify-between">
           {/* Logo & Altitude */}
-          <Link href="/" className="flex items-center gap-3.5 group">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#0F172A] via-[#4F9CF9] to-[#F97316] p-0.5 shadow-lg shadow-[#4F9CF9]/25 group-hover:scale-105 transition-transform">
-              <div className="w-full h-full bg-[#0F172A] rounded-[14px] flex items-center justify-center">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3.5 group min-w-0">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-[#0F172A] via-[#4F9CF9] to-[#F97316] p-0.5 shadow-lg shadow-[#4F9CF9]/25 group-hover:scale-105 transition-transform shrink-0">
+              <div className="w-full h-full bg-[#0F172A] rounded-[10px] sm:rounded-[14px] flex items-center justify-center">
                 <svg
-                  className="w-6 h-6 text-[#4F9CF9]"
+                  className="w-5 h-5 sm:w-6 sm:h-6 text-[#4F9CF9]"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -58,12 +58,12 @@ export function GlassNavbar() {
                 </svg>
               </div>
             </div>
-            <div>
-              <span className="font-extrabold text-xl tracking-tight text-white flex items-center gap-2">
-                ANNAPURNA <span className="text-[#4F9CF9] font-normal">GUESTHOUSE</span>
+            <div className="min-w-0">
+              <span className="font-extrabold text-sm sm:text-lg lg:text-xl tracking-tight text-white flex items-center gap-1.5 truncate">
+                ANNAPURNA <span className="text-[#4F9CF9] font-normal hidden xs:inline">GUESTHOUSE</span>
               </span>
-              <span className="text-[11px] text-[#4F9CF9] block font-mono tracking-widest uppercase">
-                SANCTUARY • 4,130M • NEPAL
+              <span className="text-[9px] sm:text-[11px] text-[#4F9CF9] block font-mono tracking-widest uppercase truncate">
+                SANCTUARY • 4,130M
               </span>
             </div>
           </Link>
@@ -161,7 +161,7 @@ export function GlassNavbar() {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden mt-3 bg-[#0F172A]/95 backdrop-blur-2xl border border-white/15 rounded-2xl px-6 pt-4 pb-6 space-y-4 shadow-2xl">
+        <div className="lg:hidden mt-3 bg-[#0F172A]/95 backdrop-blur-2xl border border-white/15 rounded-2xl px-5 sm:px-6 pt-4 pb-6 space-y-3 shadow-2xl max-h-[80vh] overflow-y-auto">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}
