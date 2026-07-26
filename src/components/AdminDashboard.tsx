@@ -397,21 +397,21 @@ export function AdminDashboard() {
                 <div>
                   <label className="text-xs text-slate-300 block mb-1">Suite Photo (URL or Upload from Device)</label>
                   <div className="space-y-2">
-                    <div className="flex gap-2">
+                    <div className="space-y-2">
                       <input
                         type="text"
                         required
                         value={newRoomImage}
                         onChange={(e) => setNewRoomImage(e.target.value)}
                         placeholder="https://... or /uploads/..."
-                        className="flex-grow px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
                       />
-                      <label className="px-4 py-2 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
+                      <label className="w-full px-4 py-2.5 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all">
                         <span>
                           {uploadingRoomImage ? (
-                            <span className="flex items-center gap-1.5"><Loader2 className="w-4 h-4 animate-spin" /> Uploading...</span>
+                            <span className="flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Uploading image to server...</span>
                           ) : (
-                            <span className="flex items-center gap-1.5"><Folder className="w-4 h-4 text-[#4F9CF9]" /> Upload Local File</span>
+                            <span className="flex items-center gap-2"><Folder className="w-4 h-4 text-[#4F9CF9]" /> Choose & Upload Local Image File</span>
                           )}
                         </span>
                         <input
@@ -428,8 +428,8 @@ export function AdminDashboard() {
                     </div>
 
                     {newRoomImage && (
-                      <div className="flex items-center gap-3 pt-1">
-                        <img src={newRoomImage} alt="Room Preview" className="w-14 h-10 object-cover rounded-lg border border-white/20" />
+                      <div className="flex items-center gap-3 pt-1 min-w-0">
+                        <img src={newRoomImage} alt="Room Preview" className="w-14 h-10 object-cover rounded-lg border border-white/20 shrink-0" />
                         <span className="text-[10px] font-mono text-slate-400 truncate">Saved to: {newRoomImage}</span>
                       </div>
                     )}
@@ -437,7 +437,7 @@ export function AdminDashboard() {
                 </div>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-[#16A34A] text-white font-bold text-xs hover:bg-[#138a3e]"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#16A34A] text-white font-bold text-xs hover:bg-[#138a3e]"
                 >
                   Publish New Room
                 </button>
@@ -447,14 +447,14 @@ export function AdminDashboard() {
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider">Active Rooms Catalog ({rooms.length})</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {rooms.map((r) => (
-                    <div key={r.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
-                      <div className="space-y-1">
-                        <strong className="text-white block text-sm">{r.name}</strong>
-                        <span className="text-xs text-slate-400">${r.pricePerNight} / night • {r.category}</span>
+                    <div key={r.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="space-y-1 min-w-0">
+                        <strong className="text-white block text-sm truncate">{r.name}</strong>
+                        <span className="text-xs text-slate-400 block">${r.pricePerNight} / night • {r.category}</span>
                       </div>
                       <button
                         onClick={() => deleteRoom(r.id)}
-                        className="px-3 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold"
+                        className="self-end sm:self-center px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold shrink-0"
                       >
                         Delete
                       </button>
@@ -715,16 +715,16 @@ export function AdminDashboard() {
                 <div>
                   <label className="text-xs text-slate-300 block mb-1">Gallery Photo (URL or Upload from Device)</label>
                   <div className="space-y-2">
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
                       <input
                         type="text"
                         required
                         value={newGalUrl}
                         onChange={(e) => setNewGalUrl(e.target.value)}
                         placeholder="https://... or /uploads/..."
-                        className="flex-grow px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                        className="w-full sm:flex-grow px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm min-w-0"
                       />
-                      <label className="px-4 py-2 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
+                      <label className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
                         <span>
                           {uploadingGalImage ? (
                             <span className="flex items-center gap-1.5"><Loader2 className="w-4 h-4 animate-spin" /> Uploading...</span>

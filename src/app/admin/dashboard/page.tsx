@@ -400,21 +400,21 @@ export default function AdminDashboardPage() {
                 <div>
                   <label className="text-xs text-slate-300 block mb-1">Suite Photo (URL or Upload from Device)</label>
                   <div className="space-y-2">
-                    <div className="flex gap-2">
+                    <div className="space-y-2">
                       <input
                         type="text"
                         required
                         value={newRoomImage}
                         onChange={(e) => setNewRoomImage(e.target.value)}
                         placeholder="https://... or /uploads/..."
-                        className="flex-grow px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
                       />
-                      <label className="px-4 py-2 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
+                      <label className="w-full px-4 py-2.5 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all">
                         <span>
                           {uploadingRoomImage ? (
-                            <span className="flex items-center gap-1.5"><Loader2 className="w-4 h-4 animate-spin" /> Uploading...</span>
+                            <span className="flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Uploading image to server...</span>
                           ) : (
-                            <span className="flex items-center gap-1.5"><Folder className="w-4 h-4 text-[#4F9CF9]" /> Upload Local File</span>
+                            <span className="flex items-center gap-2"><Folder className="w-4 h-4 text-[#4F9CF9]" /> Choose & Upload Local Image File</span>
                           )}
                         </span>
                         <input

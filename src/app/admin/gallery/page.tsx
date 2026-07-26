@@ -105,20 +105,20 @@ export default function AdminGalleryPage() {
 
           <div>
             <label className="text-xs font-bold text-slate-300 block mb-1">Photo Image (URL or Local Upload)</label>
-            <div className="flex gap-2">
+            <div className="space-y-2">
               <input
                 type="text"
                 required
                 value={newGalUrl}
                 onChange={(e) => setNewGalUrl(e.target.value)}
                 placeholder="https://... or /uploads/..."
-                className="flex-grow px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
               />
-              <label className="px-4 py-2.5 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap">
+              <label className="w-full px-4 py-2.5 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all">
                 {uploadingGalImage ? (
-                  <span className="flex items-center gap-1.5"><Loader2 className="w-4 h-4 animate-spin" /> Uploading...</span>
+                  <span className="flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Uploading image to server...</span>
                 ) : (
-                  <span className="flex items-center gap-1.5"><Folder className="w-4 h-4" /> Upload Local File</span>
+                  <span className="flex items-center gap-2"><Folder className="w-4 h-4 text-[#4F9CF9]" /> Choose & Upload Local Image File</span>
                 )}
                 <input
                   type="file"
@@ -132,7 +132,7 @@ export default function AdminGalleryPage() {
 
           <button
             type="submit"
-            className="px-6 py-3 rounded-xl bg-[#16A34A] hover:bg-[#138a3e] text-white font-bold text-xs shadow-lg transition-all"
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#16A34A] hover:bg-[#138a3e] text-white font-bold text-xs shadow-lg transition-all"
           >
             Publish Media Item
           </button>
