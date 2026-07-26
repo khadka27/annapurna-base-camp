@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 interface Snowflake {
   x: number;
@@ -14,7 +15,13 @@ interface Snowflake {
 }
 
 export function SnowEffect() {
+  const pathname = usePathname();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  // Disable snow animation on all Admin pages
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current;
