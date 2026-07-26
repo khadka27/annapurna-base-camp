@@ -11,8 +11,11 @@ export function BookingModal() {
   const [guestName, setGuestName] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
   const [guestPhone, setGuestPhone] = useState("");
-  const [checkIn, setCheckIn] = useState("2026-10-10");
-  const [checkOut, setCheckOut] = useState("2026-10-13");
+  const todayStr = new Date().toISOString().split("T")[0];
+  const defaultOutDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+  const [checkIn, setCheckIn] = useState(todayStr);
+  const [checkOut, setCheckOut] = useState(defaultOutDate);
   const [guestsCount, setGuestsCount] = useState(2);
   const [couponCode, setCouponCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState(0);
@@ -322,6 +325,7 @@ export function BookingModal() {
                 <input
                   type="date"
                   required
+                  min={todayStr}
                   value={checkIn}
                   onChange={(e) => setCheckIn(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm focus:outline-none focus:border-[#4F9CF9]"
@@ -333,6 +337,7 @@ export function BookingModal() {
                 <input
                   type="date"
                   required
+                  min={checkIn || todayStr}
                   value={checkOut}
                   onChange={(e) => setCheckOut(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm focus:outline-none focus:border-[#4F9CF9]"

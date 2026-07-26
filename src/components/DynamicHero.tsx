@@ -8,8 +8,11 @@ export function DynamicHero() {
   const { heroConfig, setSelectedRoomForBooking, rooms } = useCms();
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const [checkIn, setCheckIn] = useState("2026-10-10");
-  const [checkOut, setCheckOut] = useState("2026-10-13");
+  const todayStr = new Date().toISOString().split("T")[0];
+  const defaultOutDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+  const [checkIn, setCheckIn] = useState(todayStr);
+  const [checkOut, setCheckOut] = useState(defaultOutDate);
   const [guests, setGuests] = useState(2);
   const [selectedRoomType, setSelectedRoomType] = useState("suite");
 
@@ -161,6 +164,7 @@ export function DynamicHero() {
               <label className="text-[10px] font-mono text-slate-300 block uppercase font-bold">Check-In</label>
               <input
                 type="date"
+                min={todayStr}
                 value={checkIn}
                 onChange={(e) => setCheckIn(e.target.value)}
                 className="w-full bg-transparent text-white font-semibold text-sm focus:outline-none cursor-pointer"
@@ -172,6 +176,7 @@ export function DynamicHero() {
               <label className="text-[10px] font-mono text-slate-300 block uppercase font-bold">Check-Out</label>
               <input
                 type="date"
+                min={checkIn || todayStr}
                 value={checkOut}
                 onChange={(e) => setCheckOut(e.target.value)}
                 className="w-full bg-transparent text-white font-semibold text-sm focus:outline-none cursor-pointer"

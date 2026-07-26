@@ -34,8 +34,11 @@ export default function DynamicRoomBookingPage({
     rooms[0];
 
   // Booking Form State
-  const [checkIn, setCheckIn] = useState("2026-10-10");
-  const [checkOut, setCheckOut] = useState("2026-10-13");
+  const todayStr = new Date().toISOString().split("T")[0];
+  const defaultOutDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+  const [checkIn, setCheckIn] = useState(todayStr);
+  const [checkOut, setCheckOut] = useState(defaultOutDate);
   const [guestsCount, setGuestsCount] = useState(room ? room.capacity : 2);
   const [guestName, setGuestName] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
@@ -367,6 +370,7 @@ export default function DynamicRoomBookingPage({
                       <input
                         type="date"
                         required
+                        min={todayStr}
                         value={checkIn}
                         onChange={(e) => setCheckIn(e.target.value)}
                         className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-xs font-mono"
@@ -377,6 +381,7 @@ export default function DynamicRoomBookingPage({
                       <input
                         type="date"
                         required
+                        min={checkIn || todayStr}
                         value={checkOut}
                         onChange={(e) => setCheckOut(e.target.value)}
                         className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-xs font-mono"
