@@ -55,6 +55,7 @@ export interface GalleryItem {
 }
 
 export interface CouponItem {
+  id?: string;
   code: string;
   discountPercent: number;
   active: boolean;
@@ -92,6 +93,9 @@ interface CmsContextType {
 
   coupons: CouponItem[];
   addCoupon: (coupon: CouponItem) => Promise<void>;
+  toggleCouponActive: (code: string, active: boolean) => Promise<void>;
+  updateCoupon: (code: string, updated: Partial<CouponItem>) => Promise<void>;
+  deleteCoupon: (code: string) => Promise<void>;
 
   services: ServiceItem[];
   addService: (service: Omit<ServiceItem, "id">) => Promise<void>;
@@ -312,6 +316,50 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  const toggleCouponActive = async (code: string, active: boolean) => {
+    setCoupons((prev) => prev.map((c) => (c.code === code ? { ...c, active } : c)));
+    try {
+      const match = coupons.find((c) => c.code === code);
+      if (match?.id) {
+        await fetch("/api/coupons", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: match.id, active }),
+        });
+      }
+    } catch (err) {
+      console.error("Failed to toggle coupon active status:", err);
+    }
+  };
+
+  const updateCoupon = async (code: string, updated: Partial<CouponItem>) => {
+    setCoupons((prev) => prev.map((c) => (c.code === code ? { ...c, ...updated } : c)));
+    try {
+      const match = coupons.find((c) => c.code === code);
+      if (match?.id) {
+        await fetch("/api/coupons", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: match.id, ...updated }),
+        });
+      }
+    } catch (err) {
+      console.error("Failed to update coupon:", err);
+    }
+  };
+
+  const deleteCoupon = async (code: string) => {
+    const match = coupons.find((c) => c.code === code);
+    setCoupons((prev) => prev.filter((c) => c.code !== code));
+    if (match?.id) {
+      try {
+        await fetch(`/api/coupons?id=${match.id}`, { method: "DELETE" });
+      } catch (err) {
+        console.error("Failed to delete coupon from database:", err);
+      }
+    }
+  };
+
   const addService = async (serviceData: Omit<ServiceItem, "id">) => {
     try {
       const res = await fetch("/api/services", {
@@ -356,6 +404,9 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deleteGalleryItem,
         coupons,
         addCoupon,
+        toggleCouponActive,
+        updateCoupon,
+        deleteCoupon,
         services,
         addService,
         deleteService,

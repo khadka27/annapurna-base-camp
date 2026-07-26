@@ -25,6 +25,8 @@ export default function AdminDashboardPage() {
     deleteGalleryItem,
     coupons,
     addCoupon,
+    toggleCouponActive,
+    deleteCoupon,
     services,
     addService,
     deleteService,
@@ -849,9 +851,22 @@ export default function AdminDashboardPage() {
                       <strong className="font-mono text-sm text-[#4F9CF9] block">{c.code}</strong>
                       <span className="text-xs text-slate-400">{c.discountPercent}% OFF</span>
                     </div>
-                    <span className="px-2 py-1 rounded bg-[#16A34A]/20 text-[#16A34A] text-[10px] font-bold">
-                      ACTIVE
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => toggleCouponActive(c.code, !c.active)}
+                        className={`px-2.5 py-1 rounded text-[10px] font-bold cursor-pointer transition-colors ${
+                          c.active ? "bg-[#16A34A]/20 text-[#16A34A] hover:bg-[#16A34A]/40" : "bg-amber-500/20 text-amber-300 hover:bg-amber-500/40"
+                        }`}
+                      >
+                        {c.active ? "ACTIVE" : "DEACTIVATED"}
+                      </button>
+                      <button
+                        onClick={() => deleteCoupon(c.code)}
+                        className="px-2 py-1 rounded bg-red-500/20 hover:bg-red-500/40 text-red-300 text-[10px] font-bold cursor-pointer"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

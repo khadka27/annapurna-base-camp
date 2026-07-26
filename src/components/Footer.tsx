@@ -387,73 +387,7 @@ export function Footer() {
         </div>
       </div>
 
-      {/* 5. FLOATING LIVE CHAT WIDGET (Bottom-Left) */}
-      <div className="fixed bottom-16 left-4 z-40 space-y-2 pointer-events-auto">
-        {chatOpen && (
-          <div className="space-y-2 max-w-xs animate-fade-in">
-            {/* Hi how can we help bubble */}
-            <div className="bg-white text-slate-800 p-3 rounded-2xl shadow-2xl border border-slate-200 text-xs font-semibold flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-500" />
-                <span>Hi! How can we help?</span>
-              </div>
-              <button
-                onClick={() => setChatOpen(false)}
-                className="text-slate-400 hover:text-slate-600 text-xs font-bold"
-                aria-label="Close chat"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </div>
 
-            {/* Quick action buttons */}
-            <div className="flex flex-col gap-1.5 items-start">
-              <button
-                onClick={() => handleQuickQuestion("I have a question about ABC trek booking")}
-                className="px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white text-[#102542] text-xs font-bold shadow-md border border-slate-200 transition-all text-left"
-              >
-                I have a question
-              </button>
-              <button
-                onClick={() => handleQuickQuestion("Tell me more about guesthouse amenities")}
-                className="px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white text-[#102542] text-xs font-bold shadow-md border border-slate-200 transition-all text-left"
-              >
-                Tell me more
-              </button>
-            </div>
-
-            {/* Render any sent messages */}
-            {chatMessages.map((msg, i) => (
-              <div
-                key={i}
-                className={`p-2.5 rounded-xl text-xs shadow-md ${
-                  i % 2 === 0
-                    ? "bg-[#102542] text-white self-end"
-                    : "bg-emerald-100 text-emerald-900 border border-emerald-300"
-                }`}
-              >
-                {msg}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Floating Chat Icon Trigger Circle */}
-        <button
-          onClick={() => setChatOpen(!chatOpen)}
-          className="relative w-12 h-12 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shadow-2xl transition-transform hover:scale-105"
-          aria-label="Open Live Chat"
-        >
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z" />
-          </svg>
-
-          {/* Red Notification Badge "1" */}
-          <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center border-2 border-white shadow">
-            1
-          </span>
-        </button>
-      </div>
 
       {/* 6. BOTTOM COOKIE CONSENT BAR (Fixed at bottom) */}
       {!cookieAccepted && (
