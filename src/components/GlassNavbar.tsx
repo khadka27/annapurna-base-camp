@@ -130,6 +130,16 @@ export function GlassNavbar() {
             >
               ABC Trek Guide
             </Link>
+            <Link
+              href="/contact"
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                pathname === "/contact"
+                  ? "bg-[#4F9CF9] text-white font-bold"
+                  : "text-[#4F9CF9] font-bold hover:text-white hover:bg-[#4F9CF9]/20"
+              }`}
+            >
+              Contact Us
+            </Link>
           </nav>
 
           {/* Action Tools */}

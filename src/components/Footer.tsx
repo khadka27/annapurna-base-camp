@@ -319,23 +319,20 @@ export function Footer() {
                 {/* Sub-column 1 */}
                 <ul className="space-y-2.5">
                   <li><Link href="/" className="hover:text-white transition-colors">Destinations</Link></li>
-                  <li><Link href="/trek" className="hover:text-white transition-colors">Nepal</Link></li>
-                  <li><Link href="/trek" className="hover:text-white transition-colors">Tibet</Link></li>
-                  <li><Link href="/trek" className="hover:text-white transition-colors">Bhutan</Link></li>
-                  <li><Link href="/experiences" className="hover:text-white transition-colors">Travel Guides</Link></li>
-                  <li><a href="#calculator" className="hover:text-white transition-colors">Plan Your Trip</a></li>
-                  <li><a href="#welcome" className="hover:text-white transition-colors">Contact Us</a></li>
+                  <li><Link href="/rooms" className="hover:text-white transition-colors">Luxury Suites</Link></li>
+                  <li><Link href="/services" className="hover:text-white transition-colors">Services</Link></li>
+                  <li><Link href="/trek" className="hover:text-white transition-colors">Trekking Route</Link></li>
+                  <li><Link href="/experiences" className="hover:text-white transition-colors">Sanctuary Experience</Link></li>
+                  <li><Link href="/contact" className="hover:text-white transition-colors font-bold text-[#4F9CF9]">Contact Us</Link></li>
                 </ul>
 
                 {/* Sub-column 2 */}
                 <ul className="space-y-2.5">
-                  <li><Link href="/gallery" className="hover:text-white transition-colors">Blog</Link></li>
-                  <li><Link href="/gallery" className="hover:text-white transition-colors">Photos</Link></li>
-                  <li><Link href="/gallery" className="hover:text-white transition-colors">Videos</Link></li>
-                  <li><Link href="/experiences" className="hover:text-white transition-colors">Client Reviews</Link></li>
-                  <li><a href="#welcome" className="hover:text-white transition-colors">Write a Review</a></li>
-                  <li><Link href="/" className="hover:text-white transition-colors">Site Map</Link></li>
-                  <li><Link href="/" className="hover:text-white transition-colors">Terms and Conditions</Link></li>
+                  <li><Link href="/gallery" className="hover:text-white transition-colors">Visual Gallery</Link></li>
+                  <li><Link href="/experiences" className="hover:text-white transition-colors font-semibold">Reviews & Telemetry</Link></li>
+                  <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                  <li><Link href="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link></li>
+                  <li><Link href="/cancellation-policy" className="hover:text-white transition-colors text-amber-300 font-semibold">Cancellation Policy</Link></li>
                 </ul>
               </div>
             </div>
