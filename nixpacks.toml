@@ -1,5 +1,4 @@
 # Nixpacks configuration for Annapurna Base Camp
-[providers]
 providers = ["node"]
 
 [variables]
