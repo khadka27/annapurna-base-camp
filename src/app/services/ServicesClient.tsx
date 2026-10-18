@@ -7,11 +7,11 @@ import { Footer } from "@/components/Footer";
 
 export default function ServicesClient() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-20">
+    <div className="min-h-screen flex flex-col bg-[#395371] text-white pt-20">
       <GlassNavbar />
 
       {/* Header Banner */}
-      <div className="relative py-20 overflow-hidden bg-slate-900 border-b border-white/10">
+      <div className="relative py-20 overflow-hidden bg-[#395371] border-b border-white/10">
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#4F9CF9] rounded-full blur-[180px]" />
         </div>

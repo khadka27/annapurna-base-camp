@@ -9,11 +9,11 @@ import { Footer } from "@/components/Footer";
 
 export default function GalleryClient() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-20">
+    <div className="min-h-screen flex flex-col bg-[#395371] text-white pt-20">
       <GlassNavbar />
       <main className="flex-grow">
         {/* Gallery Header */}
-        <section className="py-16 bg-[#0F172A] text-white text-center px-4 relative overflow-hidden border-b border-white/10">
+        <section className="py-16 bg-[#395371] text-white text-center px-4 relative overflow-hidden border-b border-white/10">
           <div className="max-w-4xl mx-auto space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-[#4F9CF9] text-xs font-mono font-bold uppercase">
               <span>HIMALAYAN PHOTOGRAPHY & MEDIA</span>

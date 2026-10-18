@@ -2,17 +2,29 @@
 
 import React, { useState } from "react";
 import { AdminNavbar } from "@/components/AdminNavbar";
-import { useCms, RoomItem } from "@/context/CmsContext";
-import { Building, Plus, Trash2, Folder, Loader2 } from "lucide-react";
+import { useCms } from "@/context/CmsContext";
+import { Building, Plus, Trash2, Folder, Loader2, CheckCircle2, XCircle } from "lucide-react";
 
 export default function AdminRoomsPage() {
-  const { rooms, addRoom, deleteRoom } = useCms();
+  const { rooms, addRoom, updateRoom, deleteRoom } = useCms();
 
   const [newRoomName, setNewRoomName] = useState("");
   const [newRoomPrice, setNewRoomPrice] = useState(250);
-  const [newRoomCategory, setNewRoomCategory] = useState<RoomItem["category"]>("suite");
-  const [newRoomImage, setNewRoomImage] = useState("https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80");
+  const [newRoomCapacity, setNewRoomCapacity] = useState(2);
+  const [newRoomImage, setNewRoomImage] = useState(
+    "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80"
+  );
   const [uploadingRoomImage, setUploadingRoomImage] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<"all" | "available" | "booked">("all");
+
+  const availableCount = rooms.filter((r) => r.available !== false).length;
+  const bookedCount = rooms.length - availableCount;
+
+  const displayedRooms = rooms.filter((r) => {
+    if (statusFilter === "available") return r.available !== false;
+    if (statusFilter === "booked") return r.available === false;
+    return true;
+  });
 
   const handleFileUpload = async (file: File) => {
     if (!file) return;
@@ -51,50 +63,61 @@ export default function AdminRoomsPage() {
 
     await addRoom({
       name: newRoomName.trim(),
-      category: newRoomCategory,
+      category: "Standard",
       pricePerNight: Number(newRoomPrice),
-      capacity: 2,
+      capacity: Number(newRoomCapacity || 2),
       size: "42 m²",
       view: "Mountain Sanctuary View",
       rating: 4.9,
-      description: "Custom luxury room configured via Admin CMS.",
+      description: "Comfortable mountain room configured via Admin CMS.",
       images: [newRoomImage],
       amenities: ["Radiant Floor Heating", "Panoramic Window", "Oxygen Pure Air"],
       featured: true,
       available: true,
     });
     setNewRoomName("");
-    alert("New room added to luxury catalog!");
+    alert("New room added and published live to website!");
+  };
+
+  const handleToggleAvailability = async (id: string, currentAvailable: boolean) => {
+    await updateRoom(id, { available: !currentAvailable });
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#395371] text-white">
+      <AdminNavbar />
+
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 w-full">
         {/* Header */}
-        <div className="bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/15 shadow-2xl flex items-center justify-between">
+        <div className="bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/15 shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-[#4F9CF9] text-[#0F172A] flex items-center justify-center font-bold shadow-lg">
               <Building className="w-6 h-6 text-[#0F172A]" />
             </div>
             <div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
-                Rooms CRUD & Catalog Manager
+                Rooms Management
               </h1>
               <span className="text-xs font-mono text-[#4F9CF9]">
-                CREATE, UPDATE & MANAGE HIGH-ALTITUDE GLACIER SUITES
+                ADD ROOMS DIRECTLY & CONTROL LIVE AVAILABILITY
               </span>
             </div>
           </div>
-          <span className="px-4 py-2 rounded-full bg-[#16A34A]/20 text-[#16A34A] text-xs font-mono font-bold border border-[#16A34A]/30">
-            {rooms.length} Suites Live
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold border border-emerald-500/30">
+              {availableCount} Available
+            </span>
+            <span className="px-3.5 py-1.5 rounded-full bg-rose-500/20 text-rose-300 text-xs font-mono font-bold border border-rose-500/30">
+              {bookedCount} Booked
+            </span>
+          </div>
         </div>
 
         {/* Add New Room Form */}
         <form onSubmit={handleCreateRoom} className="bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/15 shadow-2xl space-y-5">
           <h2 className="text-base font-bold text-[#4F9CF9] uppercase tracking-wider flex items-center gap-2">
             <Plus className="w-5 h-5" />
-            <span>Add New Suite to Catalog</span>
+            <span>Add New Room (Direct Display)</span>
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -105,8 +128,8 @@ export default function AdminRoomsPage() {
                 required
                 value={newRoomName}
                 onChange={(e) => setNewRoomName(e.target.value)}
-                placeholder="e.g. Dhaulagiri Horizon Suite"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                placeholder="e.g. Dhaulagiri Horizon Room"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm focus:outline-none focus:border-[#4F9CF9]"
               />
             </div>
             <div>
@@ -116,26 +139,25 @@ export default function AdminRoomsPage() {
                 required
                 value={newRoomPrice}
                 onChange={(e) => setNewRoomPrice(Number(e.target.value))}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm focus:outline-none focus:border-[#4F9CF9]"
               />
             </div>
             <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1">Category</label>
-              <select
-                value={newRoomCategory}
-                onChange={(e) => setNewRoomCategory(e.target.value as any)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs focus:outline-none cursor-pointer"
-              >
-                <option value="suite" className="bg-[#0F172A]">Glacier Suite</option>
-                <option value="panorama" className="bg-[#0F172A]">Panorama Room</option>
-                <option value="deluxe" className="bg-[#0F172A]">Deluxe Twin</option>
-                <option value="lodge" className="bg-[#0F172A]">Alpine Lodge</option>
-              </select>
+              <label className="text-xs font-bold text-slate-300 block mb-1">Guest Capacity</label>
+              <input
+                type="number"
+                required
+                min={1}
+                max={10}
+                value={newRoomCapacity}
+                onChange={(e) => setNewRoomCapacity(Number(e.target.value))}
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm focus:outline-none focus:border-[#4F9CF9]"
+              />
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-bold text-slate-300 block mb-1">Suite Photo (URL or Device Upload)</label>
+            <label className="text-xs font-bold text-slate-300 block mb-1">Room Photo (URL or Device Upload)</label>
             <div className="space-y-2">
               <input
                 type="text"
@@ -143,7 +165,7 @@ export default function AdminRoomsPage() {
                 value={newRoomImage}
                 onChange={(e) => setNewRoomImage(e.target.value)}
                 placeholder="https://... or /uploads/..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-sm focus:outline-none focus:border-[#4F9CF9]"
               />
               <label className="w-full px-4 py-2.5 rounded-xl bg-[#4F9CF9]/20 hover:bg-[#4F9CF9]/30 text-[#4F9CF9] border border-[#4F9CF9]/40 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all">
                 {uploadingRoomImage ? (
@@ -165,38 +187,123 @@ export default function AdminRoomsPage() {
             type="submit"
             className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#16A34A] hover:bg-[#138a3e] text-white font-bold text-xs shadow-lg transition-all"
           >
-            Publish New Room Suite
+            Publish New Room Live
           </button>
         </form>
 
-        {/* Existing Rooms List */}
+        {/* Existing Rooms List with Status Filter & Availability Toggle */}
         <div className="space-y-4">
-          <h2 className="text-sm font-bold text-white uppercase tracking-wider">
-            Active Catalog Suites ({rooms.length})
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {rooms.map((r) => (
-              <div key={r.id} className="p-4 sm:p-5 rounded-3xl bg-white/5 border border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-                  <img src={r.images[0]} alt={r.name} className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-2xl border border-white/15 shrink-0" />
-                  <div className="min-w-0">
-                    <strong className="text-white text-sm sm:text-base block truncate">{r.name}</strong>
-                    <span className="text-xs text-[#4F9CF9] font-mono block">${r.pricePerNight} / night • {r.category}</span>
-                  </div>
-                </div>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <h2 className="text-sm font-bold text-white uppercase tracking-wider">
+              Rooms Catalog ({rooms.length})
+            </h2>
 
-                <button
-                  onClick={() => deleteRoom(r.id)}
-                  className="self-end sm:self-center px-3.5 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold border border-red-500/30 transition-all flex items-center gap-1.5 shrink-0"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  <span>Delete</span>
-                </button>
+            {/* Filter Pills */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setStatusFilter("all")}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  statusFilter === "all"
+                    ? "bg-[#4F9CF9] text-white shadow-md shadow-[#4F9CF9]/30"
+                    : "bg-white/5 text-slate-300 border border-white/10 hover:bg-white/10"
+                }`}
+              >
+                All ({rooms.length})
+              </button>
+              <button
+                onClick={() => setStatusFilter("available")}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  statusFilter === "available"
+                    ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
+                    : "bg-white/5 text-slate-300 border border-white/10 hover:bg-white/10"
+                }`}
+              >
+                Available ({availableCount})
+              </button>
+              <button
+                onClick={() => setStatusFilter("booked")}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  statusFilter === "booked"
+                    ? "bg-rose-600 text-white shadow-md shadow-rose-600/30"
+                    : "bg-white/5 text-slate-300 border border-white/10 hover:bg-white/10"
+                }`}
+              >
+                Booked ({bookedCount})
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {displayedRooms.length === 0 ? (
+              <div className="col-span-full py-12 text-center bg-white/5 rounded-3xl border border-white/10 text-slate-300 text-sm">
+                No rooms match the selected filter ({statusFilter}).
               </div>
-            ))}
+            ) : (
+              displayedRooms.map((r) => {
+                const isAvailable = r.available !== false;
+                return (
+                  <div
+                    key={r.id}
+                    className="p-4 sm:p-5 rounded-3xl bg-white/5 border border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  >
+                    <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                      <img
+                        src={r.images[0]}
+                        alt={r.name}
+                        className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-2xl border border-white/15 shrink-0"
+                      />
+                      <div className="min-w-0 space-y-1">
+                        <strong className="text-white text-sm sm:text-base block truncate">
+                          {r.name}
+                        </strong>
+                        <span className="text-xs text-[#4F9CF9] font-mono block">
+                          ${r.pricePerNight} / night • {r.capacity} Guests
+                        </span>
+                        <div>
+                          {isAvailable ? (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                              <CheckCircle2 className="w-3 h-3" />
+                              <span>Available</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                              <XCircle className="w-3 h-3" />
+                              <span>Booked</span>
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+                      <button
+                        onClick={() => handleToggleAvailability(r.id, isAvailable)}
+                        className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
+                          isAvailable
+                            ? "bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border-rose-500/30"
+                            : "bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border-emerald-500/30"
+                        }`}
+                        title={isAvailable ? "Mark as Booked" : "Mark as Available"}
+                      >
+                        {isAvailable ? "Mark Booked" : "Mark Available"}
+                      </button>
+
+                      <button
+                        onClick={() => deleteRoom(r.id)}
+                        className="px-3 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold border border-red-500/30 transition-all flex items-center gap-1.5"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span>Delete</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
       </main>
     </div>
   );
 }
+

@@ -13,6 +13,7 @@ export function AdminDashboard() {
     updateHeroConfig,
     rooms,
     addRoom,
+    updateRoom,
     deleteRoom,
     bookings,
     updateBookingStatus,
@@ -46,7 +47,7 @@ export function AdminDashboard() {
   // New Room Form state
   const [newRoomName, setNewRoomName] = useState("");
   const [newRoomPrice, setNewRoomPrice] = useState(250);
-  const [newRoomCategory, setNewRoomCategory] = useState<RoomItem["category"]>("suite");
+  const [newRoomCapacity, setNewRoomCapacity] = useState(2);
   const [newRoomImage, setNewRoomImage] = useState("https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80");
 
   // New Gallery Form state
@@ -112,20 +113,20 @@ export function AdminDashboard() {
     if (!newRoomName) return;
     addRoom({
       name: newRoomName,
-      category: newRoomCategory,
+      category: "Standard",
       pricePerNight: Number(newRoomPrice),
-      capacity: 2,
+      capacity: Number(newRoomCapacity || 2),
       size: "42 m²",
       view: "Mountain Sanctuary View",
       rating: 4.9,
-      description: "Custom luxury room configured via Admin CMS.",
+      description: "Comfortable mountain room configured via Admin CMS.",
       images: [newRoomImage],
       amenities: ["Radiant Floor Heating", "Panoramic Window", "Oxygen Pure Air"],
       featured: true,
       available: true,
     });
     setNewRoomName("");
-    alert("New room added to luxury catalog!");
+    alert("New room added and published to website!");
   };
 
   const handleCreateGallery = (e: React.FormEvent) => {
@@ -381,21 +382,20 @@ export function AdminDashboard() {
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-slate-300 block mb-1">Category</label>
-                    <select
-                      value={newRoomCategory}
-                      onChange={(e) => setNewRoomCategory(e.target.value as any)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs focus:outline-none focus:border-[#4F9CF9] transition-all cursor-pointer shadow-sm"
-                    >
-                      <option value="suite" className="bg-[#0F172A]">Glacier Suite</option>
-                      <option value="panorama" className="bg-[#0F172A]">Panorama Room</option>
-                      <option value="deluxe" className="bg-[#0F172A]">Deluxe Twin</option>
-                      <option value="lodge" className="bg-[#0F172A]">Alpine Lodge</option>
-                    </select>
+                    <label className="text-xs text-slate-300 block mb-1">Guest Capacity</label>
+                    <input
+                      type="number"
+                      required
+                      min={1}
+                      max={10}
+                      value={newRoomCapacity}
+                      onChange={(e) => setNewRoomCapacity(Number(e.target.value))}
+                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-white text-sm"
+                    />
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs text-slate-300 block mb-1">Suite Photo (URL or Upload from Device)</label>
+                  <label className="text-xs text-slate-300 block mb-1">Room Photo (URL or Upload from Device)</label>
                   <div className="space-y-2">
                     <div className="space-y-2">
                       <input
@@ -446,20 +446,38 @@ export function AdminDashboard() {
               <div className="space-y-3">
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider">Active Rooms Catalog ({rooms.length})</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {rooms.map((r) => (
-                    <div key={r.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                      <div className="space-y-1 min-w-0">
-                        <strong className="text-white block text-sm truncate">{r.name}</strong>
-                        <span className="text-xs text-slate-400 block">${r.pricePerNight} / night • {r.category}</span>
+                  {rooms.map((r) => {
+                    const isAvailable = r.available !== false;
+                    return (
+                      <div key={r.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="space-y-1 min-w-0">
+                          <strong className="text-white block text-sm truncate">{r.name}</strong>
+                          <span className="text-xs text-slate-400 block">${r.pricePerNight} / night • {r.capacity} Guests</span>
+                          <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
+                            isAvailable ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" : "bg-rose-500/20 text-rose-300 border border-rose-500/30"
+                          }`}>
+                            {isAvailable ? "Available" : "Booked"}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+                          <button
+                            onClick={() => updateRoom(r.id, { available: !isAvailable })}
+                            className={`px-2.5 py-1 rounded-lg text-xs font-bold border ${
+                              isAvailable ? "bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border-rose-500/30" : "bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border-emerald-500/30"
+                            }`}
+                          >
+                            {isAvailable ? "Mark Booked" : "Mark Available"}
+                          </button>
+                          <button
+                            onClick={() => deleteRoom(r.id)}
+                            className="px-2.5 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
-                      <button
-                        onClick={() => deleteRoom(r.id)}
-                        className="self-end sm:self-center px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold shrink-0"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>

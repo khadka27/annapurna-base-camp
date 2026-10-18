@@ -166,7 +166,7 @@ export default function RoomSlugClient({
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-20">
+    <div className="min-h-screen flex flex-col bg-[#395371] text-white pt-20">
       <GlassNavbar />
 
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12 w-full">
@@ -191,7 +191,7 @@ export default function RoomSlugClient({
                 alt={room.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-black/30" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#395371] via-transparent to-black/30" />
 
               {/* Price & Rating Badges */}
               <div className="absolute top-4 left-4 flex items-center gap-2">

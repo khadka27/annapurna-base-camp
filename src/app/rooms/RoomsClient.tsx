@@ -9,7 +9,7 @@ import { Footer } from "@/components/Footer";
 
 export default function RoomsClient() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-20">
+    <div className="min-h-screen flex flex-col bg-[#395371] text-white pt-20">
       <GlassNavbar />
       <main className="flex-grow">
         {/* Page Hero Header with Lodge Image Background */}
@@ -20,7 +20,7 @@ export default function RoomsClient() {
             style={{ backgroundImage: `url('/images/Lodge-in-Annapurna-base-camp.jpg')` }}
           />
           {/* Dark Gradient & Glass Backdrop Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A]/90 via-[#0F172A]/85 to-[#0F172A]/95 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#395371]/90 via-[#395371]/85 to-[#395371] backdrop-blur-[2px]" />
 
           {/* Content */}
           <div className="relative z-10 max-w-4xl mx-auto space-y-4">

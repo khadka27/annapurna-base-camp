@@ -9,7 +9,7 @@ import { Footer } from "@/components/Footer";
 
 export default function ExperiencesClient() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-16">
+    <div className="min-h-screen flex flex-col bg-[#395371] text-white pt-16">
       <GlassNavbar />
       <main className="flex-grow">
         {/* Experiences Header */}

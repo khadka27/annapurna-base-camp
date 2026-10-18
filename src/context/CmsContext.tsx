@@ -16,7 +16,7 @@ export interface HeroConfig {
 export interface RoomItem {
   id: string;
   name: string;
-  category: "suite" | "panorama" | "deluxe" | "lodge";
+  category?: string;
   pricePerNight: number;
   capacity: number;
   size: string;
@@ -80,7 +80,7 @@ interface CmsContextType {
 
   rooms: RoomItem[];
   addRoom: (room: Omit<RoomItem, "id">) => Promise<void>;
-  updateRoom: (id: string, room: Partial<RoomItem>) => void;
+  updateRoom: (id: string, room: Partial<RoomItem>) => Promise<void>;
   deleteRoom: (id: string) => Promise<void>;
 
   bookings: BookingRecord[];
@@ -136,13 +136,143 @@ const DEFAULT_HERO: HeroConfig = {
   ],
 };
 
+const DEFAULT_ROOMS: RoomItem[] = [
+  {
+    id: "room-1",
+    name: "Royal Annapurna Glacier Suite",
+    pricePerNight: 380,
+    capacity: 2,
+    size: "52 m²",
+    view: "360° Annapurna I & South Face View",
+    rating: 5.0,
+    description:
+      "Our flagship sanctuary penthouse suite perched at 4,130m elevation. Features floor-to-ceiling triple-glazed panoramic bay windows with direct view of Annapurna I, heated radiant floorboards, king luxury wool mattress, private en-suite hot shower, oxygen-rich ambient air circulation, and espresso mountain bar.",
+    images: [
+      "/images/Lodge-in-Annapurna-base-camp.jpg",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1200&q=80",
+    ],
+    amenities: [
+      "Floor-to-Ceiling Glacier View Windows",
+      "Radiant Hydronic Floor Heating",
+      "Private En-Suite Solar Hot Shower",
+      "Supplemental Oxygen Supply System",
+      "Goose-Down Duvet & Wool Blankets",
+      "Private Telescope & Star Deck",
+      "Espresso & Himalayan Herbal Tea Bar",
+      "Satellite Starlink High-Speed Wi-Fi",
+    ],
+    featured: true,
+    available: true,
+    discountBadge: "FLAGSHIP SUITE",
+  },
+  {
+    id: "room-2",
+    name: "Fishtail Horizon Panorama Room",
+    pricePerNight: 280,
+    capacity: 2,
+    size: "40 m²",
+    view: "Machhapuchhre (Fishtail Peak) Sunrise View",
+    rating: 4.9,
+    description:
+      "Breathtaking sanctuary room aligned directly towards the sacred Machhapuchhre (Fishtail Peak) spire. Awaken to golden alpenglow illuminating the peak from your plush king bed. Equipped with thermal solar heating, private bathroom, high-altitude insulating curtains, and organic fleece bathrobes.",
+    images: [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
+    ],
+    amenities: [
+      "Machhapuchhre Sunrise Panorama",
+      "Solar-Powered Room Heating",
+      "Private Bathroom with Hot Water",
+      "Thermal Fleece Bedding",
+      "Organic Bath Amenities & Fleece Robes",
+      "Starlink Satellite Wi-Fi",
+      "USB Charging Stations",
+    ],
+    featured: true,
+    available: false,
+    discountBadge: "BEST SUNRISE VIEW",
+  },
+  {
+    id: "room-3",
+    name: "Highland Sanctuary Twin Deluxe",
+    pricePerNight: 195,
+    capacity: 2,
+    size: "34 m²",
+    view: "Modi Khola Glacier Valley View",
+    rating: 4.8,
+    description:
+      "Designed for trekking pairs, expedition partners, or companions seeking maximum warmth and comfort. Features two single orthopaedic beds with electric thermal blankets, insulated cedarwood paneling, writing desk, and mountain valley views.",
+    images: [
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1200&q=80",
+    ],
+    amenities: [
+      "Two Orthopaedic Twin Beds",
+      "Dual-Control Electric Blanket",
+      "Insulated Himalayan Cedar Paneling",
+      "High-Altitude Solar Hot Water Access",
+      "Personal Gear Storage Lockers",
+      "Starlink Wi-Fi",
+    ],
+    featured: false,
+    available: true,
+    discountBadge: "TREKKERS CHOICE",
+  },
+  {
+    id: "room-4",
+    name: "Base Camp Alpine Lodge Room",
+    pricePerNight: 120,
+    capacity: 2,
+    size: "26 m²",
+    view: "Annapurna South Ridge View",
+    rating: 4.7,
+    description:
+      "Cozy traditional Sherpa timber lodge room offering authentic mountain warmth and communal lodge camaraderie. Includes heavy thermal down duvets, shared heated bath facilities, and hot tea service delivered to your room.",
+    images: [
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+    ],
+    amenities: [
+      "Traditional Sherpa Timber Decor",
+      "Heavy-Duty Expedition Down Duvets",
+      "Communal Heated Bathrooms",
+      "Hot Morning Tea Service",
+      "Starlink High-Speed Wi-Fi",
+    ],
+    featured: false,
+    available: true,
+    discountBadge: "COZY VALUE",
+  },
+];
+
+const DEFAULT_BOOKINGS: BookingRecord[] = [
+  {
+    id: "BK-8842",
+    guestName: "Alexander Wright",
+    guestEmail: "alexander.wright@alpinist.co.uk",
+    guestPhone: "+44 7911 123456",
+    roomId: "room-2",
+    roomName: "Fishtail Horizon Panorama Room",
+    checkIn: "2026-10-22",
+    checkOut: "2026-10-25",
+    guestsCount: 2,
+    discountAmount: 0,
+    totalAmount: 840,
+    status: "Confirmed",
+    createdAt: "2026-10-15",
+  },
+];
+
 const CmsContext = createContext<CmsContextType | undefined>(undefined);
 
 export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const [heroConfig, setHeroConfig] = useState<HeroConfig>(DEFAULT_HERO);
-  const [rooms, setRooms] = useState<RoomItem[]>([]);
-  const [bookings, setBookings] = useState<BookingRecord[]>([]);
+  const [rooms, setRooms] = useState<RoomItem[]>(DEFAULT_ROOMS);
+  const [bookings, setBookings] = useState<BookingRecord[]>(DEFAULT_BOOKINGS);
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [coupons, setCoupons] = useState<CouponItem[]>([]);
   const [services, setServices] = useState<ServiceItem[]>([]);
@@ -162,10 +292,10 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           fetch("/api/services").then((r) => r.json()),
         ]);
 
-        if (roomsRes.success && Array.isArray(roomsRes.rooms)) {
+        if (roomsRes.success && Array.isArray(roomsRes.rooms) && roomsRes.rooms.length > 0) {
           setRooms(roomsRes.rooms);
         }
-        if (bookingsRes.success && Array.isArray(bookingsRes.bookings)) {
+        if (bookingsRes.success && Array.isArray(bookingsRes.bookings) && bookingsRes.bookings.length > 0) {
           setBookings(bookingsRes.bookings);
         }
         if (galleryRes.success && Array.isArray(galleryRes.gallery)) {
@@ -225,8 +355,17 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  const updateRoom = (id: string, roomData: Partial<RoomItem>) => {
+  const updateRoom = async (id: string, roomData: Partial<RoomItem>) => {
     setRooms((prev) => prev.map((r) => (r.id === id ? { ...r, ...roomData } : r)));
+    try {
+      await fetch("/api/rooms", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, ...roomData }),
+      });
+    } catch (err) {
+      console.error("Failed to update room in database:", err);
+    }
   };
 
   const deleteRoom = async (id: string) => {
@@ -416,7 +555,7 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setAdminOpen,
       }}
     >
-      <div className={darkMode ? "dark bg-[#0F172A] text-white" : "bg-[#F8FAFC] text-[#0F172A]"}>
+      <div className={darkMode ? "dark bg-[#395371] text-white" : "bg-[#395371] text-white"}>
         {children}
       </div>
     </CmsContext.Provider>

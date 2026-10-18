@@ -15,7 +15,7 @@ export function DynamicHero() {
   const [checkIn, setCheckIn] = useState(getTodayStr);
   const [checkOut, setCheckOut] = useState(getDefaultOutDate);
   const [guests, setGuests] = useState(2);
-  const [selectedRoomType, setSelectedRoomType] = useState("suite");
+  const [selectedRoomId, setSelectedRoomId] = useState("");
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -85,8 +85,8 @@ export function DynamicHero() {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const match = rooms.find((r) => r.category === selectedRoomType) || rooms[0];
-    setSelectedRoomForBooking(match);
+    const match = rooms.find((r) => r.id === selectedRoomId) || rooms[0];
+    if (match) setSelectedRoomForBooking(match);
   };
 
   return (
@@ -197,18 +197,20 @@ export function DynamicHero() {
               />
             </div>
 
-            {/* Room Type */}
+            {/* Select Room */}
             <div className="bg-white/10 p-3 rounded-2xl border border-white/15">
               <CustomSelect
-                label="Room Type"
-                value={selectedRoomType}
-                onChange={setSelectedRoomType}
-                options={[
-                  { value: "suite", label: "Glacier Suite" },
-                  { value: "panorama", label: "Panorama Room" },
-                  { value: "deluxe", label: "Deluxe Twin" },
-                  { value: "lodge", label: "Alpine Lodge" },
-                ]}
+                label="Select Room"
+                value={selectedRoomId || (rooms[0]?.id ?? "")}
+                onChange={setSelectedRoomId}
+                options={
+                  rooms.length > 0
+                    ? rooms.map((r) => ({
+                        value: r.id,
+                        label: `${r.name} ($${r.pricePerNight})`,
+                      }))
+                    : [{ value: "any", label: "All Mountain Rooms" }]
+                }
               />
             </div>
 
