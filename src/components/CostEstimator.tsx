@@ -16,6 +16,7 @@ export function CostEstimator() {
   const [guestEmail, setGuestEmail] = useState<string>("");
   const [guestPhone, setGuestPhone] = useState<string>("");
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [quoteId, setQuoteId] = useState<string>("ABC-QUOTE-5001");
 
   // Base Prices per person
   const packagePrices = {
@@ -37,10 +38,12 @@ export function CostEstimator() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const newQuoteId = `ABC-QUOTE-${Math.floor(1000 + Math.random() * 9000)}`;
+    setQuoteId(newQuoteId);
     setSubmitted(true);
 
     const waUrl = getWhatsAppBookingUrl({
-      bookingId: `ABC-QUOTE-${Math.floor(1000 + Math.random() * 9000)}`,
+      bookingId: newQuoteId,
       roomName: `Expedition Package (${packageType.toUpperCase()})`,
       guestName: guestName || "Expedition Trekker",
       guestEmail: guestEmail || "guest@annapurna.com",
@@ -343,7 +346,7 @@ export function CostEstimator() {
 
                   <a
                     href={getWhatsAppBookingUrl({
-                      bookingId: `ABC-QUOTE-${Math.floor(1000 + Math.random() * 9000)}`,
+                      bookingId: quoteId,
                       roomName: `Expedition Package (${packageType.toUpperCase()})`,
                       guestName: guestName || "Expedition Trekker",
                       guestEmail: guestEmail || "guest@annapurna.com",

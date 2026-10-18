@@ -1,38 +1,57 @@
-"use client";
+import { Metadata } from "next";
+import ExperiencesClient from "./ExperiencesClient";
+import {
+  SITE_URL,
+  SITE_NAME,
+  getBreadcrumbSchema,
+} from "@/lib/seo-schemas";
 
-import React from "react";
-import { GlassNavbar } from "@/components/GlassNavbar";
-import { ExperiencesTimeline } from "@/components/ExperiencesTimeline";
-import { BookingModal } from "@/components/BookingModal";
-import { AdminDashboard } from "@/components/AdminDashboard";
-import { Footer } from "@/components/Footer";
+export const metadata: Metadata = {
+  title: "Curated Sanctuary Experiences • Sunrise, Stargazing & Alpine Hospitality",
+  description:
+    "Immerse yourself in authentic Himalayan experiences at 4,130m in Annapurna Base Camp, Nepal. Morning golden sunrises on Annapurna I, zero-light pollution stargazing, warm Sherpa kitchen storytelling, and alpine wellness.",
+  keywords: [
+    "Annapurna Base Camp experiences",
+    "Annapurna sunrise photography",
+    "Stargazing Annapurna Base Camp",
+    "Sherpa hospitality Annapurna",
+    "Annapurna sanctuary trek memories",
+    "Annapurna Guesthouse activities",
+  ],
+  alternates: {
+    canonical: `${SITE_URL}/experiences`,
+  },
+  openGraph: {
+    title: "Curated Sanctuary Experiences | Annapurna Guesthouse (4,130m)",
+    description:
+      "Golden hour sunrises over 8,000m summits, high-altitude night sky stargazing, and authentic Sherpa tea hospitality.",
+    url: `${SITE_URL}/experiences`,
+    siteName: SITE_NAME,
+    type: "website",
+    images: [
+      {
+        url: `${SITE_URL}/images/Annapurna-Base-Camp.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Sunrise over Annapurna Sanctuary peaks",
+      },
+    ],
+  },
+};
 
 export default function ExperiencesPage() {
-  return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-16">
-      <GlassNavbar />
-      <main className="flex-grow">
-        {/* Experiences Header */}
-        <section className="py-16 text-center px-4 relative overflow-hidden border-b border-white/10">
-          <div className="max-w-4xl mx-auto space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-[#16A34A] text-xs font-mono font-bold uppercase">
-              <span>SANCTUARY HOSPITALITY</span>
-            </div>
-            <h1 className="text-4xl sm:text-6xl font-extrabold text-white">
-              Curated Sanctuary Experiences
-            </h1>
-            <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto">
-              From morning tea on the heated viewing deck watching golden sunrise over 8,000m summits to zero-light stargazing with high-altitude telescopes.
-            </p>
-          </div>
-        </section>
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Curated Experiences", url: "/experiences" },
+  ]);
 
-        {/* Timeline Component */}
-        <ExperiencesTimeline />
-      </main>
-      <Footer />
-      <BookingModal />
-      <AdminDashboard />
-    </div>
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <ExperiencesClient />
+    </>
   );
 }

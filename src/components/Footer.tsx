@@ -237,10 +237,10 @@ export function Footer() {
                   Drop a Message
                 </span>
                 <a
-                  href="mailto:info@nepalgatewaytrekking.com"
+                  href="mailto:info@abc-annapurnaguesthouse.com"
                   className="text-xs text-slate-300 hover:text-[#4F9CF9] transition-colors block font-mono"
                 >
-                  info@nepalgatewaytrekking.com
+                  info@abc-annapurnaguesthouse.com
                 </a>
               </div>
 

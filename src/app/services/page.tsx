@@ -1,41 +1,65 @@
-"use client";
+import { Metadata } from "next";
+import ServicesClient from "./ServicesClient";
+import {
+  SITE_URL,
+  SITE_NAME,
+  getBreadcrumbSchema,
+  getServicesSchema,
+} from "@/lib/seo-schemas";
 
-import React from "react";
-import { GlassNavbar } from "@/components/GlassNavbar";
-import { ServicesShowcase } from "@/components/ServicesShowcase";
-import { Footer } from "@/components/Footer";
+export const metadata: Metadata = {
+  title: "High-Altitude Luxury & Safety Services • Medical Oxygen & Helicopter Charter",
+  description:
+    "Comprehensive high-altitude hospitality and safety services at 4,130m in Annapurna Base Camp, Nepal. Features medical oxygen chambers, thermal heated suites, direct helicopter charter access, satellite WiFi, and authentic Sherpa dining.",
+  keywords: [
+    "Annapurna Base Camp medical oxygen",
+    "Helicopter rescue Annapurna Base Camp",
+    "Hot shower Annapurna Base Camp",
+    "Sherpa restaurant Annapurna Base Camp",
+    "Starlink internet Annapurna Base Camp",
+    "Annapurna Guesthouse services",
+    "High altitude lodge amenities Nepal",
+  ],
+  alternates: {
+    canonical: `${SITE_URL}/services`,
+  },
+  openGraph: {
+    title: "High-Altitude Luxury & Safety Services | Annapurna Guesthouse (4,130m)",
+    description:
+      "Explore alpine medical oxygen, heated suites, emergency helicopter access, satellite broadband, and Sherpa dining at 4,130m inside the Annapurna Sanctuary.",
+    url: `${SITE_URL}/services`,
+    siteName: SITE_NAME,
+    type: "website",
+    images: [
+      {
+        url: `${SITE_URL}/images/Annapurna-Base-Camp.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "High-Altitude Services at Annapurna Guesthouse",
+      },
+    ],
+  },
+};
 
 export default function ServicesPage() {
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Services & Alpine Amenities", url: "/services" },
+  ]);
+
+  const servicesSchema = getServicesSchema();
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-20">
-      <GlassNavbar />
-
-      {/* Header Banner */}
-      <div className="relative py-20 overflow-hidden bg-slate-900 border-b border-white/10">
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#4F9CF9] rounded-full blur-[180px]" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#4F9CF9]/20 text-[#4F9CF9] text-xs font-mono font-bold uppercase tracking-wider border border-[#4F9CF9]/30">
-            <span>ANNAPURNA BASE CAMP • 4,130M SANCTUARY</span>
-          </div>
-
-          <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight">
-            High-Altitude Luxury & Safety Services
-          </h1>
-
-          <p className="max-w-3xl mx-auto text-slate-300 text-base sm:text-lg">
-            Discover our full range of alpine medical oxygen chambers, thermal soaking tubs, direct helicopter charter access, satellite broadband, and authentic Sherpa dining.
-          </p>
-        </div>
-      </div>
-
-      <main className="flex-grow">
-        <ServicesShowcase />
-      </main>
-
-      <Footer />
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema) }}
+      />
+      <ServicesClient />
+    </>
   );
 }

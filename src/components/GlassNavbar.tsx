@@ -88,7 +88,7 @@ export function GlassNavbar() {
                   : "text-slate-200 hover:text-white hover:bg-white/10"
               }`}
             >
-              Luxury Rooms
+              Rooms
             </Link>
             <Link
               href="/services"
@@ -184,7 +184,7 @@ export function GlassNavbar() {
             onClick={() => setMobileMenuOpen(false)}
             className="block text-slate-200 hover:text-white text-base font-semibold"
           >
-            Luxury Rooms
+            Rooms
           </Link>
           <Link
             href="/services"

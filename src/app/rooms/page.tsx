@@ -1,47 +1,59 @@
-"use client";
+import { Metadata } from "next";
+import RoomsClient from "./RoomsClient";
+import {
+  SITE_URL,
+  SITE_NAME,
+  getBreadcrumbSchema,
+} from "@/lib/seo-schemas";
 
-import React from "react";
-import { GlassNavbar } from "@/components/GlassNavbar";
-import { RoomShowcase } from "@/components/RoomShowcase";
-import { BookingModal } from "@/components/BookingModal";
-import { AdminDashboard } from "@/components/AdminDashboard";
-import { Footer } from "@/components/Footer";
+export const metadata: Metadata = {
+  title: "Glacier Suites & Accommodations (4,130m)",
+  description:
+    "Book luxury heated suites at 4,130m elevation in Annapurna Base Camp, Nepal. Features double-pane panoramic windows, radiant floor warming, private en-suite thermal baths, and uninterrupted sunrise views of Annapurna I.",
+  keywords: [
+    "Annapurna Base Camp rooms",
+    "Annapurna Base Camp luxury suite",
+    "Heated rooms Annapurna Base Camp",
+    "Book ABC guesthouse suite",
+    "Fishtail panorama suite",
+    "Glacier sanctuary suite ABC",
+    "Lodge rooms Annapurna Base Camp",
+    "Nepal high altitude room reservation",
+  ],
+  alternates: {
+    canonical: `${SITE_URL}/rooms`,
+  },
+  openGraph: {
+    title: "Glacier Suites & Accommodations | Annapurna Guesthouse (4,130m)",
+    description:
+      "Perched at 4,130m inside the Annapurna Sanctuary. Explore heated suites with panoramic mountain views and instant online reservations.",
+    url: `${SITE_URL}/rooms`,
+    siteName: SITE_NAME,
+    type: "website",
+    images: [
+      {
+        url: `${SITE_URL}/images/Lodge-in-Annapurna-base-camp.jpg`,
+        width: 1200,
+        height: 800,
+        alt: "Glacier Suites at Annapurna Base Camp Guesthouse",
+      },
+    ],
+  },
+};
 
 export default function RoomsPage() {
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Glacier Suites & Accommodations", url: "/rooms" },
+  ]);
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-20">
-      <GlassNavbar />
-      <main className="flex-grow">
-        {/* Page Hero Header with Lodge Image Background */}
-        <section className="relative py-20 text-center px-4 overflow-hidden border-b border-white/15 group">
-          {/* Background Image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-105"
-            style={{ backgroundImage: `url('/images/Lodge-in-Annapurna-base-camp.jpg')` }}
-          />
-          {/* Dark Gradient & Glass Backdrop Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A]/90 via-[#0F172A]/85 to-[#0F172A]/95 backdrop-blur-[2px]" />
-
-          {/* Content */}
-          <div className="relative z-10 max-w-4xl mx-auto space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#4F9CF9]/20 text-[#4F9CF9] text-xs font-mono font-bold uppercase backdrop-blur-md border border-[#4F9CF9]/30">
-              <span>EXPLORE ALL SUITES & LODGES</span>
-            </div>
-            <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight drop-shadow-md">
-              Glacier Suites & Accommodations
-            </h1>
-            <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed drop-shadow-sm">
-              Perched at 4,130m inside the Annapurna Sanctuary. Every room features panoramic double-pane windows, radiant floor warming, and private en-suite thermal baths.
-            </p>
-          </div>
-        </section>
-
-        {/* Room Showcase Component */}
-        <RoomShowcase />
-      </main>
-      <Footer />
-      <BookingModal />
-      <AdminDashboard />
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <RoomsClient />
+    </>
   );
 }

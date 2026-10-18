@@ -3,21 +3,36 @@ import { Metadata } from "next";
 import { GlassNavbar } from "@/components/GlassNavbar";
 import { Footer } from "@/components/Footer";
 import { Scale, AlertTriangle, CheckCircle, Shield } from "lucide-react";
+import { SITE_URL, SITE_NAME, getBreadcrumbSchema } from "@/lib/seo-schemas";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | Annapurna Base Camp Guesthouse",
+  title: "Terms & Conditions • Official Guest Stay Terms",
   description:
     "Official Terms of Service and Stay Conditions at Annapurna Base Camp Guesthouse (4,130m). Read reservation guidelines, altitude safety rules, and stay terms.",
+  alternates: {
+    canonical: `${SITE_URL}/terms`,
+  },
   openGraph: {
     title: "Terms & Conditions | Annapurna Base Camp Guesthouse",
     description: "Terms of service, altitude safety disclaimers, and room stay policies.",
-    url: "https://annapurnabasecamp.com/terms",
+    url: `${SITE_URL}/terms`,
+    siteName: SITE_NAME,
+    type: "website",
   },
 };
 
 export default function TermsPage() {
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Terms & Conditions", url: "/terms" },
+  ]);
+
   return (
     <div className="min-h-screen flex flex-col bg-[#395371] text-white pt-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <GlassNavbar />
 
       <main className="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 w-full">

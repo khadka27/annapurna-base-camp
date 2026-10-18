@@ -109,11 +109,11 @@ interface CmsContextType {
 }
 
 const DEFAULT_HERO: HeroConfig = {
-  title: "Annapurna Base Camp Sanctuary Guesthouse",
+  title: "Annapurna Guesthouse",
   subtitle:
-    "Experience high-altitude luxury at 4,130m elevation in the heart of the Himalayas with heated suites, panoramic glacier views & authentic Sherpa hospitality.",
-  badge: "4,130M HIGHEST LUXURY LODGE IN NEPAL",
-  seasonalBanner: "2026 TREK SEASON OPEN — RESERVE GLACIER SUITES ONLINE",
+    "Experience high-altitude hospitality at 4,130m elevation in the heart of the Himalayas with warm rooms, panoramic glacier views & authentic Gurung hospitality.",
+  badge: "4,130M HIGHEST LODGE IN NEPAL",
+  seasonalBanner: "2026 TREK SEASON OPEN — RESERVE YOUR ROOM ONLINE",
   autoSlideSpeed: 5000,
   showOverlay: true,
   whatsappNumber: "9779851055520",

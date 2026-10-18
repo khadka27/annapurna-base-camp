@@ -4,9 +4,16 @@ import { GlassNavbar } from "@/components/GlassNavbar";
 import { Footer } from "@/components/Footer";
 import { ContactFormClient } from "./ContactFormClient";
 import { MapPin, Phone, Mail, Clock, ShieldCheck, Compass, MessageCircle } from "lucide-react";
+import {
+  SITE_URL,
+  SITE_NAME,
+  SITE_PHONE,
+  SITE_EMAIL,
+  getBreadcrumbSchema,
+} from "@/lib/seo-schemas";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Annapurna Base Camp Guesthouse & Trekking",
+  title: "Contact Us • 24/7 High-Altitude Expedition Desk",
   description:
     "Get in touch with Annapurna Base Camp Guesthouse (4,130m). Contact us for room reservations, trekking inquiries, altitude guidance, or emergency support.",
   keywords: [
@@ -16,17 +23,48 @@ export const metadata: Metadata = {
     "Himalayan lodge booking contact",
     "Kaski Nepal guesthouse",
   ],
+  alternates: {
+    canonical: `${SITE_URL}/contact`,
+  },
   openGraph: {
     title: "Contact Annapurna Base Camp Guesthouse (4,130m)",
     description:
       "Direct inquiries for luxury Himalayan lodging, trekking guide bookings, and emergency altitude support.",
-    url: "https://annapurnabasecamp.com/contact",
+    url: `${SITE_URL}/contact`,
+    siteName: SITE_NAME,
+    type: "website",
   },
 };
 
 export default function ContactPage() {
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Contact Us", url: "/contact" },
+  ]);
+
+  const contactSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: "Contact Annapurna Guesthouse",
+    url: `${SITE_URL}/contact`,
+    mainEntity: {
+      "@type": "LodgingBusiness",
+      name: SITE_NAME,
+      telephone: SITE_PHONE,
+      email: SITE_EMAIL,
+    },
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#395371] text-white pt-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
+      />
       <GlassNavbar />
 
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12 w-full">
@@ -74,8 +112,8 @@ export default function ContactPage() {
               <p className="text-xs text-slate-300 mt-1">Reservations, group bookings & press</p>
             </div>
             <div className="pt-2 border-t border-white/10 space-y-1 font-mono text-sm">
-              <a href="mailto:info@annapurnabasecamp.com" className="block text-white hover:text-[#4F9CF9] font-bold">
-                info@annapurnabasecamp.com
+              <a href="mailto:info@abc-annapurnaguesthouse.com" className="block text-white hover:text-[#4F9CF9] font-bold">
+                info@abc-annapurnaguesthouse.com
               </a>
               <span className="text-xs text-slate-400 block">Response within 2 hours</span>
             </div>

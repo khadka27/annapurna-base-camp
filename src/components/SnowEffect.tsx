@@ -17,13 +17,10 @@ interface Snowflake {
 export function SnowEffect() {
   const pathname = usePathname();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  // Disable snow animation on all Admin pages
-  if (pathname?.startsWith("/admin")) {
-    return null;
-  }
+  const isAdmin = pathname?.startsWith("/admin");
 
   useEffect(() => {
+    if (isAdmin) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -93,7 +90,9 @@ export function SnowEffect() {
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [isAdmin]);
+
+  if (isAdmin) return null;
 
   return (
     <canvas

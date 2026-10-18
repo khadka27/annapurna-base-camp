@@ -2,18 +2,17 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { ShieldCheck, ExternalLink, LogOut } from "lucide-react";
 
 interface AdminNavbarProps {
   activeTab?: string;
-  setActiveTab?: (tab: any) => void;
+  setActiveTab?: (tab: string) => void;
 }
 
 export function AdminNavbar({ activeTab, setActiveTab }: AdminNavbarProps) {
   const pathname = usePathname();
-  const router = useRouter();
 
   const handleLogout = async () => {
     localStorage.removeItem("admin_auth");

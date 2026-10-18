@@ -3,21 +3,36 @@ import { Metadata } from "next";
 import { GlassNavbar } from "@/components/GlassNavbar";
 import { Footer } from "@/components/Footer";
 import { RefreshCw, CheckCircle, AlertCircle, Clock } from "lucide-react";
+import { SITE_URL, SITE_NAME, getBreadcrumbSchema } from "@/lib/seo-schemas";
 
 export const metadata: Metadata = {
-  title: "Cancellation & Refund Policy | Annapurna Base Camp Guesthouse",
+  title: "Cancellation & Refund Policy • Transparent Guidelines",
   description:
     "Official Cancellation & Refund Policy for room reservations at Annapurna Base Camp Guesthouse. Learn about refund percentages, weather rescheduling, and cancellation rules.",
+  alternates: {
+    canonical: `${SITE_URL}/cancellation-policy`,
+  },
   openGraph: {
     title: "Cancellation & Refund Policy | Annapurna Base Camp Guesthouse",
     description: "Transparent reservation cancellation timeline and weather refund rules.",
-    url: "https://annapurnabasecamp.com/cancellation-policy",
+    url: `${SITE_URL}/cancellation-policy`,
+    siteName: SITE_NAME,
+    type: "website",
   },
 };
 
 export default function CancellationPolicyPage() {
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Cancellation & Refund Policy", url: "/cancellation-policy" },
+  ]);
+
   return (
     <div className="min-h-screen flex flex-col bg-[#395371] text-white pt-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <GlassNavbar />
 
       <main className="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 w-full">
@@ -84,7 +99,7 @@ export default function CancellationPolicyPage() {
               <AlertCircle className="w-5 h-5 text-[#4F9CF9]" /> 3. How to Request a Cancellation
             </h2>
             <p>
-              To cancel or modify a booking, email us at <a href="mailto:bookings@annapurnabasecamp.com" className="text-[#4F9CF9] font-mono underline">bookings@annapurnabasecamp.com</a> or message our WhatsApp desk at <strong className="text-emerald-400 font-mono">+977 9851000000</strong> with your Booking Reference ID. Refunds are returned to the original payment method within 3–5 business days.
+              To cancel or modify a booking, email us at <a href="mailto:bookings@abc-annapurnaguesthouse.com" className="text-[#4F9CF9] font-mono underline">bookings@abc-annapurnaguesthouse.com</a> or message our WhatsApp desk at <strong className="text-emerald-400 font-mono">+977 9851055520</strong> with your Booking Reference ID. Refunds are returned to the original payment method within 3–5 business days.
             </p>
           </section>
         </div>

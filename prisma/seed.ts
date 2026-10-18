@@ -29,7 +29,7 @@ async function main() {
   await prisma.heroConfig.upsert({
     where: { id: "default-hero" },
     update: {
-      title: "Annapurna Base Camp Sanctuary Guesthouse",
+      title: "Annapurna Guesthouse",
       subtitle:
         "Experience high-altitude luxury at 4,130m elevation in the heart of the Himalayas with heated suites, panoramic glacier views & authentic Sherpa hospitality.",
       badge: "4,130M HIGHEST LUXURY LODGE IN NEPAL",
@@ -38,7 +38,7 @@ async function main() {
     },
     create: {
       id: "default-hero",
-      title: "Annapurna Base Camp Sanctuary Guesthouse",
+      title: "Annapurna Guesthouse",
       subtitle:
         "Experience high-altitude luxury at 4,130m elevation in the heart of the Himalayas with heated suites, panoramic glacier views & authentic Sherpa hospitality.",
       badge: "4,130M HIGHEST LUXURY LODGE IN NEPAL",

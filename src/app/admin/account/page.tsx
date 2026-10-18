@@ -14,13 +14,8 @@ export default function AdminAccountSettingsPage() {
   const [fetching, setFetching] = useState(true);
   const [statusMsg, setStatusMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
-  useEffect(() => {
-    fetchCredentials();
-  }, []);
-
   const fetchCredentials = async () => {
     try {
-      setFetching(true);
       const res = await fetch("/api/admin/credentials");
       const data = await res.json();
       if (data.success && data.email) {
@@ -33,6 +28,10 @@ export default function AdminAccountSettingsPage() {
       setFetching(false);
     }
   };
+
+  useEffect(() => {
+    fetchCredentials();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +83,7 @@ export default function AdminAccountSettingsPage() {
       } else {
         setStatusMsg({ type: "error", text: data.message || "Failed to update credentials." });
       }
-    } catch (err: any) {
+    } catch {
       setStatusMsg({ type: "error", text: "Network error updating admin credentials." });
     } finally {
       setLoading(false);

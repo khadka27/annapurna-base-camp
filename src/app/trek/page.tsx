@@ -1,46 +1,86 @@
-"use client";
+import { Metadata } from "next";
+import TrekClient from "./TrekClient";
+import {
+  SITE_URL,
+  SITE_NAME,
+  getBreadcrumbSchema,
+  getTrekTripSchema,
+  getFaqSchema,
+} from "@/lib/seo-schemas";
 
-import React from "react";
-import { GlassNavbar } from "@/components/GlassNavbar";
-import { ItineraryExplorer } from "@/components/ItineraryExplorer";
-import { PreparationGuide } from "@/components/PreparationGuide";
-import { HighlightsGrid } from "@/components/HighlightsGrid";
-import { BookingModal } from "@/components/BookingModal";
-import { AdminDashboard } from "@/components/AdminDashboard";
-import { Footer } from "@/components/Footer";
+export const metadata: Metadata = {
+  title: "Annapurna Base Camp Trek (4,130m) • Route Map, Elevation & Safety Guide",
+  description:
+    "Official expedition guide for the 10-day Annapurna Base Camp Trek (4,130m). Detailed day-by-day itinerary, elevation gain charts, gear packing list, and acute mountain sickness (AMS) safety protocols.",
+  keywords: [
+    "Annapurna Base Camp Trek",
+    "ABC Trek itinerary 10 days",
+    "Annapurna Base Camp elevation map",
+    "Annapurna Sanctuary route guide",
+    "Poon Hill to Annapurna Base Camp",
+    "Annapurna Base Camp packing list",
+    "AMS safety Annapurna Base Camp",
+    "Annapurna Guesthouse trek guide",
+    "Pokhara to Annapurna Base Camp trek",
+  ],
+  alternates: {
+    canonical: `${SITE_URL}/trek`,
+  },
+  openGraph: {
+    title: "Annapurna Base Camp Trek (4,130m) • Route Map & Guide | Annapurna Guesthouse",
+    description:
+      "Explore the 10-day journey to Annapurna Base Camp at 4,130m elevation. Includes route map, elevation scaling charts, packing checklists, and sanctuary hospitality.",
+    url: `${SITE_URL}/trek`,
+    siteName: SITE_NAME,
+    type: "website",
+    images: [
+      {
+        url: `${SITE_URL}/images/Annapurna-Base-Camp.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Annapurna Base Camp Trek route beneath 8,000m summits",
+      },
+    ],
+  },
+};
 
 export default function TrekPage() {
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Annapurna Base Camp Trek Guide (4,130m)", url: "/trek" },
+  ]);
+
+  const tripSchema = getTrekTripSchema();
+  const trekFaqSchema = getFaqSchema([
+    {
+      q: "How difficult is the Annapurna Base Camp (ABC) trek?",
+      a: "The ABC trek is considered moderately challenging. It involves 5–7 hours of walking per day on stone staircases and mountain trails, reaching a maximum altitude of 4,130 meters at Annapurna Base Camp.",
+    },
+    {
+      q: "What is the best season to trek to Annapurna Base Camp?",
+      a: "The best trekking seasons are Autumn (October to November) for crystal-clear mountain skies and Spring (March to May) for blooming rhododendron forests and mild temperatures.",
+    },
+    {
+      q: "How can I prevent Acute Mountain Sickness (AMS)?",
+      a: "Ascend gradually, stay well-hydrated (3–4 liters of fluids per day), avoid alcohol, eat warm carbohydrate-rich meals, and rest at our guesthouse if mild symptoms occur. We have 24/7 medical oxygen on-site.",
+    },
+  ]);
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-[#0F172A] pt-16">
-      <GlassNavbar />
-      <main className="flex-grow">
-        {/* Trek Guide Header */}
-        <section className="py-16 bg-[#0F172A] text-white text-center px-4 relative overflow-hidden border-b border-white/10">
-          <div className="max-w-4xl mx-auto space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-[#F97316] text-xs font-mono font-bold uppercase">
-              <span>OFFICIAL EXPEDITION GUIDE</span>
-            </div>
-            <h1 className="text-4xl sm:text-6xl font-extrabold text-white">
-              Annapurna Base Camp Trek (4,130m)
-            </h1>
-            <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto">
-              Complete day-by-day 10-day route map, elevation scaling charts, gear preparation checklist, and AMS altitude safety protocols.
-            </p>
-          </div>
-        </section>
-
-        {/* 10-Day Route Map */}
-        <ItineraryExplorer />
-
-        {/* Highlights */}
-        <HighlightsGrid />
-
-        {/* Packing Checklist & AMS Safety */}
-        <PreparationGuide />
-      </main>
-      <Footer />
-      <BookingModal />
-      <AdminDashboard />
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(tripSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(trekFaqSchema) }}
+      />
+      <TrekClient />
+    </>
   );
 }

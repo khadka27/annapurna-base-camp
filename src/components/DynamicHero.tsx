@@ -5,15 +5,15 @@ import Link from "next/link";
 import { useCms } from "@/context/CmsContext";
 import { CustomSelect } from "@/components/CustomSelect";
 
+const getTodayStr = () => new Date().toISOString().split("T")[0];
+const getDefaultOutDate = () => new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
 export function DynamicHero() {
   const { heroConfig, setSelectedRoomForBooking, rooms } = useCms();
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const todayStr = new Date().toISOString().split("T")[0];
-  const defaultOutDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
-
-  const [checkIn, setCheckIn] = useState(todayStr);
-  const [checkOut, setCheckOut] = useState(defaultOutDate);
+  const [checkIn, setCheckIn] = useState(getTodayStr);
+  const [checkOut, setCheckOut] = useState(getDefaultOutDate);
   const [guests, setGuests] = useState(2);
   const [selectedRoomType, setSelectedRoomType] = useState("suite");
 
@@ -89,8 +89,6 @@ export function DynamicHero() {
     setSelectedRoomForBooking(match);
   };
 
-  const activeSlideObj = heroConfig.slides[currentSlide] || heroConfig.slides[0];
-
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-28 pb-16 overflow-hidden bg-[#395371]">
       {/* Background Slideshow */}
@@ -165,7 +163,7 @@ export function DynamicHero() {
               <label className="text-[10px] font-mono text-slate-300 block uppercase font-bold">Check-In</label>
               <input
                 type="date"
-                min={todayStr}
+                min={checkIn}
                 value={checkIn}
                 onChange={(e) => setCheckIn(e.target.value)}
                 className="w-full bg-transparent text-white font-semibold text-sm focus:outline-none cursor-pointer"
@@ -177,7 +175,7 @@ export function DynamicHero() {
               <label className="text-[10px] font-mono text-slate-300 block uppercase font-bold">Check-Out</label>
               <input
                 type="date"
-                min={checkIn || todayStr}
+                min={checkIn}
                 value={checkOut}
                 onChange={(e) => setCheckOut(e.target.value)}
                 className="w-full bg-transparent text-white font-semibold text-sm focus:outline-none cursor-pointer"

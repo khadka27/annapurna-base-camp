@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useCms, RoomItem } from "@/context/CmsContext";
-import { getRoomSlug } from "@/app/rooms/[slug]/page";
+import { getRoomSlug } from "@/lib/room-utils";
 
 export function RoomShowcase() {
   const { rooms, bookings } = useCms();

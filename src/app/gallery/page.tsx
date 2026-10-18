@@ -1,38 +1,57 @@
-"use client";
+import { Metadata } from "next";
+import GalleryClient from "./GalleryClient";
+import {
+  SITE_URL,
+  SITE_NAME,
+  getBreadcrumbSchema,
+} from "@/lib/seo-schemas";
 
-import React from "react";
-import { GlassNavbar } from "@/components/GlassNavbar";
-import { MasonryGallery } from "@/components/MasonryGallery";
-import { BookingModal } from "@/components/BookingModal";
-import { AdminDashboard } from "@/components/AdminDashboard";
-import { Footer } from "@/components/Footer";
+export const metadata: Metadata = {
+  title: "Guesthouse Media Gallery • High-Altitude Photography (4,130m)",
+  description:
+    "Browse high-resolution photographs and drone imagery of Annapurna Base Camp (4,130m), luxury glacier suites, dining room dishes, snowy mountain lodges, and 8,000m Himalayan peaks.",
+  keywords: [
+    "Annapurna Base Camp photos",
+    "Annapurna Guesthouse gallery",
+    "ABC lodge photos Nepal",
+    "Annapurna Base Camp snowfall pictures",
+    "Annapurna I sunrise photos",
+    "Annapurna sanctuary pictures",
+  ],
+  alternates: {
+    canonical: `${SITE_URL}/gallery`,
+  },
+  openGraph: {
+    title: "Guesthouse Media Gallery | Annapurna Guesthouse (4,130m)",
+    description:
+      "Explore high-resolution photography of our mountain lodge at 4,130m, luxury suites, and breathtaking Annapurna Sanctuary scenery.",
+    url: `${SITE_URL}/gallery`,
+    siteName: SITE_NAME,
+    type: "website",
+    images: [
+      {
+        url: `${SITE_URL}/images/Annapurna-Base-Camp.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Annapurna Base Camp Sanctuary Gallery",
+      },
+    ],
+  },
+};
 
 export default function GalleryPage() {
-  return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-white pt-20">
-      <GlassNavbar />
-      <main className="flex-grow">
-        {/* Gallery Header */}
-        <section className="py-16 bg-[#0F172A] text-white text-center px-4 relative overflow-hidden border-b border-white/10">
-          <div className="max-w-4xl mx-auto space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-[#4F9CF9] text-xs font-mono font-bold uppercase">
-              <span>HIMALAYAN PHOTOGRAPHY & MEDIA</span>
-            </div>
-            <h1 className="text-4xl sm:text-6xl font-extrabold text-white">
-              Guesthouse Media Gallery
-            </h1>
-            <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto">
-              Browse high-resolution imagery of Annapurna Base Camp, our luxury suites, dining room dishes, thermal bath house, and 8,000m summits.
-            </p>
-          </div>
-        </section>
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Media Gallery", url: "/gallery" },
+  ]);
 
-        {/* Pinterest Style Masonry Gallery Component */}
-        <MasonryGallery />
-      </main>
-      <Footer />
-      <BookingModal />
-      <AdminDashboard />
-    </div>
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <GalleryClient />
+    </>
   );
 }

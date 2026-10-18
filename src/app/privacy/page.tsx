@@ -3,21 +3,36 @@ import { Metadata } from "next";
 import { GlassNavbar } from "@/components/GlassNavbar";
 import { Footer } from "@/components/Footer";
 import { ShieldCheck, Lock, Eye, FileText } from "lucide-react";
+import { SITE_URL, SITE_NAME, getBreadcrumbSchema } from "@/lib/seo-schemas";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Annapurna Base Camp Guesthouse",
+  title: "Privacy Policy • Guest Data Protection Protocol",
   description:
     "Official Privacy Policy for Annapurna Base Camp Guesthouse (4,130m). Learn how we collect, protect, and handle guest reservation and contact data.",
+  alternates: {
+    canonical: `${SITE_URL}/privacy`,
+  },
   openGraph: {
     title: "Privacy Policy | Annapurna Base Camp Guesthouse",
     description: "Data privacy practices and protection standards at Annapurna Base Camp Guesthouse.",
-    url: "https://annapurnabasecamp.com/privacy",
+    url: `${SITE_URL}/privacy`,
+    siteName: SITE_NAME,
+    type: "website",
   },
 };
 
 export default function PrivacyPolicyPage() {
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Privacy Policy", url: "/privacy" },
+  ]);
+
   return (
     <div className="min-h-screen flex flex-col bg-[#395371] text-white pt-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <GlassNavbar />
 
       <main className="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 w-full">
@@ -83,7 +98,7 @@ export default function PrivacyPolicyPage() {
           <section className="space-y-3 pt-4 border-t border-white/10">
             <h2 className="text-lg font-bold text-white">5. Contact Us Regarding Your Privacy</h2>
             <p className="text-xs">
-              If you have any questions or wish to delete your reservation records, contact our Privacy Desk at <a href="mailto:privacy@annapurnabasecamp.com" className="text-[#4F9CF9] font-mono underline">privacy@annapurnabasecamp.com</a>.
+              If you have any questions or wish to delete your reservation records, contact our Privacy Desk at <a href="mailto:privacy@abc-annapurnaguesthouse.com" className="text-[#4F9CF9] font-mono underline">privacy@abc-annapurnaguesthouse.com</a>.
             </p>
           </section>
         </div>
