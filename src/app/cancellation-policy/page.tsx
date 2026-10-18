@@ -99,7 +99,7 @@ export default function CancellationPolicyPage() {
               <AlertCircle className="w-5 h-5 text-[#4F9CF9]" /> 3. How to Request a Cancellation
             </h2>
             <p>
-              To cancel or modify a booking, email us at <a href="mailto:bookings@abc-annapurnaguesthouse.com" className="text-[#4F9CF9] font-mono underline">bookings@abc-annapurnaguesthouse.com</a> or message our WhatsApp desk at <strong className="text-emerald-400 font-mono">+977 9851055520</strong> with your Booking Reference ID. Refunds are returned to the original payment method within 3–5 business days.
+              To cancel or modify a booking, email us at <a href="mailto:bookings@abc-annapurnaguesthouse.com" className="text-[#4F9CF9] font-mono underline">bookings@abc-annapurnaguesthouse.com</a> or message our WhatsApp desk at <strong className="text-emerald-400 font-mono">+977 9846063557</strong> with your Booking Reference ID. Refunds are returned to the original payment method within 3–5 business days.
             </p>
           </section>
         </div>

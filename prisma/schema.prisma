@@ -17,7 +17,7 @@ model AdminUser {
 model Room {
   id            String   @id @default(cuid())
   name          String
-  category      String   // suite, panorama, deluxe, lodge
+  category      String?  // Optional legacy category, completely unused
   pricePerNight Float
   capacity      Int      @default(2)
   size          String
@@ -73,7 +73,7 @@ model HeroConfig {
   badge          String
   seasonalBanner String
   autoSlideSpeed Int    @default(5000)
-  whatsappNumber String @default("9779851055520")
+  whatsappNumber String @default("9779846063557")
 }
 
 model Service {

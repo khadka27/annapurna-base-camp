@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     const room = await prisma.room.create({
       data: {
         name: body.name,
-        category: body.category || "Standard",
+        category: body.category || null,
         pricePerNight: Number(body.pricePerNight),
         capacity: Number(body.capacity || 2),
         size: body.size || "40 m²",

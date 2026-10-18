@@ -10,6 +10,7 @@ import { AdminDashboard } from "@/components/AdminDashboard";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { ServicesShowcase } from "@/components/ServicesShowcase";
+import { PermitsAndGuidesSection } from "@/components/PermitsAndGuidesSection";
 import { useCms } from "@/context/CmsContext";
 
 export default function HomeClient() {
@@ -61,13 +62,13 @@ export default function HomeClient() {
               {/* Content Container */}
               <div className="relative z-10 p-8 sm:p-14 space-y-6">
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#4F9CF9]/20 text-[#4F9CF9] text-xs font-mono font-bold uppercase tracking-wider backdrop-blur-md border border-[#4F9CF9]/30">
-                  <span>Welcome to Annapurna Guesthouse</span>
+                  <span>Welcome to Annapurna Guest House and Restaurant</span>
                 </div>
                 <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight drop-shadow-md">
                   Your Mountain Home at Annapurna Base Camp
                 </h2>
                 <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto drop-shadow-sm">
-                  Located at 4,130 meters in the breathtaking Annapurna Sanctuary, Annapurna Guesthouse offers trekkers a comfortable place to rest, recharge, and experience authentic Himalayan hospitality. Surrounded by towering snow-covered peaks, our guesthouse combines warm local service with spectacular mountain scenery, creating memories that last a lifetime.
+                  Located at 4,130 meters in the heart of the Himalayas, Annapurna Guest House and Restaurant offers trekkers a warm place to rest, recharge, and experience authentic Gurung hospitality. Surrounded by towering snow-covered peaks, our guest house combines home-cooked food, hot showers, and comfortable rooms with spectacular mountain scenery.
                 </p>
                 <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-3xl mx-auto drop-shadow-sm">
                   Whether you&apos;re reaching the base camp after days of trekking or simply soaking in the incredible Himalayan views, every stay is designed to be peaceful, welcoming, and unforgettable.
@@ -333,6 +334,11 @@ export default function HomeClient() {
             </div>
           </ScrollReveal>
         </section>
+
+        {/* Permits, Guides & Porters Assistance */}
+        <ScrollReveal variant="fade-up">
+          <PermitsAndGuidesSection />
+        </ScrollReveal>
 
         {/* Dining */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -8,25 +8,26 @@ import {
 } from "@/lib/seo-schemas";
 
 export const metadata: Metadata = {
-  title: "High-Altitude Luxury & Safety Services • Medical Oxygen & Helicopter Charter",
+  title: "Guest House & Restaurant Facilities • Hot Gas Showers, Guides & Porters (4,130m)",
   description:
-    "Comprehensive high-altitude hospitality and safety services at 4,130m in Annapurna Base Camp, Nepal. Features medical oxygen chambers, thermal heated suites, direct helicopter charter access, satellite WiFi, and authentic Sherpa dining.",
+    "Explore hospitality and trekking facilities at Annapurna Guest House and Restaurant (4,130m). Steaming hot gas & bucket showers, guide & porter assistance, warm dining hall, emergency oxygen, and Starlink Wi-Fi.",
   keywords: [
+    "Annapurna Base Camp hot shower",
+    "Gas shower Annapurna Base Camp",
+    "Bucket shower ABC lodge",
+    "Annapurna Base Camp guides and porters",
     "Annapurna Base Camp medical oxygen",
     "Helicopter rescue Annapurna Base Camp",
-    "Hot shower Annapurna Base Camp",
-    "Sherpa restaurant Annapurna Base Camp",
-    "Starlink internet Annapurna Base Camp",
-    "Annapurna Guesthouse services",
+    "Annapurna Guest House and Restaurant services",
     "High altitude lodge amenities Nepal",
   ],
   alternates: {
     canonical: `${SITE_URL}/services`,
   },
   openGraph: {
-    title: "High-Altitude Luxury & Safety Services | Annapurna Guesthouse (4,130m)",
+    title: "Guest House & Restaurant Facilities | Annapurna Guest House and Restaurant (4,130m)",
     description:
-      "Explore alpine medical oxygen, heated suites, emergency helicopter access, satellite broadband, and Sherpa dining at 4,130m inside the Annapurna Sanctuary.",
+      "Explore hot gas & bucket showers, guide & porter arrangements, emergency oxygen, satellite broadband, and authentic mountain dining at 4,130m.",
     url: `${SITE_URL}/services`,
     siteName: SITE_NAME,
     type: "website",

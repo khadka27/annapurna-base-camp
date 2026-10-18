@@ -59,8 +59,8 @@ export function GlassNavbar() {
               </div>
             </div>
             <div className="min-w-0">
-              <span className="font-extrabold text-sm sm:text-lg lg:text-xl tracking-tight text-white flex items-center gap-1.5 truncate">
-                ANNAPURNA <span className="text-[#4F9CF9] font-normal hidden xs:inline">GUESTHOUSE</span>
+              <span className="font-extrabold text-sm sm:text-base lg:text-lg tracking-tight text-white flex items-center gap-1.5 truncate">
+                ANNAPURNA <span className="text-cyan-300 font-semibold hidden xs:inline">GUEST HOUSE & RESTAURANT</span>
               </span>
               <span className="text-[9px] sm:text-[11px] text-[#4F9CF9] block font-mono tracking-widest uppercase truncate">
                 SANCTUARY • 4,130M

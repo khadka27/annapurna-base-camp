@@ -42,7 +42,7 @@ export function AdminDashboard() {
   const [heroSubtitle, setHeroSubtitle] = useState(heroConfig.subtitle);
   const [heroBadge, setHeroBadge] = useState(heroConfig.badge);
   const [autoSpeed, setAutoSpeed] = useState(heroConfig.autoSlideSpeed);
-  const [whatsappNumber, setWhatsappNumber] = useState(heroConfig.whatsappNumber || "9779851055520");
+  const [whatsappNumber, setWhatsappNumber] = useState(heroConfig.whatsappNumber || "9779846063557");
 
   // New Room Form state
   const [newRoomName, setNewRoomName] = useState("");
@@ -113,7 +113,6 @@ export function AdminDashboard() {
     if (!newRoomName) return;
     addRoom({
       name: newRoomName,
-      category: "Standard",
       pricePerNight: Number(newRoomPrice),
       capacity: Number(newRoomCapacity || 2),
       size: "42 m²",
@@ -677,13 +676,13 @@ export function AdminDashboard() {
 
               <div>
                 <label className="text-xs text-[#25D366] font-bold block mb-1 uppercase tracking-wider">
-                  Expedition Official WhatsApp Phone Number (e.g. 9779851055520)
+                  Expedition Official WhatsApp Phone Number (e.g. 9779846063557)
                 </label>
                 <input
                   type="text"
                   value={whatsappNumber}
                   onChange={(e) => setWhatsappNumber(e.target.value)}
-                  placeholder="9779851055520"
+                  placeholder="9779846063557"
                   className="w-full px-3 py-2 rounded-xl bg-white/10 border border-[#25D366]/30 text-white text-sm focus:border-[#25D366]"
                 />
                 <span className="text-[11px] text-slate-400 block mt-1">

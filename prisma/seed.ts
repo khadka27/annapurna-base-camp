@@ -29,31 +29,32 @@ async function main() {
   await prisma.heroConfig.upsert({
     where: { id: "default-hero" },
     update: {
-      title: "Annapurna Guesthouse",
+      title: "Annapurna Guest House and Restaurant",
       subtitle:
-        "Experience high-altitude luxury at 4,130m elevation in the heart of the Himalayas with heated suites, panoramic glacier views & authentic Sherpa hospitality.",
-      badge: "4,130M HIGHEST LUXURY LODGE IN NEPAL",
-      seasonalBanner: "2026 TREK SEASON OPEN — RESERVE GLACIER SUITES ONLINE",
+        "Experience high-altitude hospitality at 4,130m elevation in the heart of the Himalayas with warm rooms, panoramic glacier views, delicious restaurant dining & authentic Gurung hospitality.",
+      badge: "4,130M HIGHEST LODGE IN NEPAL",
+      seasonalBanner: "2026 TREK SEASON OPEN — RESERVE YOUR ROOM ONLINE",
       autoSlideSpeed: 5000,
+      whatsappNumber: "9779846063557",
     },
     create: {
       id: "default-hero",
-      title: "Annapurna Guesthouse",
+      title: "Annapurna Guest House and Restaurant",
       subtitle:
-        "Experience high-altitude luxury at 4,130m elevation in the heart of the Himalayas with heated suites, panoramic glacier views & authentic Sherpa hospitality.",
-      badge: "4,130M HIGHEST LUXURY LODGE IN NEPAL",
-      seasonalBanner: "2026 TREK SEASON OPEN — RESERVE GLACIER SUITES ONLINE",
+        "Experience high-altitude hospitality at 4,130m elevation in the heart of the Himalayas with warm rooms, panoramic glacier views, delicious restaurant dining & authentic Gurung hospitality.",
+      badge: "4,130M HIGHEST LODGE IN NEPAL",
+      seasonalBanner: "2026 TREK SEASON OPEN — RESERVE YOUR ROOM ONLINE",
       autoSlideSpeed: 5000,
+      whatsappNumber: "9779846063557",
     },
   });
   console.log("[OK] Hero Config seeded");
 
-  // 3. Seed Luxury Rooms
+  // 3. Seed Rooms (Category Removed)
   const roomsData = [
     {
       id: "room-1",
       name: "Royal Annapurna Glacier Suite",
-      category: "suite",
       pricePerNight: 380,
       capacity: 2,
       size: "52 m²",
@@ -84,7 +85,6 @@ async function main() {
     {
       id: "room-2",
       name: "Fishtail Horizon Panorama Room",
-      category: "panorama",
       pricePerNight: 280,
       capacity: 2,
       size: "40 m²",
@@ -107,13 +107,12 @@ async function main() {
         "USB Charging Stations",
       ],
       featured: true,
-      available: true,
+      available: false,
       discountBadge: "BEST SUNRISE VIEW",
     },
     {
       id: "room-3",
       name: "Highland Sanctuary Twin Deluxe",
-      category: "deluxe",
       pricePerNight: 195,
       capacity: 2,
       size: "34 m²",
@@ -140,7 +139,6 @@ async function main() {
     {
       id: "room-4",
       name: "Base Camp Alpine Lodge Room",
-      category: "lodge",
       pricePerNight: 120,
       capacity: 2,
       size: "26 m²",

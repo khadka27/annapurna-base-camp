@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ThermometerSnowflake,
   Wind,
@@ -11,19 +11,123 @@ import {
   Activity,
   Sparkles,
   RefreshCw,
+  Gauge,
+  Info,
 } from "lucide-react";
 
+interface LiveWeatherData {
+  temp: number;
+  feelsLike: number;
+  condition: string;
+  oxygenPercent: number;
+  surfacePressure: number;
+  windSpeed: string;
+  humidity: string;
+  visibility: string;
+  lastUpdated: string;
+  isLive: boolean;
+}
+
 export function WeatherWidget() {
-  const [weather] = useState({
-    temp: -4,
-    feelsLike: -11,
-    condition: "Clear Mountain Skies",
+  const [weather, setWeather] = useState<LiveWeatherData>({
+    temp: 0,
+    feelsLike: -2,
+    condition: "Partly Cloudy Mountain Skies",
     oxygenPercent: 62,
-    windSpeed: "14 km/h",
-    humidity: "42%",
-    visibility: "100% Unobstructed",
-    lastUpdated: "Live Feed • Synced 2m ago",
+    surfacePressure: 629.8,
+    windSpeed: "5 km/h",
+    humidity: "93%",
+    visibility: "High Alpine Visibility",
+    lastUpdated: "Fetching Live Satellite...",
+    isLive: false,
   });
+  const [loading, setLoading] = useState(false);
+  const [showO2Info, setShowO2Info] = useState(false);
+
+  const getWeatherCondition = (code: number): string => {
+    switch (code) {
+      case 0:
+        return "Clear Himalayan Skies";
+      case 1:
+        return "Mainly Clear & Sunny";
+      case 2:
+        return "Partly Cloudy Peaks";
+      case 3:
+        return "Overcast Himalayan Ridge";
+      case 45:
+      case 48:
+        return "High-Altitude Fog / Mist";
+      case 51:
+      case 53:
+      case 55:
+        return "Light Mountain Drizzle";
+      case 61:
+      case 63:
+      case 65:
+        return "Alpine Rain";
+      case 71:
+      case 73:
+      case 75:
+      case 77:
+        return "Base Camp Snowfall";
+      case 85:
+      case 86:
+        return "High-Altitude Snow Showers";
+      default:
+        return "Alpine Mountain Weather";
+    }
+  };
+
+  const fetchLiveWeather = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(
+        "https://api.open-meteo.com/v1/forecast?latitude=28.53&longitude=83.88&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,surface_pressure&timezone=Asia%2FKathmandu"
+      );
+      if (!res.ok) throw new Error("Weather fetch failed");
+      const data = await res.json();
+      const current = data.current;
+
+      const pressure = current.surface_pressure || 629.8;
+      // Barometric oxygen relative to sea level (1013.25 hPa)
+      const calculatedO2 = Math.round((pressure / 1013.25) * 100);
+
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+
+      setWeather({
+        temp: Math.round(current.temperature_2m * 10) / 10,
+        feelsLike: Math.round(current.apparent_temperature * 10) / 10,
+        condition: getWeatherCondition(current.weather_code),
+        oxygenPercent: calculatedO2 || 62,
+        surfacePressure: Math.round(pressure * 10) / 10,
+        windSpeed: `${Math.round(current.wind_speed_10m)} km/h`,
+        humidity: `${Math.round(current.relative_humidity_2m)}%`,
+        visibility: current.weather_code >= 71 ? "Snowfall Drift" : "100% Mountain Clarity",
+        lastUpdated: `Live Satellite • ${timeStr} NPT`,
+        isLive: true,
+      });
+    } catch (err) {
+      console.warn("Live weather fetch fallback:", err);
+      setWeather((prev) => ({
+        ...prev,
+        lastUpdated: "Station Altitude Model (4,130m)",
+      }));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLiveWeather();
+    // Auto-refresh every 10 minutes
+    const interval = setInterval(fetchLiveWeather, 600000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section id="weather" className="py-14 sm:py-16 bg-[#395371] text-white relative overflow-hidden">
@@ -38,38 +142,53 @@ export function WeatherWidget() {
 
           {/* Top Section: Header & Live Metrics Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left Column: Sanctuary Conditions Overview */}
+            {/* Left Column: Guest House Conditions Overview */}
             <div className="lg:col-span-5 space-y-5">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#4F9CF9]/15 text-[#4F9CF9] text-xs font-mono font-bold uppercase tracking-wider border border-[#4F9CF9]/30 backdrop-blur-md">
                 <span className="w-2 h-2 rounded-full bg-[#16A34A] animate-pulse" />
-                <span>LIVE BASE CAMP TELEMETRY</span>
+                <span>REAL-TIME SATELLITE TELEMETRY</span>
               </div>
 
               <div className="space-y-2">
                 <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-                  Annapurna Sanctuary Conditions
+                  Annapurna Base Camp Live Conditions
                 </h2>
                 <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                  Real-time high-altitude weather and oxygen telemetry streamed directly from our Base Camp sanctuary station at 4,130m.
+                  Live high-altitude weather and barometric oxygen telemetry at Annapurna Guest House & Restaurant (4,130m elevation).
                 </p>
               </div>
 
               {/* Station Elevation & Sync Status */}
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2.5">
                 <div className="flex items-center justify-between text-xs font-mono">
                   <span className="text-slate-400">STATION ELEVATION:</span>
                   <span className="text-[#4F9CF9] font-bold">4,130M (13,549 FT)</span>
                 </div>
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-slate-400">ATMOSPHERIC STATUS:</span>
+                  <span className="text-slate-400">ATMOSPHERIC PRESSURE:</span>
                   <span className="text-[#16A34A] font-bold flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#16A34A]" />
-                    <span>OPTICAL CLARITY</span>
+                    <Gauge className="w-3.5 h-3.5 text-[#16A34A]" />
+                    <span>{weather.surfacePressure} hPa (62% of Sea Level)</span>
                   </span>
                 </div>
-                <div className="pt-1 text-[11px] text-slate-400 font-mono flex items-center gap-1.5 border-t border-white/5">
-                  <RefreshCw className="w-3 h-3 text-[#4F9CF9] animate-spin" />
-                  <span>{weather.lastUpdated}</span>
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="text-slate-400">WEATHER STATUS:</span>
+                  <span className="text-amber-300 font-bold">{weather.condition}</span>
+                </div>
+                <div className="pt-2 text-[11px] text-slate-300 font-mono flex items-center justify-between border-t border-white/10">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
+                    <span className="text-emerald-300 font-bold">{weather.lastUpdated}</span>
+                  </div>
+                  <button
+                    onClick={fetchLiveWeather}
+                    disabled={loading}
+                    className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[#4F9CF9] text-[11px] font-bold flex items-center gap-1 transition-all"
+                    title="Refresh Live Weather from Satellite"
+                  >
+                    <RefreshCw className={`w-3 h-3 ${loading ? "animate-spin" : ""}`} />
+                    <span>{loading ? "Updating..." : "Refresh"}</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -88,7 +207,7 @@ export function WeatherWidget() {
                 </div>
                 <div>
                   <div className="text-3xl font-extrabold text-white group-hover:text-[#4F9CF9] transition-colors">
-                    {weather.temp}°C
+                    {weather.temp > 0 ? `+${weather.temp}` : weather.temp}°C
                   </div>
                   <span className="text-[11px] text-[#4F9CF9] font-mono block mt-0.5">
                     Feels like {weather.feelsLike}°C
@@ -97,10 +216,17 @@ export function WeatherWidget() {
               </div>
 
               {/* Oxygen Level */}
-              <div className="bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/15 hover:border-[#16A34A]/50 transition-all duration-300 group space-y-3">
+              <div className="bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/15 hover:border-[#16A34A]/50 transition-all duration-300 group space-y-3 relative">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-slate-400 font-mono uppercase font-bold tracking-wider">
-                    Oxygen Level
+                  <span className="text-[11px] text-slate-400 font-mono uppercase font-bold tracking-wider flex items-center gap-1">
+                    <span>Oxygen Level</span>
+                    <button
+                      onClick={() => setShowO2Info(!showO2Info)}
+                      className="text-slate-400 hover:text-white"
+                      title="What is this?"
+                    >
+                      <Info className="w-3 h-3" />
+                    </button>
                   </span>
                   <div className="w-8 h-8 rounded-xl bg-[#16A34A]/20 flex items-center justify-center text-[#16A34A]">
                     <Wind className="w-4 h-4" />
@@ -111,9 +237,15 @@ export function WeatherWidget() {
                     {weather.oxygenPercent}%
                   </div>
                   <span className="text-[11px] text-slate-300 font-mono block mt-0.5">
-                    Relative to Sea Level
+                    Effective O₂ (4,130m)
                   </span>
                 </div>
+
+                {showO2Info && (
+                  <div className="absolute top-full left-0 right-0 mt-2 z-20 p-3 rounded-xl bg-[#0F172A] border border-white/20 text-[11px] text-slate-300 shadow-xl leading-relaxed">
+                    At 4,130m, barometric pressure is ~630 hPa, giving ~62% effective oxygen partial pressure compared to sea level.
+                  </div>
+                )}
               </div>
 
               {/* Wind Speed */}
@@ -131,7 +263,27 @@ export function WeatherWidget() {
                     {weather.windSpeed}
                   </div>
                   <span className="text-[11px] text-slate-300 font-mono block mt-0.5">
-                    Direction: NW
+                    Himalayan Breeze
+                  </span>
+                </div>
+              </div>
+
+              {/* Humidity */}
+              <div className="bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/15 hover:border-indigo-400/50 transition-all duration-300 group space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] text-slate-400 font-mono uppercase font-bold tracking-wider">
+                    Humidity
+                  </span>
+                  <div className="w-8 h-8 rounded-xl bg-indigo-400/20 flex items-center justify-center text-indigo-400">
+                    <Droplets className="w-4 h-4" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-2xl font-extrabold text-white">
+                    {weather.humidity}
+                  </div>
+                  <span className="text-[11px] text-slate-300 font-mono block mt-0.5">
+                    Relative Alpine
                   </span>
                 </div>
               </div>
@@ -147,51 +299,31 @@ export function WeatherWidget() {
                   </div>
                 </div>
                 <div>
-                  <div className="text-base font-extrabold text-white leading-tight">
-                    100% Unobstructed
+                  <div className="text-lg font-extrabold text-white truncate">
+                    {weather.visibility}
                   </div>
-                  <span className="text-[11px] text-[#16A34A] font-mono block mt-0.5">
-                    Perfect Summit Optics
+                  <span className="text-[11px] text-slate-300 font-mono block mt-0.5">
+                    Peak Visibility
                   </span>
                 </div>
               </div>
 
-              {/* Sky Condition */}
-              <div className="bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/15 hover:border-amber-400/50 transition-all duration-300 group space-y-3">
+              {/* Guesthouse Comfort */}
+              <div className="bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/15 hover:border-orange-400/50 transition-all duration-300 group space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] text-slate-400 font-mono uppercase font-bold tracking-wider">
-                    Sky Condition
+                    Lodge Warming
                   </span>
-                  <div className="w-8 h-8 rounded-xl bg-amber-400/20 flex items-center justify-center text-amber-400">
-                    <Sun className="w-4 h-4 text-amber-400 animate-pulse" />
+                  <div className="w-8 h-8 rounded-xl bg-orange-400/20 flex items-center justify-center text-orange-400">
+                    <Sun className="w-4 h-4" />
                   </div>
                 </div>
                 <div>
-                  <div className="text-base font-extrabold text-white">
-                    Clear Sky
+                  <div className="text-lg font-extrabold text-orange-300">
+                    Warm & Heated
                   </div>
                   <span className="text-[11px] text-slate-300 font-mono block mt-0.5">
-                    Optimal Sunrise View
-                  </span>
-                </div>
-              </div>
-
-              {/* Humidity */}
-              <div className="bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/15 hover:border-[#4F9CF9]/50 transition-all duration-300 group space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-slate-400 font-mono uppercase font-bold tracking-wider">
-                    Humidity
-                  </span>
-                  <div className="w-8 h-8 rounded-xl bg-[#4F9CF9]/20 flex items-center justify-center text-[#4F9CF9]">
-                    <Droplets className="w-4 h-4" />
-                  </div>
-                </div>
-                <div>
-                  <div className="text-2xl font-extrabold text-white">
-                    {weather.humidity}
-                  </div>
-                  <span className="text-[11px] text-slate-300 font-mono block mt-0.5">
-                    Crisp Mountain Air
+                    Dining Room Stove Active
                   </span>
                 </div>
               </div>
@@ -207,10 +339,10 @@ export function WeatherWidget() {
                 </div>
                 <div>
                   <h3 className="text-sm sm:text-base font-bold text-white uppercase tracking-wider">
-                    24-Hour Diurnal Telemetry Curve (4,130m Elevation)
+                    24-Hour High-Altitude Diurnal Cycle (4,130m Elevation)
                   </h3>
                   <p className="text-xs text-slate-400 font-mono">
-                    Continuous atmospheric temperature & blood oxygen saturation correlation
+                    Atmospheric temperature fluctuations & effective barometric oxygen level
                   </p>
                 </div>
               </div>
@@ -220,7 +352,7 @@ export function WeatherWidget() {
                   <span className="w-3 h-1 bg-[#4F9CF9] rounded-full inline-block" /> Temp (°C)
                 </span>
                 <span className="flex items-center gap-2 text-[#16A34A] font-bold">
-                  <span className="w-3 h-1 bg-[#16A34A] rounded-full inline-block" /> Oxygen (%)
+                  <span className="w-3 h-1 bg-[#16A34A] rounded-full inline-block" /> Oxygen (~62%)
                 </span>
               </div>
             </div>
@@ -278,23 +410,28 @@ export function WeatherWidget() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 pt-2 text-center text-xs font-mono">
               <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 space-y-0.5">
                 <span className="text-slate-400 block text-[10px]">00:00 MIDNIGHT</span>
-                <span className="text-white font-bold text-xs">-12°C • 60% O₂</span>
+                <span className="text-white font-bold block">-8°C</span>
+                <span className="text-[#16A34A] text-[10px] block">62% O₂</span>
               </div>
               <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 space-y-0.5">
-                <span className="text-slate-400 block text-[10px]">06:00 DAWN SUNRISE</span>
-                <span className="text-[#4F9CF9] font-bold text-xs">-8°C • 62% O₂</span>
-              </div>
-              <div className="p-2.5 rounded-xl bg-amber-400/10 border border-amber-400/20 space-y-0.5">
-                <span className="text-amber-400 block text-[10px] font-bold">12:00 NOON PEAK</span>
-                <span className="text-white font-bold text-xs">-2°C • 65% O₂</span>
+                <span className="text-slate-400 block text-[10px]">05:30 DAWN</span>
+                <span className="text-white font-bold block">-9°C</span>
+                <span className="text-[#16A34A] text-[10px] block">62% O₂</span>
               </div>
               <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 space-y-0.5">
-                <span className="text-slate-400 block text-[10px]">18:00 DUSK SUNSET</span>
-                <span className="text-white font-bold text-xs">-6°C • 63% O₂</span>
+                <span className="text-amber-400 block text-[10px]">11:00 MIDDAY</span>
+                <span className="text-white font-bold block">+3°C</span>
+                <span className="text-[#16A34A] text-[10px] block">63% O₂</span>
               </div>
               <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 space-y-0.5">
-                <span className="text-slate-400 block text-[10px]">24:00 MIDNIGHT</span>
-                <span className="text-slate-300 font-bold text-xs">-11°C • 61% O₂</span>
+                <span className="text-[#4F9CF9] block text-[10px]">16:00 DUSK</span>
+                <span className="text-white font-bold block">-1°C</span>
+                <span className="text-[#16A34A] text-[10px] block">62% O₂</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 space-y-0.5 col-span-2 sm:col-span-1">
+                <span className="text-slate-400 block text-[10px]">21:00 NIGHT</span>
+                <span className="text-white font-bold block">-5°C</span>
+                <span className="text-[#16A34A] text-[10px] block">62% O₂</span>
               </div>
             </div>
           </div>

@@ -21,7 +21,7 @@ const EXPERIENCES = [
     title: "Gourmet High-Altitude Dining",
     tag: "CULINARY EXCELLENCE",
     description:
-      "Relish organic Sherpa stew, truffle yak cheese fondue, and freshly baked mountain apple pies prepared by our expedition chef at 4,130m.",
+      "Relish authentic Nepali Dal Bhat, warm Sherpa noodle soup, steaming momos, and freshly baked mountain apple pies prepared in our guesthouse restaurant at 4,130m.",
     accent: "border-[#16A34A] text-[#16A34A]",
     iconSvg: (
       <svg className="w-5 h-5 text-[#16A34A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -31,10 +31,10 @@ const EXPERIENCES = [
   },
   {
     time: "04:30 PM",
-    title: "Oxygen-Enriched Thermal Bathing",
-    tag: "RECOVERY & SPA",
+    title: "Hot Gas Shower & Hot Bucket Shower",
+    tag: "HOT SHOWER & RECOVERY",
     description:
-      "Relax in our private heated thermal tubs equipped with supplementary oxygen diffusion to ensure optimal acclimatization.",
+      "Wash off the high-altitude trail exhaustion with a steaming hot gas-geyser shower or hot bucket shower with warm water to refresh and soothe muscles at 4,130m.",
     accent: "border-[#4F9CF9] text-[#4F9CF9]",
     iconSvg: (
       <svg className="w-5 h-5 text-[#4F9CF9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -63,13 +63,13 @@ export function ExperiencesTimeline() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-[#4F9CF9] text-xs font-bold uppercase tracking-wider border border-white/15">
-            <span>Sanctuary Experiences</span>
+            <span>Guest House & Trail Life</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Experience the Majesty of the Himalayas
+            Life at Annapurna Guest House and Restaurant
           </h2>
-          <p className="text-slate-400 text-base sm:text-lg">
-            Surrounded by Annapurna I, Machhapuchhre, Hiunchuli, and Annapurna South, every moment at Annapurna Guesthouse offers breathtaking scenery.
+          <p className="text-slate-300 text-base sm:text-lg">
+            Surrounded by Annapurna I, Machhapuchhre, Hiunchuli, and Annapurna South, every moment at Annapurna Guest House and Restaurant offers unforgettable Himalayan memories.
           </p>
         </div>
 

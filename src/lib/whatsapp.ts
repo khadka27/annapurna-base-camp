@@ -14,11 +14,11 @@ export interface WhatsAppBookingParams {
 }
 
 export function getWhatsAppBookingUrl(params: WhatsAppBookingParams, targetPhone?: string): string {
-  const defaultPhone = "9779851055520";
+  const defaultPhone = "9779846063557";
   const rawNumber = targetPhone || defaultPhone;
   const phoneNumber = rawNumber.replace(/[^0-9]/g, "") || defaultPhone;
 
-  const message = `🏔️ *ANNAPURNA BASE CAMP GUESTHOUSE BOOKING*
+  const message = `🏔️ *ANNAPURNA GUEST HOUSE AND RESTAURANT (4,130M)*
 
 *Booking Ref ID:* ${params.bookingId}
 *Suite Reserved:* ${params.roomName}

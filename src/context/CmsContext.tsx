@@ -50,7 +50,7 @@ export interface BookingRecord {
 export interface GalleryItem {
   id: string;
   title: string;
-  category: "Sanctuary" | "Suites" | "Dining" | "Peaks";
+  category: string;
   imageUrl: string;
 }
 
@@ -69,6 +69,12 @@ export interface ServiceItem {
   icon: string;
   description: string;
   included: boolean;
+}
+
+export interface BookingDraft {
+  checkIn: string;
+  checkOut: string;
+  guestsCount: number;
 }
 
 interface CmsContextType {
@@ -104,19 +110,22 @@ interface CmsContextType {
   selectedRoomForBooking: RoomItem | null;
   setSelectedRoomForBooking: (room: RoomItem | null) => void;
 
+  bookingDraft: BookingDraft | null;
+  setBookingDraft: (draft: BookingDraft | null) => void;
+
   adminOpen: boolean;
   setAdminOpen: (open: boolean) => void;
 }
 
 const DEFAULT_HERO: HeroConfig = {
-  title: "Annapurna Guesthouse",
+  title: "Annapurna Guest House and Restaurant",
   subtitle:
-    "Experience high-altitude hospitality at 4,130m elevation in the heart of the Himalayas with warm rooms, panoramic glacier views & authentic Gurung hospitality.",
+    "Experience high-altitude hospitality at 4,130m elevation in the heart of the Himalayas with warm rooms, panoramic glacier views, delicious restaurant dining & authentic Gurung hospitality.",
   badge: "4,130M HIGHEST LODGE IN NEPAL",
   seasonalBanner: "2026 TREK SEASON OPEN — RESERVE YOUR ROOM ONLINE",
   autoSlideSpeed: 5000,
   showOverlay: true,
-  whatsappNumber: "9779851055520",
+  whatsappNumber: "9779846063557",
   slides: [
     {
       id: "1",
@@ -266,6 +275,138 @@ const DEFAULT_BOOKINGS: BookingRecord[] = [
   },
 ];
 
+const DEFAULT_GALLERY: GalleryItem[] = [
+  {
+    id: "gal-1",
+    title: "Official Carved Signboard at 4,130m",
+    category: "Guest House",
+    imageUrl: "/images/gallery/annapurna-guest-house-wooden-signboard.jpg",
+  },
+  {
+    id: "gal-2",
+    title: "Guest House Courtyard Patio & Gazebo",
+    category: "Guest House",
+    imageUrl: "/images/gallery/guest-house-lodge-patio.jpg",
+  },
+  {
+    id: "gal-3",
+    title: "Indoor Restaurant Dining Hall with Mountain Views",
+    category: "Restaurant & Dining",
+    imageUrl: "/images/gallery/restaurant-dining-hall-interior.jpg",
+  },
+  {
+    id: "gal-4",
+    title: "Trekkers Enjoying Hot Steaming Dal Bhat Dinner",
+    category: "Restaurant & Dining",
+    imageUrl: "/images/gallery/trekkers-warm-dalbhat-dinner.jpg",
+  },
+  {
+    id: "gal-5",
+    title: "Lodge Exterior & Red Roofs in the Himalayan Mist",
+    category: "Guest House",
+    imageUrl: "/images/gallery/lodge-exterior-misty-peaks.jpg",
+  },
+  {
+    id: "gal-6",
+    title: "Machhapuchhre (Fishtail Peak) Golden Alpenglow",
+    category: "Mountains & Peaks",
+    imageUrl: "/images/gallery/fishtail-machhapuchhre-golden-sunset.jpg",
+  },
+  {
+    id: "gal-7",
+    title: "Aerial View of Annapurna Base Camp Lodge Cluster",
+    category: "Mountains & Peaks",
+    imageUrl: "/images/gallery/annapurna-base-camp-aerial-view.jpg",
+  },
+  {
+    id: "gal-8",
+    title: "Himalayan Emergency Helicopter Standby Pad",
+    category: "Lodge Life",
+    imageUrl: "/images/gallery/abc-helicopter-sanctuary.jpg",
+  },
+  {
+    id: "gal-9",
+    title: "Tibetan Buddhist Prayer Flags at 4,130m",
+    category: "Lodge Life",
+    imageUrl: "/images/gallery/himalayan-prayer-flags-abc.jpg",
+  },
+  {
+    id: "gal-10",
+    title: "Annapurna I South Face & Glacier Ridge",
+    category: "Mountains & Peaks",
+    imageUrl: "/images/gallery/annapurna-peak-view.jpg",
+  },
+  {
+    id: "gal-11",
+    title: "Sunrise Golden Light on High Altitude Snow Wall",
+    category: "Mountains & Peaks",
+    imageUrl: "/images/gallery/annapurna-alpenglow-sunrise.jpg",
+  },
+  {
+    id: "gal-12",
+    title: "Evening Mountain Warmth & Trekker Fellowship",
+    category: "Lodge Life",
+    imageUrl: "/images/gallery/annapurna-evening-ambience.jpg",
+  },
+];
+
+const DEFAULT_SERVICES: ServiceItem[] = [
+  {
+    id: "srv-1",
+    title: "Hot Gas Shower & Bucket Shower",
+    category: "Wellness & Safety",
+    price: 4,
+    icon: "flame",
+    description: "Steaming hot gas-geyser shower and traditional hot bucket shower with warm water to refresh after trekking to Annapurna Base Camp (4,130m).",
+    included: false,
+  },
+  {
+    id: "srv-2",
+    title: "Licensed Trekking Guides & Experienced Porters",
+    category: "Logistics & Transport",
+    price: 0,
+    icon: "activity",
+    description: "Certified mountain guides and strong, trustworthy porters available for your ABC trek, baggage assistance, and route navigation.",
+    included: false,
+  },
+  {
+    id: "srv-3",
+    title: "Warm Restaurant Dining & Traditional Dal Bhat",
+    category: "Dining & Comfort",
+    price: 0,
+    icon: "utensils",
+    description: "Freshly prepared mountain meals, unlimited refill Dal Bhat power, hot noodle soups, ginger lemon honey tea, and bakery treats.",
+    included: false,
+  },
+  {
+    id: "srv-4",
+    title: "High-Altitude Medical Oxygen Support",
+    category: "Wellness & Safety",
+    price: 0,
+    icon: "activity",
+    description: "Supplemental emergency oxygen bottles and pulse oximeter saturation checks available 24/7 for altitude acclimatization safety.",
+    included: true,
+  },
+  {
+    id: "srv-5",
+    title: "High-Speed Starlink Satellite Wi-Fi",
+    category: "Connectivity",
+    price: 0,
+    icon: "wifi",
+    description: "Fast satellite broadband connectivity in dining lounge and guest rooms to keep in touch with family and share photos.",
+    included: true,
+  },
+  {
+    id: "srv-6",
+    title: "Emergency Helicopter Evacuation Standby",
+    category: "Logistics & Transport",
+    price: 0,
+    icon: "helicopter",
+    description: "Direct helipad on-site with rapid standby emergency medical evacuation dispatch coordination to Pokhara hospitals.",
+    included: false,
+  },
+];
+
 const CmsContext = createContext<CmsContextType | undefined>(undefined);
 
 export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -273,10 +414,11 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [heroConfig, setHeroConfig] = useState<HeroConfig>(DEFAULT_HERO);
   const [rooms, setRooms] = useState<RoomItem[]>(DEFAULT_ROOMS);
   const [bookings, setBookings] = useState<BookingRecord[]>(DEFAULT_BOOKINGS);
-  const [gallery, setGallery] = useState<GalleryItem[]>([]);
+  const [gallery, setGallery] = useState<GalleryItem[]>(DEFAULT_GALLERY);
   const [coupons, setCoupons] = useState<CouponItem[]>([]);
-  const [services, setServices] = useState<ServiceItem[]>([]);
+  const [services, setServices] = useState<ServiceItem[]>(DEFAULT_SERVICES);
   const [selectedRoomForBooking, setSelectedRoomForBooking] = useState<RoomItem | null>(null);
+  const [bookingDraft, setBookingDraft] = useState<BookingDraft | null>(null);
   const [adminOpen, setAdminOpen] = useState<boolean>(false);
 
   // Fetch Live Data from PostgreSQL Database on Mount
@@ -298,13 +440,13 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (bookingsRes.success && Array.isArray(bookingsRes.bookings) && bookingsRes.bookings.length > 0) {
           setBookings(bookingsRes.bookings);
         }
-        if (galleryRes.success && Array.isArray(galleryRes.gallery)) {
+        if (galleryRes.success && Array.isArray(galleryRes.gallery) && galleryRes.gallery.length > 0) {
           setGallery(galleryRes.gallery);
         }
         if (couponsRes.success && Array.isArray(couponsRes.coupons)) {
           setCoupons(couponsRes.coupons);
         }
-        if (servicesRes.success && Array.isArray(servicesRes.services)) {
+        if (servicesRes.success && Array.isArray(servicesRes.services) && servicesRes.services.length > 0) {
           setServices(servicesRes.services);
         }
         if (heroRes.success && heroRes.hero) {
@@ -551,6 +693,8 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deleteService,
         selectedRoomForBooking,
         setSelectedRoomForBooking,
+        bookingDraft,
+        setBookingDraft,
         adminOpen,
         setAdminOpen,
       }}

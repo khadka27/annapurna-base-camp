@@ -216,18 +216,30 @@ export function Footer() {
                 <span className="text-xs font-bold text-white block">
                   Call us, we&apos;re at your service
                 </span>
-                <div className="space-y-1 text-xs text-slate-300 font-mono">
+                <div className="space-y-1.5 text-xs text-slate-300 font-mono">
                   <a
-                    href={`https://wa.me/${(heroConfig.whatsappNumber || "9779851055520").replace(/[^0-9]/g, "")}`}
+                    href="tel:+9779866060057"
+                    className="flex items-center gap-2 hover:text-cyan-400 transition-colors"
+                  >
+                    <Phone className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>+977 9866060057 (Main Contact)</span>
+                  </a>
+                  <a
+                    href={`https://wa.me/${(heroConfig.whatsappNumber || "9779846063557").replace(/[^0-9]/g, "")}`}
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-center gap-2 hover:text-[#25D366] transition-colors"
                   >
-                    <Phone className="w-3.5 h-3.5 text-emerald-400" /> +{heroConfig.whatsappNumber || "977 98510 55520"} (WhatsApp)
+                    <Phone className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>+977 9846063557 (WhatsApp)</span>
                   </a>
-                  <p className="flex items-center gap-2 hover:text-white transition-colors">
-                    <Phone className="w-3.5 h-3.5 text-emerald-400" /> +977 9841 986923 (Rajendra)
-                  </p>
+                  <a
+                    href="tel:+9779844920552"
+                    className="flex items-center gap-2 hover:text-indigo-300 transition-colors"
+                  >
+                    <Phone className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>+977 9844920552 (Hotel Reception)</span>
+                  </a>
                 </div>
               </div>
 
@@ -270,9 +282,10 @@ export function Footer() {
                   </a>
                   {/* Instagram */}
                   <a
-                    href="https://instagram.com"
+                    href="https://www.instagram.com/annapurna_guest_house/"
                     target="_blank"
                     rel="noreferrer"
+                    title="Follow @annapurna_guest_house on Instagram"
                     className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 hover:opacity-90 flex items-center justify-center text-white text-xs font-bold transition-all shadow-md"
                   >
                     <Camera className="w-4 h-4 text-white" />

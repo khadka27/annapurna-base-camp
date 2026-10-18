@@ -7,10 +7,11 @@
 
 export const SITE_DOMAIN = "abc-annapurnaguesthouse.com";
 export const SITE_URL = `https://${SITE_DOMAIN}`;
-export const SITE_NAME = "Annapurna Guesthouse";
-export const SITE_LEGAL_NAME = "Annapurna Guesthouse";
-export const SITE_PHONE = "+977-9851055520";
-export const SITE_PHONE_SECONDARY = "+977-9841986923";
+export const SITE_NAME = "Annapurna Guest House and Restaurant";
+export const SITE_LEGAL_NAME = "Annapurna Guest House and Restaurant";
+export const SITE_PHONE = "+977-9866060057"; // Main Contact Number
+export const SITE_PHONE_SECONDARY = "+977-9844920552"; // Hotel Reception Number
+export const SITE_PHONE_WHATSAPP = "+977-9846063557"; // WhatsApp Number
 export const SITE_EMAIL = "info@abc-annapurnaguesthouse.com";
 export const SITE_BOOKING_EMAIL = "bookings@abc-annapurnaguesthouse.com";
 export const SITE_ALTITUDE = "4,130 meters (13,550 feet)";
@@ -26,14 +27,15 @@ export const SITE_GEO = {
 export function getLodgingBusinessSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": ["LodgingBusiness", "Hotel", "BedAndBreakfast"],
+    "@type": ["LodgingBusiness", "Hotel", "Restaurant", "BedAndBreakfast"],
     "@id": `${SITE_URL}/#lodging`,
     name: SITE_NAME,
     alternateName: [
-      "ABC Annapurna Guesthouse",
-      "Annapurna Base Camp Guesthouse",
-      "Annapurna Sanctuary Lodge",
-      "ABC Lodge & Guesthouse Nepal",
+      "Annapurna Guest House and Restaurant",
+      "Annapurna Guest House & Restaurant",
+      "ABC Annapurna Guest House and Restaurant",
+      "Annapurna Base Camp Guest House and Restaurant",
+      "ABC Lodge & Restaurant Nepal",
     ],
     legalName: SITE_LEGAL_NAME,
     description:

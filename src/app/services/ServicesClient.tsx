@@ -18,15 +18,15 @@ export default function ServicesClient() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 relative z-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#4F9CF9]/20 text-[#4F9CF9] text-xs font-mono font-bold uppercase tracking-wider border border-[#4F9CF9]/30">
-            <span>ANNAPURNA BASE CAMP • 4,130M SANCTUARY</span>
+            <span>ANNAPURNA BASE CAMP • 4,130M LODGE</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight">
-            High-Altitude Luxury & Safety Services
+            Guest House & Restaurant Facilities
           </h1>
 
           <p className="max-w-3xl mx-auto text-slate-300 text-base sm:text-lg">
-            Discover our full range of alpine medical oxygen chambers, thermal soaking tubs, direct helicopter charter access, satellite broadband, and authentic Sherpa dining.
+            Discover our high-altitude facilities — steaming hot gas geyser & bucket showers, certified guides & porters assistance, dining hall with authentic Dal Bhat, emergency oxygen, and Starlink Wi-Fi.
           </p>
         </div>
       </div>

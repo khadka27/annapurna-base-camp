@@ -4,6 +4,7 @@ import React from "react";
 import { GlassNavbar } from "@/components/GlassNavbar";
 import { ItineraryExplorer } from "@/components/ItineraryExplorer";
 import { PreparationGuide } from "@/components/PreparationGuide";
+import { PermitsAndGuidesSection } from "@/components/PermitsAndGuidesSection";
 import { HighlightsGrid } from "@/components/HighlightsGrid";
 import { BookingModal } from "@/components/BookingModal";
 import { AdminDashboard } from "@/components/AdminDashboard";
@@ -44,6 +45,9 @@ export default function TrekClient() {
 
         {/* Packing Checklist & AMS Safety */}
         <PreparationGuide />
+
+        {/* Permits, Guides & Porters Assistance */}
+        <PermitsAndGuidesSection />
       </main>
       <Footer />
       <BookingModal />

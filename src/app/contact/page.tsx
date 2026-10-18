@@ -75,10 +75,10 @@ export default function ContactPage() {
             <span>24/7 High-Altitude Expedition Desk</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Connect with Annapurna Base Camp
+            Connect with Annapurna Guest House and Restaurant
           </h1>
           <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
-            Have questions about room availability, trek preparation, weather telemetry, or emergency rescue? Our sanctuary concierge team is ready to assist you.
+            Have questions about room availability, trek preparation, restaurant dining, or emergency assistance? Our sanctuary team is ready to assist you.
           </p>
         </header>
 
@@ -92,13 +92,19 @@ export default function ContactPage() {
               <h2 className="text-lg font-bold text-white">Direct Phone & WhatsApp</h2>
               <p className="text-xs text-slate-300 mt-1">Direct satellite & mobile contact at Base Camp</p>
             </div>
-            <div className="pt-2 border-t border-white/10 space-y-1 font-mono text-sm">
-              <a href="tel:+9779851000000" className="block text-white hover:text-[#4F9CF9] font-bold">
-                +977 9851000000
+            <div className="pt-2 border-t border-white/10 space-y-2 font-mono text-xs">
+              <a href="tel:+9779866060057" className="block text-white hover:text-cyan-400 font-bold">
+                📞 +977 9866060057 (Main Contact)
               </a>
-              <a href="https://wa.me/9779851000000" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[#25D366] font-bold text-xs">
+              <a href="tel:+9779844920552" className="block text-slate-200 hover:text-indigo-300 font-bold">
+                🏨 +977 9844920552 (Hotel Reception)
+              </a>
+              <a href="https://wa.me/9779846063557" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-[#25D366] font-bold">
                 <MessageCircle className="w-3.5 h-3.5" />
-                <span>Chat on WhatsApp</span>
+                <span>+977 9846063557 (WhatsApp)</span>
+              </a>
+              <a href="https://www.instagram.com/annapurna_guest_house/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-pink-400 hover:text-pink-300 font-bold block pt-1">
+                <span>📸 @annapurna_guest_house (Instagram)</span>
               </a>
             </div>
           </div>

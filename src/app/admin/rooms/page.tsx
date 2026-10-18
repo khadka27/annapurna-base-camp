@@ -63,7 +63,6 @@ export default function AdminRoomsPage() {
 
     await addRoom({
       name: newRoomName.trim(),
-      category: "Standard",
       pricePerNight: Number(newRoomPrice),
       capacity: Number(newRoomCapacity || 2),
       size: "42 m²",

@@ -3,20 +3,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useCms } from "@/context/CmsContext";
-import { CustomSelect } from "@/components/CustomSelect";
-
-const getTodayStr = () => new Date().toISOString().split("T")[0];
-const getDefaultOutDate = () => new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+import { HeroBookingBar } from "@/components/HeroBookingBar";
 
 export function DynamicHero() {
   const { heroConfig, setSelectedRoomForBooking, rooms } = useCms();
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  const [checkIn, setCheckIn] = useState(getTodayStr);
-  const [checkOut, setCheckOut] = useState(getDefaultOutDate);
-  const [guests, setGuests] = useState(2);
-  const [selectedRoomId, setSelectedRoomId] = useState("");
-
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -83,37 +74,33 @@ export function DynamicHero() {
     };
   }, []);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const match = rooms.find((r) => r.id === selectedRoomId) || rooms[0];
-    if (match) setSelectedRoomForBooking(match);
-  };
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-28 pb-16 overflow-hidden bg-[#395371]">
-      {/* Background Slideshow */}
-      {heroConfig.slides.map((slide, idx) => (
-        <div
-          key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-            idx === currentSlide ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-        >
-          <img
-            src={slide.image}
-            alt={slide.tag}
-            className="w-full h-full object-cover transform scale-105 transition-transform duration-[10000ms]"
-          />
-          {heroConfig.showOverlay && (
-            <div className="absolute inset-0 bg-gradient-to-t from-[#395371] via-[#395371]/60 to-[#395371]/30" />
-          )}
-        </div>
-      ))}
+    <section className="relative min-h-screen flex items-center justify-center pt-28 pb-20 bg-[#395371]">
+      {/* Background Slideshow & Snow Overlay (isolated with overflow-hidden so foreground popovers never get clipped) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {heroConfig.slides.map((slide, idx) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              idx === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <img
+              src={slide.image}
+              alt={slide.tag}
+              className="w-full h-full object-cover transform scale-105 transition-transform duration-[10000ms]"
+            />
+            {heroConfig.showOverlay && (
+              <div className="absolute inset-0 bg-gradient-to-t from-[#395371] via-[#395371]/60 to-[#395371]/30" />
+            )}
+          </div>
+        ))}
 
-      {/* Snow Particles */}
-      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-10 opacity-70" />
+        {/* Snow Particles */}
+        <canvas ref={canvasRef} className="absolute inset-0 opacity-70" />
+      </div>
 
-      <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+      <div className="relative z-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
         {/* Mountain Badge */}
         <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-xs sm:text-sm font-semibold text-white shadow-xl">
           <svg className="w-4 h-4 text-[#4F9CF9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -133,10 +120,10 @@ export function DynamicHero() {
         </div>
 
         {/* Hero CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-1">
           <button
             onClick={() => setSelectedRoomForBooking(rooms[0])}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-white bg-[#F97316] hover:bg-[#ea6200] shadow-xl shadow-[#F97316]/30 transition-all flex items-center justify-center gap-2.5 text-base"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-white bg-[#F97316] hover:bg-[#ea6200] shadow-xl shadow-[#F97316]/30 transition-all flex items-center justify-center gap-2.5 text-base cursor-pointer"
           >
             <span>Book Your Stay</span>
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -155,74 +142,8 @@ export function DynamicHero() {
           </Link>
         </div>
 
-        {/* Booking Search Widget */}
-        <div className="max-w-5xl mx-auto bg-white/10 backdrop-blur-2xl p-4 sm:p-6 rounded-3xl border border-white/25 shadow-2xl space-y-3 mt-8">
-          <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-left">
-            {/* Check-In */}
-            <div className="bg-white/10 p-3 rounded-2xl border border-white/15">
-              <label className="text-[10px] font-mono text-slate-300 block uppercase font-bold">Check-In</label>
-              <input
-                type="date"
-                min={checkIn}
-                value={checkIn}
-                onChange={(e) => setCheckIn(e.target.value)}
-                className="w-full bg-transparent text-white font-semibold text-sm focus:outline-none cursor-pointer"
-              />
-            </div>
-
-            {/* Check-Out */}
-            <div className="bg-white/10 p-3 rounded-2xl border border-white/15">
-              <label className="text-[10px] font-mono text-slate-300 block uppercase font-bold">Check-Out</label>
-              <input
-                type="date"
-                min={checkIn}
-                value={checkOut}
-                onChange={(e) => setCheckOut(e.target.value)}
-                className="w-full bg-transparent text-white font-semibold text-sm focus:outline-none cursor-pointer"
-              />
-            </div>
-
-            {/* Guests */}
-            <div className="bg-white/10 p-3 rounded-2xl border border-white/15">
-              <CustomSelect
-                label="Guests"
-                value={String(guests)}
-                onChange={(v) => setGuests(Number(v))}
-                options={[
-                  { value: "1", label: "1 Guest" },
-                  { value: "2", label: "2 Guests" },
-                  { value: "3", label: "3 Guests" },
-                  { value: "4", label: "4+ Guests" },
-                ]}
-              />
-            </div>
-
-            {/* Select Room */}
-            <div className="bg-white/10 p-3 rounded-2xl border border-white/15">
-              <CustomSelect
-                label="Select Room"
-                value={selectedRoomId || (rooms[0]?.id ?? "")}
-                onChange={setSelectedRoomId}
-                options={
-                  rooms.length > 0
-                    ? rooms.map((r) => ({
-                        value: r.id,
-                        label: `${r.name} ($${r.pricePerNight})`,
-                      }))
-                    : [{ value: "any", label: "All Mountain Rooms" }]
-                }
-              />
-            </div>
-
-            {/* Search Availability CTA */}
-            <button
-              type="submit"
-              className="w-full h-full py-3 sm:py-0 rounded-2xl font-bold text-sm text-white bg-[#F97316] hover:bg-[#ea6200] shadow-lg shadow-[#F97316]/30 transition-all flex items-center justify-center gap-2"
-            >
-              <span>Search Availability</span>
-            </button>
-          </form>
-        </div>
+        {/* Glassmorphic Custom Reservation Bar with Custom Calendar & Dropdowns */}
+        <HeroBookingBar />
 
         {/* Slide Indicator Dots */}
         <div className="flex items-center justify-center gap-2 pt-2">
@@ -230,7 +151,7 @@ export function DynamicHero() {
             <button
               key={idx}
               onClick={() => setCurrentSlide(idx)}
-              className={`h-2 rounded-full transition-all ${
+              className={`h-2 rounded-full transition-all cursor-pointer ${
                 idx === currentSlide ? "w-8 bg-[#4F9CF9]" : "w-2 bg-white/40 hover:bg-white/70"
               }`}
             />

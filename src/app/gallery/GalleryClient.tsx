@@ -22,7 +22,7 @@ export default function GalleryClient() {
               Guesthouse Media Gallery
             </h1>
             <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto">
-              Browse high-resolution imagery of Annapurna Base Camp, our luxury suites, dining room dishes, thermal bath house, and 8,000m summits.
+              Browse authentic photography of Annapurna Guest House and Restaurant at 4,130m, comfortable rooms, hot dining meals, and 8,000m summits.
             </p>
           </div>
         </section>

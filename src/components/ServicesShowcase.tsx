@@ -24,13 +24,13 @@ export function ServicesShowcase() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-[#4F9CF9] text-xs font-bold uppercase tracking-wider border border-white/15">
-              <span>High-Altitude Alpine Amenities</span>
+              <span>High-Altitude Lodge Facilities</span>
             </div>
             <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-              Comprehensive Sanctuary Services
+              Guest House & Restaurant Facilities
             </h2>
             <p className="text-slate-300 text-base sm:text-lg">
-              Tailored high-altitude wellness, emergency logistics, mountain dining, and low-latency broadband designed for comfort at 4,130m.
+              Authentic high-altitude hot gas shower & bucket shower, warm dining hall with traditional Dal Bhat, licensed guide & porter arrangements, emergency oxygen, and Starlink Wi-Fi at 4,130m.
             </p>
           </div>
 
@@ -96,7 +96,7 @@ export function ServicesShowcase() {
               </div>
 
               <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between text-xs text-slate-400 font-mono">
-                <span>Sanctuary Standard</span>
+                <span>Guesthouse Facility</span>
                 <span className="text-white font-bold flex items-center gap-1">
                   <span className="w-2 h-2 rounded-full bg-[#16A34A] animate-pulse" />
                   Available Daily

@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCms, BookingRecord } from "@/context/CmsContext";
 import { X, MessageCircle } from "lucide-react";
 import { getWhatsAppBookingUrl } from "@/lib/whatsapp";
 
 export function BookingModal() {
-  const { selectedRoomForBooking, setSelectedRoomForBooking, addBooking, coupons, heroConfig, bookings } = useCms();
+  const { selectedRoomForBooking, setSelectedRoomForBooking, addBooking, coupons, heroConfig, bookings, bookingDraft } = useCms();
 
   const [guestName, setGuestName] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
@@ -14,15 +14,23 @@ export function BookingModal() {
   const todayStr = new Date().toISOString().split("T")[0];
   const defaultOutDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
 
-  const [checkIn, setCheckIn] = useState(todayStr);
-  const [checkOut, setCheckOut] = useState(defaultOutDate);
-  const [guestsCount, setGuestsCount] = useState(2);
+  const [checkIn, setCheckIn] = useState(bookingDraft?.checkIn || todayStr);
+  const [checkOut, setCheckOut] = useState(bookingDraft?.checkOut || defaultOutDate);
+  const [guestsCount, setGuestsCount] = useState(bookingDraft?.guestsCount || 2);
   const [couponCode, setCouponCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState(0);
   const [couponStatusMsg, setCouponStatusMsg] = useState("");
 
   const [formError, setFormError] = useState("");
   const [confirmedBooking, setConfirmedBooking] = useState<BookingRecord | null>(null);
+
+  useEffect(() => {
+    if (bookingDraft) {
+      if (bookingDraft.checkIn) setCheckIn(bookingDraft.checkIn);
+      if (bookingDraft.checkOut) setCheckOut(bookingDraft.checkOut);
+      if (bookingDraft.guestsCount) setGuestsCount(bookingDraft.guestsCount);
+    }
+  }, [bookingDraft, selectedRoomForBooking]);
 
   if (!selectedRoomForBooking) return null;
 
