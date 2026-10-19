@@ -25,13 +25,23 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
   background-color: #395371;
   color: #F8FAFC;
   font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
-  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100vw;
+  position: relative;
+}
+
+@supports not (overflow-x: clip) {
+  body {
+    overflow-x: hidden;
+  }
 }
 
 /* Glassmorphism Design System Utilities */
@@ -82,6 +92,13 @@ body {
 
 .reveal-fade-right {
   transform: translateX(40px);
+}
+
+@media (max-width: 640px) {
+  .reveal-fade-left,
+  .reveal-fade-right {
+    transform: translateY(24px);
+  }
 }
 
 .reveal-zoom-in {

@@ -75,7 +75,7 @@ export function DynamicHero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-28 pb-20 bg-[#395371]">
+    <section className="relative min-h-screen flex items-center justify-center pt-20 sm:pt-28 pb-12 sm:pb-20 bg-[#395371]">
       {/* Background Slideshow & Snow Overlay (isolated with overflow-hidden so foreground popovers never get clipped) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {heroConfig.slides.map((slide, idx) => (
@@ -100,43 +100,43 @@ export function DynamicHero() {
         <canvas ref={canvasRef} className="absolute inset-0 opacity-70" />
       </div>
 
-      <div className="relative z-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+      <div className="relative z-20 max-w-6xl mx-auto px-3.5 sm:px-6 lg:px-8 text-center space-y-4 sm:space-y-6 lg:space-y-8 w-full">
         {/* Mountain Badge */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-xs sm:text-sm font-semibold text-white shadow-xl">
-          <svg className="w-4 h-4 text-[#4F9CF9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-[11px] sm:text-sm font-semibold text-white shadow-xl max-w-[95%]">
+          <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4F9CF9] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
-          <span>{heroConfig.badge || "Stay Above the Clouds • Annapurna Base Camp • 4,130m"}</span>
+          <span className="truncate">{heroConfig.badge || "Stay Above the Clouds • Annapurna Base Camp • 4,130m"}</span>
         </div>
 
         {/* Hero Copy */}
-        <div className="space-y-4 max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight">
+        <div className="space-y-2 sm:space-y-4 max-w-4xl mx-auto">
+          <h1 className="text-2xl sm:text-5xl lg:text-7xl font-black text-white tracking-tight leading-tight sm:leading-none">
             {heroConfig.title || "Wake Up Among the Himalayas"}
           </h1>
-          <p className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-base lg:text-xl text-slate-200/90 max-w-3xl mx-auto leading-relaxed line-clamp-3 sm:line-clamp-none">
             {heroConfig.subtitle}
           </p>
         </div>
 
-        {/* Hero CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-1">
+        {/* Hero CTA Buttons - Responsive Inline on Mobile */}
+        <div className="flex flex-row items-center justify-center gap-2.5 sm:gap-4 pt-1 max-w-sm sm:max-w-none mx-auto w-full">
           <button
             onClick={() => setSelectedRoomForBooking(rooms[0])}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-white bg-[#F97316] hover:bg-[#ea6200] shadow-xl shadow-[#F97316]/30 transition-all flex items-center justify-center gap-2.5 text-base cursor-pointer"
+            className="flex-1 sm:flex-initial px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-xl font-bold text-white bg-[#F97316] hover:bg-[#ea6200] shadow-xl shadow-[#F97316]/30 transition-all flex items-center justify-center gap-1.5 sm:gap-2.5 text-xs sm:text-base cursor-pointer"
           >
             <span>Book Your Stay</span>
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </button>
 
           <Link
             href="/rooms"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-white bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-md transition-all flex items-center justify-center gap-2 text-base"
+            className="flex-1 sm:flex-initial px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-xl font-semibold text-white bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-md transition-all flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-base"
           >
             <span>Explore Rooms</span>
-            <svg className="w-5 h-5 text-[#4F9CF9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-[#4F9CF9] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           </Link>

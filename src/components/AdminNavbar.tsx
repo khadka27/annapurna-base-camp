@@ -41,8 +41,9 @@ export function AdminNavbar({ activeTab, setActiveTab }: AdminNavbarProps) {
   ];
 
   return (
-    <header className="fixed top-4 inset-x-0 z-50 transition-all duration-300 w-[95%] sm:w-[92%] lg:w-[90%] max-w-7xl mx-auto rounded-2xl border border-white/20 bg-[#395371]/90 backdrop-blur-2xl shadow-2xl py-3 px-4 sm:px-6">
-      <div className="flex items-center justify-between">
+    <div className="fixed top-2.5 sm:top-4 inset-x-0 z-50 flex justify-center px-3 sm:px-5 lg:px-8 pointer-events-none">
+      <header className="pointer-events-auto transition-all duration-300 w-full max-w-7xl rounded-2xl border border-white/20 bg-[#395371]/90 backdrop-blur-2xl shadow-2xl py-3 px-4 sm:px-6">
+        <div className="flex items-center justify-between">
         {/* Left: Admin Shield Logo & Badge */}
         <Link href="/admin/dashboard" className="flex items-center gap-3 group">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#395371] via-[#4F9CF9] to-[#16A34A] p-0.5 shadow-lg group-hover:scale-105 transition-transform">
@@ -122,5 +123,6 @@ export function AdminNavbar({ activeTab, setActiveTab }: AdminNavbarProps) {
         </div>
       </div>
     </header>
+  </div>
   );
 }

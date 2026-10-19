@@ -141,7 +141,7 @@ function CustomCalendar({
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="absolute left-0 sm:left-2 bottom-full mb-2.5 z-50 w-[295px] sm:w-[315px] bg-[#0c1222]/90 backdrop-blur-3xl border border-cyan-500/35 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.85),0_0_25px_rgba(6,182,212,0.2),inset_0_1px_2px_rgba(255,255,255,0.35)] p-3 text-white animate-in fade-in zoom-in-95 duration-150"
+      className="absolute left-1/2 -translate-x-1/2 lg:left-2 lg:translate-x-0 bottom-full mb-2.5 z-50 w-[calc(100vw-2.5rem)] max-w-[315px] bg-[#0c1222]/95 backdrop-blur-3xl border border-cyan-500/35 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.85),0_0_25px_rgba(6,182,212,0.2),inset_0_1px_2px_rgba(255,255,255,0.35)] p-3 text-white animate-in fade-in zoom-in-95 duration-150"
     >
       {/* Prismatic AI Top Accent Bar */}
       <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-fuchsia-500 rounded-full mb-2 shadow-[0_0_10px_rgba(56,189,248,0.7)]" />
@@ -306,7 +306,7 @@ function CustomGuestsDropdown({ guests, setGuests, onClose }: CustomGuestsDropdo
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="absolute left-0 sm:left-1/3 sm:-translate-x-1/2 bottom-full mb-2.5 z-50 w-[275px] sm:w-[295px] bg-[#0c1222]/90 backdrop-blur-3xl border border-indigo-500/35 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.85),0_0_25px_rgba(99,102,241,0.2),inset_0_1px_2px_rgba(255,255,255,0.35)] p-3 text-white animate-in fade-in zoom-in-95 duration-150"
+      className="absolute left-1/2 -translate-x-1/2 lg:left-1/3 lg:translate-x-0 bottom-full mb-2.5 z-50 w-[calc(100vw-2.5rem)] max-w-[295px] bg-[#0c1222]/95 backdrop-blur-3xl border border-indigo-500/35 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.85),0_0_25px_rgba(99,102,241,0.2),inset_0_1px_2px_rgba(255,255,255,0.35)] p-3 text-white animate-in fade-in zoom-in-95 duration-150"
     >
       <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-fuchsia-500 rounded-full mb-2.5 shadow-[0_0_10px_rgba(99,102,241,0.7)]" />
 
@@ -650,63 +650,66 @@ export function HeroBookingBar() {
           onSubmit={handleSearchSubmit}
           className="flex flex-col lg:flex-row items-stretch lg:items-center text-left"
         >
-          {/* Segment 1: CHECK-IN */}
-          <button
-            type="button"
-            onClick={() => handleOpenCalendar("checkIn")}
-            className={`w-full lg:w-auto relative flex-[1.1] group px-5 py-3 rounded-2xl lg:rounded-l-full transition-all duration-200 cursor-pointer focus:outline-none text-left ${
-              calendarOpen && activePicker === "checkIn"
-                ? "bg-white/20 ring-2 ring-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)]"
-                : "hover:bg-white/10"
-            }`}
-          >
-            <div className="flex items-center gap-1.5 mb-1">
-              <CalendarIcon className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-bold tracking-widest text-slate-300 uppercase">
-                Check-In
-              </span>
-            </div>
-            <div className="text-sm font-extrabold text-white tracking-tight flex items-baseline gap-1">
-              <span>{formatDateObj(checkIn).date}</span>
-              <span className="text-[11px] font-medium text-cyan-300">
-                ({formatDateObj(checkIn).day})
-              </span>
-            </div>
-            <div className="text-[10px] text-slate-300 font-medium">Arrival at 4,130m</div>
-          </button>
+          {/* Mobile 2-column Check-In & Check-Out group */}
+          <div className="grid grid-cols-2 lg:flex lg:flex-[2.2] items-stretch">
+            {/* Segment 1: CHECK-IN */}
+            <button
+              type="button"
+              onClick={() => handleOpenCalendar("checkIn")}
+              className={`w-full relative group px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-2xl lg:rounded-l-full transition-all duration-200 cursor-pointer focus:outline-none text-left ${
+                calendarOpen && activePicker === "checkIn"
+                  ? "bg-white/20 ring-2 ring-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)]"
+                  : "hover:bg-white/10"
+              }`}
+            >
+              <div className="flex items-center gap-1.5 mb-0.5 sm:mb-1">
+                <CalendarIcon className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform shrink-0" />
+                <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-slate-300 uppercase truncate">
+                  Check-In
+                </span>
+              </div>
+              <div className="text-xs sm:text-sm font-extrabold text-white tracking-tight flex items-baseline gap-1">
+                <span>{formatDateObj(checkIn).date}</span>
+                <span className="text-[10px] sm:text-[11px] font-medium text-cyan-300">
+                  ({formatDateObj(checkIn).day})
+                </span>
+              </div>
+              <div className="text-[9px] sm:text-[10px] text-slate-300 font-medium truncate">Arrival 4,130m</div>
+            </button>
+
+            {/* Vertical Divider between In & Out */}
+            <div className="w-[1px] h-8 sm:h-9 bg-white/15 my-auto shrink-0" />
+
+            {/* Segment 2: CHECK-OUT */}
+            <button
+              type="button"
+              onClick={() => handleOpenCalendar("checkOut")}
+              className={`w-full relative group px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-2xl transition-all duration-200 cursor-pointer focus:outline-none text-left ${
+                calendarOpen && activePicker === "checkOut"
+                  ? "bg-white/20 ring-2 ring-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.4)]"
+                  : "hover:bg-white/10"
+              }`}
+            >
+              <div className="flex items-center gap-1.5 mb-0.5 sm:mb-1">
+                <CalendarIcon className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform shrink-0" />
+                <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-slate-300 uppercase truncate">
+                  Check-Out
+                </span>
+              </div>
+              <div className="text-xs sm:text-sm font-extrabold text-white tracking-tight flex items-baseline gap-1">
+                <span>{formatDateObj(checkOut).date}</span>
+                <span className="text-[10px] sm:text-[11px] font-medium text-indigo-300">
+                  ({formatDateObj(checkOut).day})
+                </span>
+              </div>
+              <div className="text-[9px] sm:text-[10px] text-slate-300 font-medium truncate">
+                {nightsCount} {nightsCount === 1 ? "Night" : "Nights"} stay
+              </div>
+            </button>
+          </div>
 
           {/* Divider */}
-          <div className="hidden lg:block w-[1px] h-9 bg-white/20 my-auto" />
-
-          {/* Segment 2: CHECK-OUT */}
-          <button
-            type="button"
-            onClick={() => handleOpenCalendar("checkOut")}
-            className={`w-full lg:w-auto relative flex-[1.1] group px-5 py-3 rounded-2xl transition-all duration-200 cursor-pointer focus:outline-none text-left border-t sm:border-t-0 border-white/10 ${
-              calendarOpen && activePicker === "checkOut"
-                ? "bg-white/20 ring-2 ring-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.4)]"
-                : "hover:bg-white/10"
-            }`}
-          >
-            <div className="flex items-center gap-1.5 mb-1">
-              <CalendarIcon className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-bold tracking-widest text-slate-300 uppercase">
-                Check-Out
-              </span>
-            </div>
-            <div className="text-sm font-extrabold text-white tracking-tight flex items-baseline gap-1">
-              <span>{formatDateObj(checkOut).date}</span>
-              <span className="text-[11px] font-medium text-indigo-300">
-                ({formatDateObj(checkOut).day})
-              </span>
-            </div>
-            <div className="text-[10px] text-slate-300 font-medium">
-              {nightsCount} {nightsCount === 1 ? "Night" : "Nights"} stay
-            </div>
-          </button>
-
-          {/* Divider */}
-          <div className="hidden lg:block w-[1px] h-9 bg-white/20 my-auto" />
+          <div className="hidden lg:block w-[1px] h-9 bg-white/20 my-auto shrink-0" />
 
           {/* Segment 3: GUESTS */}
           <button
@@ -716,16 +719,16 @@ export function HeroBookingBar() {
               setCalendarOpen(false);
               setRoomsPanelOpen(false);
             }}
-            className={`w-full lg:w-auto relative flex-[1] group px-5 py-3 rounded-2xl transition-all duration-200 cursor-pointer focus:outline-none text-left border-t sm:border-t-0 border-white/10 ${
+            className={`w-full lg:w-auto relative flex-[1] group px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl transition-all duration-200 cursor-pointer focus:outline-none text-left border-t lg:border-t-0 border-white/10 ${
               guestsOpen
                 ? "bg-white/20 ring-2 ring-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.4)]"
                 : "hover:bg-white/10"
             }`}
           >
-            <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center justify-between mb-0.5 sm:mb-1">
               <div className="flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-purple-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] font-bold tracking-widest text-slate-300 uppercase">
+                <Users className="w-3.5 h-3.5 text-purple-400 group-hover:scale-110 transition-transform shrink-0" />
+                <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-slate-300 uppercase">
                   Guests
                 </span>
               </div>
@@ -735,10 +738,10 @@ export function HeroBookingBar() {
                 }`}
               />
             </div>
-            <div className="text-sm font-extrabold text-white tracking-tight">
+            <div className="text-xs sm:text-sm font-extrabold text-white tracking-tight">
               {guests} {guests === 1 ? "Guest" : "Guests"}
             </div>
-            <div className="text-[10px] text-slate-300 font-medium truncate">
+            <div className="text-[9px] sm:text-[10px] text-slate-300 font-medium truncate">
               {guests === 1
                 ? "Solo Trekker"
                 : guests === 2
@@ -748,12 +751,12 @@ export function HeroBookingBar() {
           </button>
 
           {/* Segment 4: SEARCH AVAILABILITY CTA BUTTON */}
-          <div className="p-1 sm:p-1.5 shrink-0">
+          <div className="p-1 sm:p-1.5 shrink-0 border-t lg:border-t-0 border-white/10">
             <button
               type="submit"
-              className="w-full lg:w-auto h-full px-8 py-3.5 rounded-2xl lg:rounded-full font-extrabold text-sm text-white bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:via-indigo-500 hover:to-purple-500 shadow-xl shadow-indigo-500/35 hover:shadow-cyan-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 cursor-pointer group"
+              className="w-full lg:w-auto h-full px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl lg:rounded-full font-extrabold text-xs sm:text-sm text-white bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:via-indigo-500 hover:to-purple-500 shadow-xl shadow-indigo-500/35 hover:shadow-cyan-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer group"
             >
-              <Search className="w-4 h-4 text-white group-hover:rotate-12 transition-transform duration-200" />
+              <Search className="w-4 h-4 text-white group-hover:rotate-12 transition-transform duration-200 shrink-0" />
               <span className="tracking-wide">Search Availability</span>
             </button>
           </div>

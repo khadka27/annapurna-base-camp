@@ -39,7 +39,7 @@ export default function HomeClient() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#395371] text-white">
+    <div className="min-h-screen flex flex-col bg-[#395371] text-white overflow-x-clip">
       {/* Navbar with 20px padding */}
       <GlassNavbar />
 
