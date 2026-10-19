@@ -30,12 +30,12 @@ export function GlassNavbar() {
   };
 
   return (
-    <div className="fixed top-2.5 sm:top-4 inset-x-0 z-50 flex justify-center px-3 sm:px-5 lg:px-8 pointer-events-none">
+    <div className="fixed top-2 sm:top-4 inset-x-0 z-50 flex justify-center px-2 sm:px-4 lg:px-8 pointer-events-none">
       <header
         className={`pointer-events-auto transition-all duration-300 w-full max-w-7xl rounded-2xl border ${
           scrolled
-            ? "bg-[#395371]/95 backdrop-blur-2xl border-white/20 shadow-2xl shadow-black/40 py-2 sm:py-2.5 px-3.5 sm:px-6"
-            : "bg-[#395371]/90 backdrop-blur-xl border-white/15 shadow-xl py-2.5 sm:py-3 px-3.5 sm:px-6"
+            ? "bg-[#395371]/95 backdrop-blur-2xl border-white/20 shadow-2xl shadow-black/40 py-2 sm:py-2.5 px-3 sm:px-6"
+            : "bg-[#395371]/90 backdrop-blur-xl border-white/15 shadow-xl py-2.5 sm:py-3 px-3 sm:px-6"
         }`}
       >
         <div className="w-full">

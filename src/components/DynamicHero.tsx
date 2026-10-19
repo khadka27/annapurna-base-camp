@@ -100,7 +100,7 @@ export function DynamicHero() {
         <canvas ref={canvasRef} className="absolute inset-0 opacity-70" />
       </div>
 
-      <div className="relative z-20 max-w-6xl mx-auto px-3.5 sm:px-6 lg:px-8 text-center space-y-4 sm:space-y-6 lg:space-y-8 w-full">
+      <div className="relative z-20 max-w-6xl mx-auto px-2.5 sm:px-6 lg:px-8 text-center space-y-4 sm:space-y-6 lg:space-y-8 w-full">
         {/* Mountain Badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-[11px] sm:text-sm font-semibold text-white shadow-xl max-w-[95%]">
           <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4F9CF9] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

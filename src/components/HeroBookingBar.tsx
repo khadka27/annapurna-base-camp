@@ -640,75 +640,72 @@ export function HeroBookingBar() {
   const nightsCount = calculateNights(checkIn, checkOut);
 
   return (
-    <div ref={barRef} className="w-full max-w-4xl mx-auto mt-6 relative z-30">
+    <div ref={barRef} className="w-full max-w-4xl mx-auto mt-4 sm:mt-6 relative z-30">
       {/* Prismatic AI Backlight Glow */}
-      <div className="absolute -inset-1.5 bg-gradient-to-r from-cyan-500/25 via-indigo-500/20 to-fuchsia-500/25 rounded-3xl lg:rounded-full blur-xl opacity-75 -z-10 pointer-events-none" />
+      <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/25 via-indigo-500/20 to-fuchsia-500/25 rounded-2xl lg:rounded-full blur-lg opacity-75 -z-10 pointer-events-none" />
 
       {/* Frosted Glass Floating Dock Container */}
-      <div className="relative bg-[#0c1222]/70 backdrop-blur-3xl rounded-3xl lg:rounded-full border border-cyan-500/30 shadow-[0_20px_50px_rgba(0,0,0,0.6),0_0_25px_rgba(6,182,212,0.15),inset_0_1px_2px_rgba(255,255,255,0.35)] p-2 sm:p-2.5 transition-all">
+      <div className="relative bg-[#0c1222]/80 backdrop-blur-3xl rounded-2xl sm:rounded-3xl lg:rounded-full border border-cyan-500/30 shadow-[0_20px_50px_rgba(0,0,0,0.6),0_0_25px_rgba(6,182,212,0.15),inset_0_1px_2px_rgba(255,255,255,0.35)] p-1.5 sm:p-2.5 transition-all">
         <form
           onSubmit={handleSearchSubmit}
           className="flex flex-col lg:flex-row items-stretch lg:items-center text-left"
         >
-          {/* Mobile 2-column Check-In & Check-Out group */}
-          <div className="grid grid-cols-2 lg:flex lg:flex-[2.2] items-stretch">
+          {/* Mobile 2-column Check-In & Check-Out group with divide border */}
+          <div className="grid grid-cols-2 lg:flex lg:flex-[2.2] items-stretch divide-x divide-white/15">
             {/* Segment 1: CHECK-IN */}
             <button
               type="button"
               onClick={() => handleOpenCalendar("checkIn")}
-              className={`w-full relative group px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-2xl lg:rounded-l-full transition-all duration-200 cursor-pointer focus:outline-none text-left ${
+              className={`w-full relative group px-3 sm:px-5 py-2.5 sm:py-3.5 rounded-xl lg:rounded-l-full transition-all duration-200 cursor-pointer focus:outline-none text-left ${
                 calendarOpen && activePicker === "checkIn"
                   ? "bg-white/20 ring-2 ring-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)]"
                   : "hover:bg-white/10"
               }`}
             >
-              <div className="flex items-center gap-1.5 mb-0.5 sm:mb-1">
+              <div className="flex items-center gap-1.5 mb-1">
                 <CalendarIcon className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform shrink-0" />
-                <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-slate-300 uppercase truncate">
+                <span className="text-[10px] font-bold tracking-widest text-slate-300 uppercase truncate">
                   Check-In
                 </span>
               </div>
               <div className="text-xs sm:text-sm font-extrabold text-white tracking-tight flex items-baseline gap-1">
                 <span>{formatDateObj(checkIn).date}</span>
-                <span className="text-[10px] sm:text-[11px] font-medium text-cyan-300">
+                <span className="text-[10px] sm:text-[11px] font-semibold text-cyan-300">
                   ({formatDateObj(checkIn).day})
                 </span>
               </div>
-              <div className="text-[9px] sm:text-[10px] text-slate-300 font-medium truncate">Arrival 4,130m</div>
+              <div className="text-[10px] text-slate-300 font-medium truncate mt-0.5">Arrival 4,130m</div>
             </button>
-
-            {/* Vertical Divider between In & Out */}
-            <div className="w-[1px] h-8 sm:h-9 bg-white/15 my-auto shrink-0" />
 
             {/* Segment 2: CHECK-OUT */}
             <button
               type="button"
               onClick={() => handleOpenCalendar("checkOut")}
-              className={`w-full relative group px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-2xl transition-all duration-200 cursor-pointer focus:outline-none text-left ${
+              className={`w-full relative group px-3 sm:px-5 py-2.5 sm:py-3.5 rounded-xl transition-all duration-200 cursor-pointer focus:outline-none text-left ${
                 calendarOpen && activePicker === "checkOut"
                   ? "bg-white/20 ring-2 ring-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.4)]"
                   : "hover:bg-white/10"
               }`}
             >
-              <div className="flex items-center gap-1.5 mb-0.5 sm:mb-1">
+              <div className="flex items-center gap-1.5 mb-1">
                 <CalendarIcon className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform shrink-0" />
-                <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-slate-300 uppercase truncate">
+                <span className="text-[10px] font-bold tracking-widest text-slate-300 uppercase truncate">
                   Check-Out
                 </span>
               </div>
               <div className="text-xs sm:text-sm font-extrabold text-white tracking-tight flex items-baseline gap-1">
                 <span>{formatDateObj(checkOut).date}</span>
-                <span className="text-[10px] sm:text-[11px] font-medium text-indigo-300">
+                <span className="text-[10px] sm:text-[11px] font-semibold text-indigo-300">
                   ({formatDateObj(checkOut).day})
                 </span>
               </div>
-              <div className="text-[9px] sm:text-[10px] text-slate-300 font-medium truncate">
+              <div className="text-[10px] text-slate-300 font-medium truncate mt-0.5">
                 {nightsCount} {nightsCount === 1 ? "Night" : "Nights"} stay
               </div>
             </button>
           </div>
 
-          {/* Divider */}
+          {/* Desktop divider */}
           <div className="hidden lg:block w-[1px] h-9 bg-white/20 my-auto shrink-0" />
 
           {/* Segment 3: GUESTS */}
@@ -719,16 +716,16 @@ export function HeroBookingBar() {
               setCalendarOpen(false);
               setRoomsPanelOpen(false);
             }}
-            className={`w-full lg:w-auto relative flex-[1] group px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl transition-all duration-200 cursor-pointer focus:outline-none text-left border-t lg:border-t-0 border-white/10 ${
+            className={`w-full lg:w-auto relative flex-[1] group px-3.5 sm:px-5 py-2.5 sm:py-3.5 rounded-xl transition-all duration-200 cursor-pointer focus:outline-none text-left border-t lg:border-t-0 border-white/10 ${
               guestsOpen
                 ? "bg-white/20 ring-2 ring-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.4)]"
                 : "hover:bg-white/10"
             }`}
           >
-            <div className="flex items-center justify-between mb-0.5 sm:mb-1">
+            <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5 text-purple-400 group-hover:scale-110 transition-transform shrink-0" />
-                <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-slate-300 uppercase">
+                <span className="text-[10px] font-bold tracking-widest text-slate-300 uppercase">
                   Guests
                 </span>
               </div>
@@ -738,26 +735,28 @@ export function HeroBookingBar() {
                 }`}
               />
             </div>
-            <div className="text-xs sm:text-sm font-extrabold text-white tracking-tight">
-              {guests} {guests === 1 ? "Guest" : "Guests"}
-            </div>
-            <div className="text-[9px] sm:text-[10px] text-slate-300 font-medium truncate">
-              {guests === 1
-                ? "Solo Trekker"
-                : guests === 2
-                ? "Pair / Couple"
-                : `${guests} Trekkers Group`}
+            <div className="flex items-baseline justify-between">
+              <div className="text-xs sm:text-sm font-extrabold text-white tracking-tight">
+                {guests} {guests === 1 ? "Guest" : "Guests"}
+              </div>
+              <div className="text-[10px] text-cyan-300 font-semibold truncate">
+                {guests === 1
+                  ? "Solo Trekker"
+                  : guests === 2
+                  ? "Pair / Couple"
+                  : `${guests} Trekkers Group`}
+              </div>
             </div>
           </button>
 
           {/* Segment 4: SEARCH AVAILABILITY CTA BUTTON */}
-          <div className="p-1 sm:p-1.5 shrink-0 border-t lg:border-t-0 border-white/10">
+          <div className="p-1 sm:p-1.5 shrink-0 border-t lg:border-t-0 border-white/10 w-full lg:w-auto">
             <button
               type="submit"
-              className="w-full lg:w-auto h-full px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl lg:rounded-full font-extrabold text-xs sm:text-sm text-white bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:via-indigo-500 hover:to-purple-500 shadow-xl shadow-indigo-500/35 hover:shadow-cyan-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer group"
+              className="w-full lg:w-auto h-full px-6 sm:px-8 py-3.5 sm:py-3.5 rounded-xl lg:rounded-full font-black text-xs sm:text-sm text-white bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:via-indigo-500 hover:to-purple-500 shadow-xl shadow-indigo-500/35 hover:shadow-cyan-500/50 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer group"
             >
               <Search className="w-4 h-4 text-white group-hover:rotate-12 transition-transform duration-200 shrink-0" />
-              <span className="tracking-wide">Search Availability</span>
+              <span className="tracking-wide uppercase text-xs sm:text-sm font-extrabold">Search Availability</span>
             </button>
           </div>
         </form>
