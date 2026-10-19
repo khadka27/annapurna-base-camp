@@ -36,8 +36,17 @@ export default function RoomsClient() {
           </div>
         </section>
 
-        {/* Room Showcase Component */}
-        <RoomShowcase />
+        {/* Room Showcase Component with Suspense for useSearchParams */}
+        <React.Suspense
+          fallback={
+            <div className="py-24 text-center text-slate-300">
+              <div className="animate-spin w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full mx-auto mb-3" />
+              <p className="text-sm font-medium">Loading sanctuary accommodations...</p>
+            </div>
+          }
+        >
+          <RoomShowcase />
+        </React.Suspense>
       </main>
       <Footer />
       <BookingModal />

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useCms, RoomItem } from "@/context/CmsContext";
 import {
   Calendar as CalendarIcon,
@@ -614,6 +615,8 @@ export function HeroBookingBar() {
     }
   };
 
+  const router = useRouter();
+
   const handleApplyPresetNights = (nights: number) => {
     setCheckOut(addDaysToStr(checkIn, nights));
     setCalendarOpen(false);
@@ -623,8 +626,21 @@ export function HeroBookingBar() {
     e.preventDefault();
     setCalendarOpen(false);
     setGuestsOpen(false);
-    // Reveal the available rooms panel!
-    setRoomsPanelOpen(true);
+    
+    // Save draft in CMS context for global booking continuity
+    setBookingDraft({
+      checkIn,
+      checkOut,
+      guestsCount: guests,
+    });
+
+    // Redirect to /rooms with search query parameters
+    const params = new URLSearchParams({
+      checkIn,
+      checkOut,
+      guests: guests.toString(),
+    });
+    router.push(`/rooms?${params.toString()}`);
   };
 
   const handleSelectAndBookRoom = (room: RoomItem) => {

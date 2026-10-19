@@ -15,11 +15,11 @@ import {
   AlertCircle,
 } from "lucide-react";
 
-export function PermitsAndGuidesSection() {
+export function PermitsAndGuidesSection({ className = "py-4 sm:py-8" }: { className?: string }) {
   const [activeTab, setActiveTab] = useState<"permits" | "guides">("permits");
 
   return (
-    <section id="permits-guides" className="py-14 sm:py-16 bg-[#395371] text-white relative overflow-hidden">
+    <section id="permits-guides" className={`bg-[#395371] text-white relative overflow-hidden ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 relative z-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">

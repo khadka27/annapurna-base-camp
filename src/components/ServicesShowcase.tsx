@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useCms } from "@/context/CmsContext";
 import { DynamicIcon } from "@/components/DynamicIcon";
 
-export function ServicesShowcase() {
+export function ServicesShowcase({ className = "py-4 sm:py-8" }: { className?: string }) {
   const { services } = useCms();
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
@@ -14,7 +14,7 @@ export function ServicesShowcase() {
       : services.filter((s) => s.category === activeCategory);
 
   return (
-    <section id="services" className="py-14 sm:py-16 bg-[#395371] text-white relative overflow-hidden">
+    <section id="services" className={`bg-[#395371] text-white relative overflow-hidden ${className}`}>
       {/* Glow Backdrop */}
       <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-[#4F9CF9]/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-[#16A34A]/10 rounded-full blur-[140px] pointer-events-none" />

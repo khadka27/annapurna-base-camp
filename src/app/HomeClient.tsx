@@ -43,7 +43,7 @@ export default function HomeClient() {
       {/* Navbar with 20px padding */}
       <GlassNavbar />
 
-      <main className="flex-grow space-y-24 pb-16">
+      <main className="flex-grow space-y-8 sm:space-y-14 pb-12">
         {/* Hero Section */}
         <DynamicHero />
 
@@ -236,7 +236,7 @@ export default function HomeClient() {
         </section>
 
         {/* Services & Amenities Section */}
-        <ServicesShowcase />
+        <ServicesShowcase className="py-0" />
 
         {/* Amenities Section */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -280,7 +280,7 @@ export default function HomeClient() {
 
         {/* Live Weather Station */}
         <ScrollReveal variant="zoom-in">
-          <WeatherWidget />
+          <WeatherWidget className="py-0" />
         </ScrollReveal>
 
         {/* Gallery Section Teaser */}
@@ -337,7 +337,7 @@ export default function HomeClient() {
 
         {/* Permits, Guides & Porters Assistance */}
         <ScrollReveal variant="fade-up">
-          <PermitsAndGuidesSection />
+          <PermitsAndGuidesSection className="py-0" />
         </ScrollReveal>
 
         {/* Dining */}

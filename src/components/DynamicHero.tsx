@@ -75,7 +75,7 @@ export function DynamicHero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 sm:pt-28 pb-12 sm:pb-20 bg-[#395371]">
+    <section className="relative min-h-screen flex items-center justify-center pt-20 sm:pt-28 pb-6 sm:pb-10 bg-[#395371]">
       {/* Background Slideshow & Snow Overlay (isolated with overflow-hidden so foreground popovers never get clipped) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {heroConfig.slides.map((slide, idx) => (
