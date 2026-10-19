@@ -3,10 +3,12 @@
 import React, { useState } from "react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { useCms } from "@/context/CmsContext";
+import { useToast } from "@/context/ToastContext";
 import { Settings, Save, Check } from "lucide-react";
 
 export default function AdminHeroPage() {
   const { heroConfig, updateHeroConfig } = useCms();
+  const { toast, confirmModal } = useToast();
 
   const [heroTitle, setHeroTitle] = useState(heroConfig.title);
   const [heroSubtitle, setHeroSubtitle] = useState(heroConfig.subtitle);
@@ -17,6 +19,14 @@ export default function AdminHeroPage() {
 
   const handleSaveHero = async (e: React.FormEvent) => {
     e.preventDefault();
+    const ok = await confirmModal({
+      title: "Update Hero & WhatsApp Settings",
+      message: "Are you sure you want to save and publish these Hero headline and WhatsApp hotline configurations live to the website?",
+      confirmText: "Save & Publish",
+      type: "info",
+    });
+    if (!ok) return;
+
     await updateHeroConfig({
       title: heroTitle,
       subtitle: heroSubtitle,
@@ -25,6 +35,7 @@ export default function AdminHeroPage() {
       whatsappNumber: whatsappNumber,
     });
     setSaved(true);
+    toast.success("Hero & WhatsApp settings updated live!", "Settings Saved");
     setTimeout(() => setSaved(false), 4000);
   };
 

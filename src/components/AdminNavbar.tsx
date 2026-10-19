@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { useToast } from "@/context/ToastContext";
 import { ShieldCheck, ExternalLink, LogOut } from "lucide-react";
 
 interface AdminNavbarProps {
@@ -13,10 +14,19 @@ interface AdminNavbarProps {
 
 export function AdminNavbar({ activeTab, setActiveTab }: AdminNavbarProps) {
   const pathname = usePathname();
+  const { confirmModal } = useToast();
 
   const handleLogout = async () => {
-    localStorage.removeItem("admin_auth");
-    await signOut({ callbackUrl: "/admin/login" });
+    const ok = await confirmModal({
+      title: "Log Out of Admin Portal",
+      message: "Are you sure you want to end your executive session and log out?",
+      confirmText: "Log Out",
+      type: "warning",
+    });
+    if (ok) {
+      localStorage.removeItem("admin_auth");
+      await signOut({ callbackUrl: "/admin/login" });
+    }
   };
 
   const navItems = [

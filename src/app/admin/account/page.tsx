@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useToast } from "@/context/ToastContext";
 import { Lock, Mail, KeyRound, ShieldCheck, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 
 export default function AdminAccountSettingsPage() {
+  const { toast, confirmModal } = useToast();
   const [currentEmail, setCurrentEmail] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -38,24 +40,36 @@ export default function AdminAccountSettingsPage() {
     setStatusMsg(null);
 
     if (!currentPassword) {
+      toast.warning("Please enter your current password to verify identity.", "Verification Needed");
       setStatusMsg({ type: "error", text: "Please enter your current password to verify identity." });
       return;
     }
 
     if (!newEmail || !newPassword) {
+      toast.warning("New email and new password cannot be blank.", "Validation Error");
       setStatusMsg({ type: "error", text: "New email and new password cannot be blank." });
       return;
     }
 
     if (newPassword !== confirmPassword) {
+      toast.warning("New password and confirmation password do not match!", "Password Mismatch");
       setStatusMsg({ type: "error", text: "New password and confirmation password do not match!" });
       return;
     }
 
     if (newPassword.length < 4) {
+      toast.warning("Password should be at least 4 characters long.", "Password Too Short");
       setStatusMsg({ type: "error", text: "Password should be at least 4 characters long." });
       return;
     }
+
+    const ok = await confirmModal({
+      title: "Confirm Credentials Change",
+      message: `Are you sure you want to change your administrator email to "${newEmail}" and update your password? You will need these credentials to access the CMS.`,
+      confirmText: "Update Credentials",
+      type: "warning",
+    });
+    if (!ok) return;
 
     try {
       setLoading(true);
@@ -72,18 +86,23 @@ export default function AdminAccountSettingsPage() {
       const data = await res.json();
 
       if (data.success) {
+        const msg = data.message || "Admin credentials updated successfully!";
+        toast.success(msg, "Credentials Saved");
         setStatusMsg({
           type: "success",
-          text: data.message || "Admin email & password credentials updated successfully in PostgreSQL!",
+          text: msg,
         });
         setCurrentEmail(data.email || newEmail);
         setCurrentPassword("");
         setNewPassword("");
         setConfirmPassword("");
       } else {
-        setStatusMsg({ type: "error", text: data.message || "Failed to update credentials." });
+        const err = data.message || "Failed to update credentials.";
+        toast.error(err, "Update Failed");
+        setStatusMsg({ type: "error", text: err });
       }
     } catch {
+      toast.error("Network error updating admin credentials.", "Network Error");
       setStatusMsg({ type: "error", text: "Network error updating admin credentials." });
     } finally {
       setLoading(false);

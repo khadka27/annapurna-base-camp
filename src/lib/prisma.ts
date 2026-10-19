@@ -4,7 +4,7 @@ import { Pool } from "pg";
 
 const connectionString =
   process.env.DATABASE_URL ||
-  "postgresql://khadka27:khadka27@localhost:5432/annapurna_db?schema=public";
+  "postgresql://khadka27:ecom_pass@localhost:5432/annapurna_db?schema=public";
 
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);

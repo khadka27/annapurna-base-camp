@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { useCms } from "@/context/CmsContext";
+import { useToast } from "@/context/ToastContext";
 import { Building, Plus, Trash2, Folder, Loader2, CheckCircle2, XCircle } from "lucide-react";
 
 export default function AdminRoomsPage() {
@@ -26,6 +27,8 @@ export default function AdminRoomsPage() {
     return true;
   });
 
+  const { toast, confirmModal } = useToast();
+
   const handleFileUpload = async (file: File) => {
     if (!file) return;
     setUploadingRoomImage(true);
@@ -36,11 +39,12 @@ export default function AdminRoomsPage() {
       const data = await res.json();
       if (data.success && data.url) {
         setNewRoomImage(data.url);
+        toast.success("Suite photo uploaded successfully!", "Upload Complete");
       } else {
-        alert("Upload failed: " + (data.message || "Unknown error"));
+        toast.error("Upload failed: " + (data.message || "Unknown error"), "Upload Failed");
       }
     } catch (err) {
-      alert("Error uploading file to server");
+      toast.error("Error uploading file to server", "Upload Error");
     } finally {
       setUploadingRoomImage(false);
     }
@@ -49,17 +53,25 @@ export default function AdminRoomsPage() {
   const handleCreateRoom = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newRoomName.trim() || newRoomName.trim().length < 3) {
-      alert("Please enter a valid room title (at least 3 characters).");
+      toast.warning("Please enter a valid room title (at least 3 characters).", "Validation Error");
       return;
     }
     if (Number(newRoomPrice) <= 0) {
-      alert("Price per night must be a positive number greater than 0.");
+      toast.warning("Price per night must be a positive number greater than 0.", "Validation Error");
       return;
     }
     if (!newRoomImage.trim()) {
-      alert("Please upload or enter a room image URL.");
+      toast.warning("Please upload or enter a room image URL.", "Validation Error");
       return;
     }
+
+    const ok = await confirmModal({
+      title: "Publish New Suite",
+      message: `Add "${newRoomName.trim()}" at $${newRoomPrice}/night live to website?`,
+      confirmText: "Publish Suite",
+      type: "success",
+    });
+    if (!ok) return;
 
     await addRoom({
       name: newRoomName.trim(),
@@ -74,12 +86,36 @@ export default function AdminRoomsPage() {
       featured: true,
       available: true,
     });
+    const roomTitle = newRoomName.trim();
     setNewRoomName("");
-    alert("New room added and published live to website!");
+    toast.success(`Suite "${roomTitle}" added and published live to website!`, "Suite Published");
   };
 
-  const handleToggleAvailability = async (id: string, currentAvailable: boolean) => {
-    await updateRoom(id, { available: !currentAvailable });
+  const handleToggleAvailability = async (id: string, currentAvailable: boolean, name: string) => {
+    const nextState = !currentAvailable;
+    const ok = await confirmModal({
+      title: nextState ? "Mark Suite as Available" : "Mark Suite as Booked",
+      message: `Change reservation status of "${name}" to ${nextState ? "Available" : "Booked / Unavailable"}?`,
+      confirmText: nextState ? "Mark Available" : "Mark Booked",
+      type: nextState ? "success" : "warning",
+    });
+    if (ok) {
+      await updateRoom(id, { available: nextState });
+      toast.info(`"${name}" is now marked as ${nextState ? "Available" : "Booked"}.`, "Status Updated");
+    }
+  };
+
+  const handleDeleteRoom = async (id: string, name: string) => {
+    const ok = await confirmModal({
+      title: "Delete Room Suite",
+      message: `Are you sure you want to permanently delete "${name}"? Trekkers will no longer be able to view or reserve this suite.`,
+      confirmText: "Delete Suite",
+      type: "danger",
+    });
+    if (ok) {
+      await deleteRoom(id);
+      toast.success(`Suite "${name}" deleted successfully.`);
+    }
   };
 
   return (
@@ -276,7 +312,7 @@ export default function AdminRoomsPage() {
 
                     <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
                       <button
-                        onClick={() => handleToggleAvailability(r.id, isAvailable)}
+                        onClick={() => handleToggleAvailability(r.id, isAvailable, r.name)}
                         className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
                           isAvailable
                             ? "bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border-rose-500/30"
@@ -288,8 +324,8 @@ export default function AdminRoomsPage() {
                       </button>
 
                       <button
-                        onClick={() => deleteRoom(r.id)}
-                        className="px-3 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold border border-red-500/30 transition-all flex items-center gap-1.5"
+                        onClick={() => handleDeleteRoom(r.id, r.name)}
+                        className="px-3 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold border border-red-500/30 transition-all flex items-center gap-1.5 cursor-pointer"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                         <span>Delete</span>

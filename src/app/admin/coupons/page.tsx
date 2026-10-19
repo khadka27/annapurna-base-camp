@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { useCms, CouponItem } from "@/context/CmsContext";
+import { useToast } from "@/context/ToastContext";
 import { Tag, Plus, CheckCircle2, XCircle, Trash2, Edit3, Save, X } from "lucide-react";
 
 export default function AdminCouponsPage() {
@@ -16,14 +17,16 @@ export default function AdminCouponsPage() {
   const [editFormCode, setEditFormCode] = useState("");
   const [editFormDiscount, setEditFormDiscount] = useState(10);
 
+  const { toast, confirmModal } = useToast();
+
   const handleCreateCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newCouponCode.trim()) {
-      alert("Please enter a valid coupon code.");
+      toast.warning("Please enter a valid coupon code.", "Validation Error");
       return;
     }
     if (newCouponDiscount <= 0 || newCouponDiscount > 100) {
-      alert("Discount percentage must be between 1% and 100%.");
+      toast.warning("Discount percentage must be between 1% and 100%.", "Validation Error");
       return;
     }
 
@@ -31,9 +34,17 @@ export default function AdminCouponsPage() {
 
     // Check duplicate
     if (coupons.some((c) => c.code.toUpperCase() === code)) {
-      alert(`Coupon code "${code}" already exists in the system.`);
+      toast.error(`Coupon code "${code}" already exists in the system.`, "Duplicate Coupon");
       return;
     }
+
+    const ok = await confirmModal({
+      title: "Activate Promo Coupon",
+      message: `Activate promo code "${code}" granting a ${newCouponDiscount}% discount?`,
+      confirmText: "Activate Coupon",
+      type: "success",
+    });
+    if (!ok) return;
 
     await addCoupon({
       code,
@@ -42,7 +53,7 @@ export default function AdminCouponsPage() {
     });
 
     setNewCouponCode("");
-    alert(`Created & Activated promo code "${code}" (${newCouponDiscount}% OFF)!`);
+    toast.success(`Created & Activated promo code "${code}" (${newCouponDiscount}% OFF)!`, "Coupon Activated");
   };
 
   const startEdit = (coupon: CouponItem) => {
@@ -53,26 +64,56 @@ export default function AdminCouponsPage() {
 
   const handleSaveEdit = async (originalCode: string) => {
     if (!editFormCode.trim()) {
-      alert("Coupon code cannot be empty.");
+      toast.warning("Coupon code cannot be empty.", "Validation Error");
       return;
     }
     if (editFormDiscount <= 0 || editFormDiscount > 100) {
-      alert("Discount percentage must be between 1% and 100%.");
+      toast.warning("Discount percentage must be between 1% and 100%.", "Validation Error");
       return;
     }
 
+    const updatedCode = editFormCode.trim().toUpperCase();
+    const ok = await confirmModal({
+      title: "Update Promo Coupon",
+      message: `Save changes to coupon "${originalCode}" (Code: ${updatedCode}, Discount: ${editFormDiscount}%)?`,
+      confirmText: "Save Changes",
+      type: "info",
+    });
+    if (!ok) return;
+
     await updateCoupon(originalCode, {
-      code: editFormCode.trim().toUpperCase(),
+      code: updatedCode,
       discountPercent: Number(editFormDiscount),
     });
 
     setEditingCode(null);
-    alert("Discount coupon updated successfully!");
+    toast.success("Discount coupon updated successfully!", "Coupon Updated");
+  };
+
+  const handleToggle = async (code: string, currentActive: boolean) => {
+    const nextState = !currentActive;
+    const ok = await confirmModal({
+      title: nextState ? "Activate Promo Coupon" : "Deactivate Promo Coupon",
+      message: `Are you sure you want to ${nextState ? "activate" : "deactivate"} promo coupon "${code}"?`,
+      confirmText: nextState ? "Activate" : "Deactivate",
+      type: nextState ? "success" : "warning",
+    });
+    if (ok) {
+      await toggleCouponActive(code, nextState);
+      toast.info(`Promo code "${code}" is now ${nextState ? "Active" : "Deactivated"}.`, "Status Changed");
+    }
   };
 
   const handleDelete = async (code: string) => {
-    if (confirm(`Are you sure you want to permanently delete coupon "${code}"?`)) {
+    const ok = await confirmModal({
+      title: "Delete Promo Code",
+      message: `Are you sure you want to permanently delete coupon "${code}"? Trekkers will no longer be able to claim this discount.`,
+      confirmText: "Delete Coupon",
+      type: "danger",
+    });
+    if (ok) {
       await deleteCoupon(code);
+      toast.success(`Coupon "${code}" deleted permanently.`);
     }
   };
 
@@ -241,7 +282,7 @@ export default function AdminCouponsPage() {
                       {/* Action Bar: Toggle Active, Edit, Delete */}
                       <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-2">
                         <button
-                          onClick={() => toggleCouponActive(c.code, !c.active)}
+                          onClick={() => handleToggle(c.code, c.active)}
                           className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer ${
                             c.active
                               ? "bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 border border-amber-500/30"

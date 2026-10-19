@@ -3,6 +3,7 @@
 
 import React, { useState } from "react";
 import { useCms, RoomItem, GalleryItem, ServiceItem } from "@/context/CmsContext";
+import { useToast } from "@/context/ToastContext";
 import { X, Folder, Loader2 } from "lucide-react";
 
 export function AdminDashboard() {
@@ -22,6 +23,8 @@ export function AdminDashboard() {
     deleteGalleryItem,
     coupons,
     addCoupon,
+    toggleCouponActive,
+    deleteCoupon,
     services,
     addService,
     deleteService,
@@ -63,6 +66,8 @@ export function AdminDashboard() {
   const [newCouponCode, setNewCouponCode] = useState("");
   const [newCouponDiscount, setNewCouponDiscount] = useState(15);
 
+  const { toast, confirmModal } = useToast();
+
   const handleFileUpload = async (
     file: File,
     setUrl: (url: string) => void,
@@ -81,11 +86,12 @@ export function AdminDashboard() {
       const data = await res.json();
       if (data.success && data.url) {
         setUrl(data.url);
+        toast.success("Image uploaded successfully!", "Upload Complete");
       } else {
-        alert("Upload failed: " + (data.message || "Unknown error"));
+        toast.error("Upload failed: " + (data.message || "Unknown error"), "Upload Failed");
       }
     } catch (err) {
-      alert("Error uploading file to server");
+      toast.error("Error uploading file to server", "Upload Error");
     } finally {
       setUploading(false);
     }
@@ -96,23 +102,42 @@ export function AdminDashboard() {
   const totalRevenue = bookings.reduce((sum, b) => (b.status === "Confirmed" ? sum + b.totalAmount : sum), 0);
   const activeBookingsCount = bookings.filter((b) => b.status === "Confirmed").length;
 
-  const handleSaveHero = (e: React.FormEvent) => {
+  const handleSaveHero = async (e: React.FormEvent) => {
     e.preventDefault();
-    updateHeroConfig({
+    const ok = await confirmModal({
+      title: "Update Hero & WhatsApp Settings",
+      message: "Are you sure you want to save and publish these Hero headline & WhatsApp settings live to the website?",
+      confirmText: "Save & Publish",
+      type: "info",
+    });
+    if (!ok) return;
+
+    await updateHeroConfig({
       title: heroTitle,
       subtitle: heroSubtitle,
       badge: heroBadge,
       autoSlideSpeed: Number(autoSpeed),
       whatsappNumber: whatsappNumber,
     });
-    alert("Hero & WhatsApp settings updated live!");
+    toast.success("Hero & WhatsApp settings updated live!", "Settings Saved");
   };
 
-  const handleCreateRoom = (e: React.FormEvent) => {
+  const handleCreateRoom = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newRoomName) return;
-    addRoom({
-      name: newRoomName,
+    if (!newRoomName.trim()) {
+      toast.warning("Please enter a room name.", "Validation Error");
+      return;
+    }
+    const ok = await confirmModal({
+      title: "Publish New Suite",
+      message: `Are you sure you want to publish "${newRoomName.trim()}" at $${newRoomPrice}/night live to the website?`,
+      confirmText: "Publish Suite",
+      type: "success",
+    });
+    if (!ok) return;
+
+    await addRoom({
+      name: newRoomName.trim(),
       pricePerNight: Number(newRoomPrice),
       capacity: Number(newRoomCapacity || 2),
       size: "42 m²",
@@ -124,40 +149,77 @@ export function AdminDashboard() {
       featured: true,
       available: true,
     });
+    const roomName = newRoomName;
     setNewRoomName("");
-    alert("New room added and published to website!");
+    toast.success(`Suite "${roomName}" added and published to website!`, "Suite Published");
   };
 
-  const handleCreateGallery = (e: React.FormEvent) => {
+  const handleCreateGallery = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newGalTitle || !newGalUrl) return;
-    addGalleryItem({
-      title: newGalTitle,
-      category: newGalCategory,
-      imageUrl: newGalUrl,
+    if (!newGalTitle.trim() || !newGalUrl.trim()) {
+      toast.warning("Please provide both photo title and image URL.", "Validation Error");
+      return;
+    }
+    const ok = await confirmModal({
+      title: "Publish Gallery Photo",
+      message: `Publish photo "${newGalTitle.trim()}" to the ${newGalCategory} section?`,
+      confirmText: "Publish Photo",
+      type: "success",
     });
+    if (!ok) return;
+
+    await addGalleryItem({
+      title: newGalTitle.trim(),
+      category: newGalCategory,
+      imageUrl: newGalUrl.trim(),
+    });
+    const title = newGalTitle;
     setNewGalTitle("");
     setNewGalUrl("");
-    alert("Gallery item published!");
+    toast.success(`Gallery photo "${title}" published live!`, "Gallery Updated");
   };
 
-  const handleCreateCoupon = (e: React.FormEvent) => {
+  const handleCreateCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newCouponCode) return;
-    addCoupon({
-      code: newCouponCode.toUpperCase(),
+    if (!newCouponCode.trim()) {
+      toast.warning("Please enter a coupon code.", "Validation Error");
+      return;
+    }
+    const code = newCouponCode.trim().toUpperCase();
+    const ok = await confirmModal({
+      title: "Activate Promo Coupon",
+      message: `Activate promo code "${code}" granting a ${newCouponDiscount}% discount?`,
+      confirmText: "Activate Coupon",
+      type: "success",
+    });
+    if (!ok) return;
+
+    await addCoupon({
+      code,
       discountPercent: Number(newCouponDiscount),
       active: true,
     });
+    const discount = newCouponDiscount;
     setNewCouponCode("");
-    alert(`Created coupon ${newCouponCode.toUpperCase()} (${newCouponDiscount}% OFF)`);
+    toast.success(`Promo coupon ${code} (${discount}% OFF) activated!`, "Coupon Created");
   };
 
   const handleCreateService = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newSrvTitle) return;
+    if (!newSrvTitle.trim()) {
+      toast.warning("Please enter a service title.", "Validation Error");
+      return;
+    }
+    const ok = await confirmModal({
+      title: "Publish Sanctuary Service",
+      message: `Publish "${newSrvTitle.trim()}" (${newSrvCategory}) live to the website?`,
+      confirmText: "Publish Service",
+      type: "success",
+    });
+    if (!ok) return;
+
     await addService({
-      title: newSrvTitle,
+      title: newSrvTitle.trim(),
       category: newSrvCategory,
       price: Number(newSrvPrice),
       icon: newSrvIcon || "mountain",
@@ -167,7 +229,100 @@ export function AdminDashboard() {
     const title = newSrvTitle;
     setNewSrvTitle("");
     setNewSrvDescription("");
-    alert(`Published service "${title}"!`);
+    toast.success(`Published service "${title}"!`, "Service Published");
+  };
+
+  const handleToggleRoom = async (id: string, currentAvailable: boolean, name: string) => {
+    const nextState = !currentAvailable;
+    const ok = await confirmModal({
+      title: nextState ? "Mark Suite as Available" : "Mark Suite as Booked",
+      message: `Are you sure you want to mark "${name}" as ${nextState ? "Available for reservations" : "Booked / Unavailable"}?`,
+      confirmText: nextState ? "Mark Available" : "Mark Booked",
+      type: nextState ? "success" : "warning",
+    });
+    if (ok) {
+      await updateRoom(id, { available: nextState });
+      toast.info(`"${name}" is now marked as ${nextState ? "Available" : "Booked"}.`);
+    }
+  };
+
+  const handleBookingStatusDropdown = async (id: string, newStatus: "Confirmed" | "Pending" | "Cancelled", guestName: string) => {
+    const ok = await confirmModal({
+      title: "Update Reservation Status",
+      message: `Change booking status for ${guestName} (${id}) to "${newStatus}"?`,
+      confirmText: `Set to ${newStatus}`,
+      type: newStatus === "Cancelled" ? "danger" : newStatus === "Confirmed" ? "success" : "warning",
+    });
+    if (ok) {
+      await updateBookingStatus(id, newStatus);
+      toast.info(`Booking ${id} status set to ${newStatus}.`);
+    }
+  };
+
+  const handleDeleteRoom = async (id: string, name: string) => {
+    const ok = await confirmModal({
+      title: "Delete Room Suite",
+      message: `Are you sure you want to permanently delete "${name}"?`,
+      confirmText: "Delete Suite",
+      type: "danger",
+    });
+    if (ok) {
+      await deleteRoom(id);
+      toast.success(`Suite "${name}" deleted.`);
+    }
+  };
+
+  const handleDeleteService = async (id: string, title: string) => {
+    const ok = await confirmModal({
+      title: "Delete Sanctuary Service",
+      message: `Are you sure you want to delete "${title}"?`,
+      confirmText: "Delete Service",
+      type: "danger",
+    });
+    if (ok) {
+      await deleteService(id);
+      toast.success(`Service "${title}" deleted.`);
+    }
+  };
+
+  const handleDeleteGallery = async (id: string, title: string) => {
+    const ok = await confirmModal({
+      title: "Delete Gallery Photo",
+      message: `Remove photo "${title}" from the public gallery?`,
+      confirmText: "Delete Photo",
+      type: "danger",
+    });
+    if (ok) {
+      await deleteGalleryItem(id);
+      toast.success(`Photo "${title}" removed.`);
+    }
+  };
+
+  const handleToggleCoupon = async (code: string, currentActive: boolean) => {
+    const nextState = !currentActive;
+    const ok = await confirmModal({
+      title: nextState ? "Activate Promo Coupon" : "Deactivate Promo Coupon",
+      message: `Are you sure you want to ${nextState ? "activate" : "deactivate"} promo coupon "${code}"?`,
+      confirmText: nextState ? "Activate" : "Deactivate",
+      type: nextState ? "success" : "warning",
+    });
+    if (ok) {
+      await toggleCouponActive(code, nextState);
+      toast.info(`Promo coupon "${code}" is now ${nextState ? "Active" : "Deactivated"}.`);
+    }
+  };
+
+  const handleDeleteCoupon = async (code: string) => {
+    const ok = await confirmModal({
+      title: "Delete Promo Coupon",
+      message: `Are you sure you want to permanently delete coupon "${code}"? Trekkers will no longer be able to use it.`,
+      confirmText: "Delete Coupon",
+      type: "danger",
+    });
+    if (ok) {
+      await deleteCoupon(code);
+      toast.success(`Coupon "${code}" deleted.`);
+    }
   };
 
   return (
@@ -460,7 +615,7 @@ export function AdminDashboard() {
                         </div>
                         <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
                           <button
-                            onClick={() => updateRoom(r.id, { available: !isAvailable })}
+                            onClick={() => handleToggleRoom(r.id, isAvailable, r.name)}
                             className={`px-2.5 py-1 rounded-lg text-xs font-bold border ${
                               isAvailable ? "bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border-rose-500/30" : "bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border-emerald-500/30"
                             }`}
@@ -468,7 +623,7 @@ export function AdminDashboard() {
                             {isAvailable ? "Mark Booked" : "Mark Available"}
                           </button>
                           <button
-                            onClick={() => deleteRoom(r.id)}
+                            onClick={() => handleDeleteRoom(r.id, r.name)}
                             className="px-2.5 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold"
                           >
                             Delete
@@ -586,7 +741,7 @@ export function AdminDashboard() {
                         </div>
                       </div>
                       <button
-                        onClick={() => deleteService(srv.id)}
+                        onClick={() => handleDeleteService(srv.id, srv.title)}
                         className="px-3 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold"
                       >
                         Delete
@@ -619,7 +774,7 @@ export function AdminDashboard() {
 
                       <select
                         value={b.status}
-                        onChange={(e) => updateBookingStatus(b.id, e.target.value as any)}
+                        onChange={(e) => handleBookingStatusDropdown(b.id, e.target.value as any, b.guestName)}
                         className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs focus:outline-none focus:border-[#4F9CF9] transition-all cursor-pointer shadow-sm"
                       >
                         <option value="Confirmed" className="bg-[#0F172A]">Confirmed</option>
@@ -780,7 +935,7 @@ export function AdminDashboard() {
                   <div key={g.id} className="relative rounded-xl overflow-hidden group border border-white/10">
                     <img src={g.imageUrl} alt={g.title} className="w-full h-24 object-cover" />
                     <button
-                      onClick={() => deleteGalleryItem(g.id)}
+                      onClick={() => handleDeleteGallery(g.id, g.title)}
                       className="absolute top-2 right-2 p-1 rounded bg-red-600 text-white text-[10px] font-bold"
                     >
                       Delete
@@ -827,8 +982,26 @@ export function AdminDashboard() {
               <div className="space-y-2">
                 {coupons.map((c, idx) => (
                   <div key={idx} className="p-3 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center text-xs">
-                    <span className="font-mono font-bold text-white text-sm">{c.code}</span>
-                    <span className="text-[#16A34A] font-bold">{c.discountPercent}% OFF ACTIVE</span>
+                    <div>
+                      <span className="font-mono font-bold text-white text-sm block">{c.code}</span>
+                      <span className="text-slate-400 text-[10px]">{c.discountPercent}% OFF • {c.active ? "Active" : "Disabled"}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleToggleCoupon(c.code, c.active)}
+                        className={`px-2.5 py-1 rounded-lg text-xs font-bold border ${
+                          c.active ? "bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border-amber-500/30" : "bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border-emerald-500/30"
+                        }`}
+                      >
+                        {c.active ? "Deactivate" : "Activate"}
+                      </button>
+                      <button
+                        onClick={() => handleDeleteCoupon(c.code)}
+                        className="px-2.5 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

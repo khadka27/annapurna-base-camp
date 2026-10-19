@@ -3,12 +3,14 @@
 import React, { useState } from "react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { useCms, ServiceItem } from "@/context/CmsContext";
+import { useToast } from "@/context/ToastContext";
 import { Zap, Plus, Trash2 } from "lucide-react";
 import { DynamicIcon } from "@/components/DynamicIcon";
 import { CustomSelect } from "@/components/CustomSelect";
 
 export default function AdminServicesPage() {
   const { services, addService, deleteService } = useCms();
+  const { toast, confirmModal } = useToast();
 
   const [newSrvTitle, setNewSrvTitle] = useState("");
   const [newSrvCategory, setNewSrvCategory] = useState<ServiceItem["category"]>("Wellness & Safety");
@@ -19,18 +21,43 @@ export default function AdminServicesPage() {
 
   const handleCreateService = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newSrvTitle) return;
+    if (!newSrvTitle.trim()) {
+      toast.warning("Please enter a valid service title.", "Validation Error");
+      return;
+    }
+    const ok = await confirmModal({
+      title: "Publish Sanctuary Service",
+      message: `Publish service "${newSrvTitle.trim()}" (${newSrvCategory}) live to the website?`,
+      confirmText: "Publish Service",
+      type: "success",
+    });
+    if (!ok) return;
+
     await addService({
-      title: newSrvTitle,
+      title: newSrvTitle.trim(),
       category: newSrvCategory,
       price: Number(newSrvPrice),
       icon: newSrvIcon || "mountain",
       description: newSrvDescription || `${newSrvTitle} service at Annapurna Base Camp Sanctuary.`,
       included: newSrvIncluded,
     });
+    const srvName = newSrvTitle.trim();
     setNewSrvTitle("");
     setNewSrvDescription("");
-    alert(`Published service "${newSrvTitle}"!`);
+    toast.success(`Published service "${srvName}" live!`, "Service Published");
+  };
+
+  const handleDeleteService = async (id: string, title: string) => {
+    const ok = await confirmModal({
+      title: "Delete Sanctuary Service",
+      message: `Are you sure you want to delete "${title}"?`,
+      confirmText: "Delete Service",
+      type: "danger",
+    });
+    if (ok) {
+      await deleteService(id);
+      toast.success(`Service "${title}" deleted.`);
+    }
   };
 
   return (
@@ -162,8 +189,8 @@ export default function AdminServicesPage() {
                 </div>
 
                 <button
-                  onClick={() => deleteService(srv.id)}
-                  className="px-3.5 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold border border-red-500/30 transition-all flex items-center gap-1.5"
+                  onClick={() => handleDeleteService(srv.id, srv.title)}
+                  className="px-3.5 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs font-bold border border-red-500/30 transition-all flex items-center gap-1.5 cursor-pointer"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Delete</span>

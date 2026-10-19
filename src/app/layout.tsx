@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CmsProvider } from "@/context/CmsContext";
+import { ToastProvider } from "@/context/ToastContext";
 import { NextAuthProvider } from "@/components/NextAuthProvider";
 import { SnowEffect } from "@/components/SnowEffect";
 
@@ -147,8 +148,10 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
         <NextAuthProvider>
           <CmsProvider>
-            <SnowEffect />
-            {children}
+            <ToastProvider>
+              <SnowEffect />
+              {children}
+            </ToastProvider>
           </CmsProvider>
         </NextAuthProvider>
       </body>

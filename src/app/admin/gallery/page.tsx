@@ -3,11 +3,13 @@
 import React, { useState } from "react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { useCms, GalleryItem } from "@/context/CmsContext";
+import { useToast } from "@/context/ToastContext";
 import { Camera, Plus, Trash2, Folder, Loader2 } from "lucide-react";
 import { CustomSelect } from "@/components/CustomSelect";
 
 export default function AdminGalleryPage() {
   const { gallery, addGalleryItem, deleteGalleryItem } = useCms();
+  const { toast, confirmModal } = useToast();
 
   const [newGalTitle, setNewGalTitle] = useState("");
   const [newGalCategory, setNewGalCategory] = useState<GalleryItem["category"]>("Sanctuary");
@@ -24,11 +26,12 @@ export default function AdminGalleryPage() {
       const data = await res.json();
       if (data.success && data.url) {
         setNewGalUrl(data.url);
+        toast.success("Gallery image uploaded successfully!", "Upload Complete");
       } else {
-        alert("Upload failed: " + (data.message || "Unknown error"));
+        toast.error("Upload failed: " + (data.message || "Unknown error"), "Upload Failed");
       }
     } catch (err) {
-      alert("Error uploading file to server");
+      toast.error("Error uploading file to server", "Upload Error");
     } finally {
       setUploadingGalImage(false);
     }
@@ -36,15 +39,40 @@ export default function AdminGalleryPage() {
 
   const handleCreateGallery = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newGalTitle || !newGalUrl) return;
-    await addGalleryItem({
-      title: newGalTitle,
-      category: newGalCategory,
-      imageUrl: newGalUrl,
+    if (!newGalTitle.trim() || !newGalUrl.trim()) {
+      toast.warning("Please provide both photo title and image URL.", "Validation Error");
+      return;
+    }
+    const ok = await confirmModal({
+      title: "Publish Gallery Photo",
+      message: `Publish photo "${newGalTitle.trim()}" to the ${newGalCategory} gallery live?`,
+      confirmText: "Publish Photo",
+      type: "success",
     });
+    if (!ok) return;
+
+    await addGalleryItem({
+      title: newGalTitle.trim(),
+      category: newGalCategory,
+      imageUrl: newGalUrl.trim(),
+    });
+    const photoTitle = newGalTitle.trim();
     setNewGalTitle("");
     setNewGalUrl("");
-    alert("Gallery photo published live!");
+    toast.success(`Gallery photo "${photoTitle}" published live!`, "Photo Published");
+  };
+
+  const handleDeleteGallery = async (id: string, title: string) => {
+    const ok = await confirmModal({
+      title: "Delete Gallery Photo",
+      message: `Are you sure you want to delete photo "${title}"?`,
+      confirmText: "Delete Photo",
+      type: "danger",
+    });
+    if (ok) {
+      await deleteGalleryItem(id);
+      toast.success(`Photo "${title}" removed from gallery.`);
+    }
   };
 
   return (
@@ -155,8 +183,8 @@ export default function AdminGalleryPage() {
                     <span className="text-xs text-[#4F9CF9] font-mono">{g.category}</span>
                   </div>
                   <button
-                    onClick={() => deleteGalleryItem(g.id)}
-                    className="p-2 rounded-xl bg-red-500/20 hover:bg-red-500/40 text-red-300 border border-red-500/30 transition-all"
+                    onClick={() => handleDeleteGallery(g.id, g.title)}
+                    className="p-2 rounded-xl bg-red-500/20 hover:bg-red-500/40 text-red-300 border border-red-500/30 transition-all cursor-pointer"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

@@ -3,11 +3,52 @@
 import React from "react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { useCms } from "@/context/CmsContext";
+import { useToast } from "@/context/ToastContext";
 import { Calendar, CheckCircle, Clock, XCircle } from "lucide-react";
 import { CustomSelect } from "@/components/CustomSelect";
 
 export default function AdminBookingsPage() {
   const { bookings, updateBookingStatus } = useCms();
+  const { toast, confirmModal } = useToast();
+
+  const handleApprove = async (id: string, guestName: string) => {
+    const ok = await confirmModal({
+      title: "Approve Guest Reservation",
+      message: `Approve and confirm high-altitude room reservation ${id} for ${guestName}?`,
+      confirmText: "Approve Booking",
+      type: "success",
+    });
+    if (ok) {
+      await updateBookingStatus(id, "Confirmed");
+      toast.success(`Booking ${id} for ${guestName} approved!`, "Reservation Confirmed");
+    }
+  };
+
+  const handleReject = async (id: string, guestName: string) => {
+    const ok = await confirmModal({
+      title: "Reject Reservation Request",
+      message: `Are you sure you want to reject booking ${id} for ${guestName}?`,
+      confirmText: "Reject Reservation",
+      type: "danger",
+    });
+    if (ok) {
+      await updateBookingStatus(id, "Cancelled");
+      toast.info(`Booking ${id} marked as Rejected.`, "Reservation Updated");
+    }
+  };
+
+  const handleStatusChange = async (id: string, status: "Confirmed" | "Pending" | "Cancelled", guestName: string) => {
+    const ok = await confirmModal({
+      title: "Update Reservation Status",
+      message: `Change booking status for ${guestName} (${id}) to "${status}"?`,
+      confirmText: `Set to ${status}`,
+      type: status === "Cancelled" ? "danger" : status === "Confirmed" ? "success" : "warning",
+    });
+    if (ok) {
+      await updateBookingStatus(id, status);
+      toast.info(`Booking ${id} status set to ${status}.`, "Status Updated");
+    }
+  };
 
   const totalRevenue = bookings.reduce((sum, b) => (b.status === "Confirmed" ? sum + b.totalAmount : sum), 0);
   const confirmedCount = bookings.filter((b) => b.status === "Confirmed").length;
@@ -103,14 +144,14 @@ export default function AdminBookingsPage() {
                   {b.status === "Pending" ? (
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => updateBookingStatus(b.id, "Confirmed")}
+                        onClick={() => handleApprove(b.id, b.guestName)}
                         className="px-4 py-2 rounded-xl bg-[#16A34A] hover:bg-[#138a3e] text-white font-extrabold text-xs shadow-lg shadow-[#16A34A]/25 transition-all flex items-center gap-1.5 cursor-pointer"
                       >
                         <CheckCircle className="w-4 h-4" />
                         <span>Approve Booking</span>
                       </button>
                       <button
-                        onClick={() => updateBookingStatus(b.id, "Cancelled")}
+                        onClick={() => handleReject(b.id, b.guestName)}
                         className="px-3.5 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/40 text-red-300 font-bold text-xs border border-red-500/30 transition-all flex items-center gap-1 cursor-pointer"
                       >
                         <XCircle className="w-4 h-4" />
@@ -140,7 +181,7 @@ export default function AdminBookingsPage() {
                       </span>
                       <CustomSelect
                         value={b.status}
-                        onChange={(v) => updateBookingStatus(b.id, v as any)}
+                        onChange={(v) => handleStatusChange(b.id, v as any, b.guestName)}
                         options={[
                           { value: "Confirmed", label: "Confirmed" },
                           { value: "Pending", label: "Pending" },
